@@ -42,34 +42,63 @@ public class Jugador extends Entidad{
         if(mT.getTeclaArriba()) {
 			setY(getY() - getVelocidad());
             this.direccion = "arriba";
+            this.contadorSprites++;
+
 		}
 		if(mT.getTeclaAbajo()) {
 			setY(getY() + getVelocidad());
             this.direccion = "abajo";
+            this.contadorSprites++;
+
 		}
 		if(mT.getTeclaDer()) {
             setX(getX() + getVelocidad());
             this.direccion = "derecha";
+            this.contadorSprites++;
+
         }
 		if(mT.getTeclaIzq()) {
             setX(getX() - getVelocidad());
             this.direccion = "izquierda";
+            this.contadorSprites++;
+
 		}
+
+        if(this.contadorSprites > this.cambiaSprite){
+            if (this.numeroSprite == 1) 
+                this.numeroSprite = 2;
+            else
+                this.numeroSprite = 1;
+
+            this.contadorSprites = 0;
+        }
     }
     public void draw(Graphics2D g2){
         BufferedImage sprite = null;
         switch(this.direccion){
             case "arriba":
-                sprite = this.arriba1;
+                if(this.numeroSprite == 1)
+                    sprite = this.arriba1;
+                if(this.numeroSprite == 2)
+                    sprite = this.arriba2;
                 break;
             case "abajo":
-                sprite = this.abajo1;
+                if(this.numeroSprite == 1)
+                    sprite = this.abajo1;
+                if(this.numeroSprite == 2)
+                    sprite = this.abajo2;
                 break;
             case "izquierda":
-                sprite = this.izquierda1;
+                if(this.numeroSprite == 1)
+                    sprite = this.izquierda1;
+                if(this.numeroSprite == 2)
+                    sprite = this.izquieda2;
                 break;
             case "derecha":
-                sprite = this.derecha1;
+                if(this.numeroSprite == 1)
+                    sprite = this.derecha1;
+                if(this.numeroSprite == 2)
+                    sprite = this.derecha2;
                 break;
 
         }
