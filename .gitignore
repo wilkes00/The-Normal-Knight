@@ -1,0 +1,24 @@
+# Ignorar clases compiladas y binarios
+*.class
+
+# Carpetas de build comunes
+/bin/
+/build/
+/out/
+/target/
+/dist/
+
+# JARs y librerías
+*.jar
+*.war
+
+# IDE/editor
+/.idea/
+/.vscode/
+*.iml
+.classpath
+.project
+.settings/
+
+# Sistemas
+.DS_Store
