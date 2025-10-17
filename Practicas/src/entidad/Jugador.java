@@ -92,7 +92,7 @@ public class Jugador extends Entidad{
                 if(this.numeroSprite == 1)
                     sprite = this.izquierda1;
                 if(this.numeroSprite == 2)
-                    sprite = this.izquieda2;
+                    sprite = this.izquierda2;
                 break;
             case "derecha":
                 if(this.numeroSprite == 1)
