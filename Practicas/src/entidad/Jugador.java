@@ -102,7 +102,7 @@ public class Jugador extends Entidad{
                 break;
 
         }
-        g2.drawImage(sprite, getX(), getY(), gP.getTam(), gP.getTam(), gP);
+        g2.drawImage(sprite, getX(), getY(), gP.getTamTile(), gP.getTamTile(), gP);
     }
 
     public int getX(){

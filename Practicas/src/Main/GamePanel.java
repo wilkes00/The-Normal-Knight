@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
+import tile.ManejadorTiles;
 
 public class GamePanel extends JPanel implements Runnable{
 	//Config de pantalla
@@ -19,6 +20,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	Thread hebraJuego;
 	ManejadorTeclas mT = new ManejadorTeclas();
+	ManejadorTiles mTi = new ManejadorTiles(this);
 	Jugador jugador = new Jugador(this, mT);
 	private int FPS = 60;
 	
@@ -59,11 +61,24 @@ public class GamePanel extends JPanel implements Runnable{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
+		mTi.draw(g2);
 		jugador.draw(g2);
 		g2.dispose();
 	}
-	public int getTam(){
+	public int getTamTile(){
 		return this.sizeTile;
 	}
+
+	public int getMaxRenPantalla(){
+		return this.maxRenPantalla;
+	}
+	public int getMaxColPantalla(){
+		return this.maxColPantalla;
+	}
+	public int getAnchoPantalla(){
+		return this.anchoPantalla;
+	}
+	public int getAltoPantalla(){
+		return this.altoPantalla;
+	}
 }
-//Metodos getter a implementar

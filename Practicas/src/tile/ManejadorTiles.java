@@ -1,10 +1,9 @@
 package tile;
 
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import Main.GamePanel;
+import java.awt.Graphics2D;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class ManejadorTiles {
     private GamePanel gP;
@@ -32,6 +31,23 @@ public class ManejadorTiles {
             arregloTiles[5].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/suelo.png")));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void draw(Graphics2D g2){
+        int ren = 0, col = 0;
+        int x = 0, y = 0;
+        
+        while (ren < gP.getAltoPantalla() && col < gP.getAnchoPantalla()) { 
+            g2.drawImage(arregloTiles[4].getImagen(), x, y, gP.getTamTile(), gP.getTamTile(), null);
+            col++;
+            x += gP.getTamTile();
+            if(col == gP.getMaxColPantalla()){
+                col = 0;
+                x = 0;
+                ren++;
+                y += gP.getTamTile();
+            }
         }
     }
 }
