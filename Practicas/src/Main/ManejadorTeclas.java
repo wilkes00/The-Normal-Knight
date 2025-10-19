@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class ManejadorTeclas implements KeyListener{
-	private boolean teclaArriba, teclaAbajo, teclaIzq, teclaDer;
+	private boolean teclaSalto, teclaDash, teclaIzq, teclaDer;
 	@Override
 	public void keyTyped (KeyEvent e) {
 		
@@ -12,9 +12,9 @@ public class ManejadorTeclas implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch(e.getKeyCode()) {
-			case KeyEvent.VK_W : teclaArriba = true;
+			case KeyEvent.VK_SPACE: teclaSalto = true;
 				break;
-			case KeyEvent.VK_S : teclaAbajo = true;
+			case KeyEvent.VK_SHIFT : teclaDash = true;
 				break;
 			case KeyEvent.VK_A : teclaIzq = true;
 				break;
@@ -25,9 +25,9 @@ public class ManejadorTeclas implements KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch(e.getKeyCode()) {
-		case KeyEvent.VK_W : teclaArriba = false;
+		case KeyEvent.VK_SPACE : teclaSalto = false;
 			break;
-		case KeyEvent.VK_S : teclaAbajo = false;
+		case KeyEvent.VK_SHIFT : teclaDash = false;
 			break;
 		case KeyEvent.VK_A : teclaIzq = false;
 			break;
@@ -35,11 +35,11 @@ public class ManejadorTeclas implements KeyListener{
 			break;
 		}
 	}
-	public boolean getTeclaArriba() {
-		return this.teclaArriba;
+	public boolean getTeclaSalto() {
+		return this.teclaSalto;
 	}
-	public boolean getTeclaAbajo() {
-		return this.teclaAbajo;
+	public boolean getTeclaDash() {
+		return this.teclaDash;
 	}
 	public boolean getTeclaIzq() {
 		return this.teclaIzq;

@@ -3,9 +3,8 @@ package entidad;
 import Main.GamePanel;
 import Main.ManejadorTeclas;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 public class Jugador extends Entidad{
     private GamePanel gP;
@@ -21,49 +20,50 @@ public class Jugador extends Entidad{
         this.x = 100;
         this.y = 100;
         this.velocidad = 4;
-        this.direccion = "abajo";
+        this.direccion = "idle";
     }
     public void getSpritesJugador(){
-        try {
-            this.arriba1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverArriba1.png"));
-            this.arriba2 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverArriba2.png"));
-            this.abajo1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverAbajo1.png"));
-            this.abajo2 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverAbajo2.png"));
-            this.izquierda1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverIzquierda1.png"));
-            this.izquierda2 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverIzquierda2.png"));
-            this.derecha1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverDerecha1.png"));
-            this.derecha2 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverDerecha2.png"));
-
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        this.idle = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/spritesjugador/_Idle.gif"));
+        this.salto = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/spritesjugador/__Jump.gif"));
+        this.dash = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/spritesjugador/__Dash.gif"));
+        this.derecha = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/spritesjugador/__Run.gif"));
+        this.izquierda = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/spritesjugador/__Run.gif"));
     }
     public void update(){
-        if(mT.getTeclaArriba()) {
+        boolean movimiento = false;
+        if(mT.getTeclaSalto()) {
 			setY(getY() - getVelocidad());
-            this.direccion = "arriba";
+            this.direccion = "salto";
             this.contadorSprites++;
+            movimiento = true;
 
 		}
-		if(mT.getTeclaAbajo()) {
-			setY(getY() + getVelocidad());
-            this.direccion = "abajo";
+		if(mT.getTeclaDash()) {
+			setX(getX()+ getVelocidad());
+            this.direccion = "dash";
             this.contadorSprites++;
+            movimiento = true;
 
 		}
 		if(mT.getTeclaDer()) {
             setX(getX() + getVelocidad());
             this.direccion = "derecha";
             this.contadorSprites++;
+            movimiento = true;
 
         }
 		if(mT.getTeclaIzq()) {
             setX(getX() - getVelocidad());
             this.direccion = "izquierda";
             this.contadorSprites++;
+            movimiento = true;
 
 		}
 
+        if(!movimiento){
+            this.direccion = "idle";
+            this.numeroSprite = 1;
+        }
         if(this.contadorSprites > this.cambiaSprite){
             if (this.numeroSprite == 1) 
                 this.numeroSprite = 2;
@@ -74,34 +74,32 @@ public class Jugador extends Entidad{
         }
     }
     public void draw(Graphics2D g2){
-        BufferedImage sprite = null;
+        Image sprite = null;
+        int anchoSprite = 160;  //ancho
+        int altoSprite = 160; //alto
+        java.awt.geom.AffineTransform old = g2.getTransform();
+
         switch(this.direccion){
-            case "arriba":
-                if(this.numeroSprite == 1)
-                    sprite = this.arriba1;
-                if(this.numeroSprite == 2)
-                    sprite = this.arriba2;
+            case "idle":
+                g2.drawImage(this.idle, getX(), getY(), anchoSprite, altoSprite, gP);
                 break;
-            case "abajo":
-                if(this.numeroSprite == 1)
-                    sprite = this.abajo1;
-                if(this.numeroSprite == 2)
-                    sprite = this.abajo2;
+            case "salto":
+                g2.drawImage(this.salto, getX(), getY(), anchoSprite, altoSprite, gP);
+                break;
+            case "dash":
+                g2.drawImage(this.dash, getX(), getY(), anchoSprite, altoSprite, gP);
                 break;
             case "izquierda":
-                if(this.numeroSprite == 1)
-                    sprite = this.izquierda1;
-                if(this.numeroSprite == 2)
-                    sprite = this.izquierda2;
+                g2.translate(getX() + anchoSprite, getY());
+                g2.scale(-1, 1);
+                g2.drawImage(this.izquierda, 0, 0, anchoSprite, altoSprite, gP);
                 break;
             case "derecha":
-                if(this.numeroSprite == 1)
-                    sprite = this.derecha1;
-                if(this.numeroSprite == 2)
-                    sprite = this.derecha2;
+                g2.drawImage(this.derecha, getX(), getY(), anchoSprite, altoSprite, gP);
                 break;
 
         }
+        g2.setTransform(old);
         g2.drawImage(sprite, getX(), getY(), gP.getTamTile(), gP.getTamTile(), gP);
     }
 
