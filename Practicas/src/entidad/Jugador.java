@@ -10,16 +10,19 @@ import javax.imageio.ImageIO;
 public class Jugador extends Entidad{
     private GamePanel gP;
     private ManejadorTeclas mT;
+    private final int pantallaX, pantallaY;
 
     public Jugador(GamePanel gP, ManejadorTeclas mT){
         this.gP = gP;
         this.mT = mT;
+        this.pantallaX = gP.getAnchoPantalla() / 2 - gP.getTamTile() / 2;
+        this.pantallaY = gP.getAltoPantalla() / 2 - gP.getTamTile() / 2;
         configuracionInicial();
         getSpritesJugador();
     }
     public void configuracionInicial(){
-        this.x = 100;
-        this.y = 100;
+        this.mundoX = gP.getTamTile() * 38;
+        this.mundoY = gP.getTamTile() * 23;
         this.velocidad = 4;
         this.direccion = "abajo";
     }
@@ -102,22 +105,22 @@ public class Jugador extends Entidad{
                 break;
 
         }
-        g2.drawImage(sprite, getX(), getY(), gP.getTamTile(), gP.getTamTile(), gP);
+        g2.drawImage(sprite, this.pantallaX, this.pantallaY, gP.getTamTile(), gP.getTamTile(), gP);
     }
 
     public int getX(){
-        return this.x;
+        return this.mundoX;
     }
     public int getY(){
-        return this.y;
+        return this.mundoY;
     }
     public int getVelocidad(){
         return this.velocidad;
     }
     public void setX(int valor){
-        this.x = valor;
+        this.mundoX = valor;
     }
     public void setY(int valor){
-        this.y = valor;
+        this.mundoY = valor;
     }
 }
