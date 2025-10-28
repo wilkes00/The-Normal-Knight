@@ -22,7 +22,14 @@ public class GamePanel extends JPanel implements Runnable{
 	ManejadorTeclas mT = new ManejadorTeclas();
 	ManejadorTiles mTi = new ManejadorTiles(this);
 	Jugador jugador = new Jugador(this, mT);
+	DetectorColisiones dC = new DetectorColisiones(this);
 	private int FPS = 60;
+
+	//configuracion del mundo
+	private final int maxRenMundo = 45;
+	private final int maxColMundo = 78;
+	private final int anchoMundo = this.sizeTile * this.maxColMundo;
+	private final int altoMundo = this.sizeTile * this.maxRenMundo;
 	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(this.anchoPantalla, this.altoPantalla));
@@ -36,6 +43,7 @@ public class GamePanel extends JPanel implements Runnable{
 		hebraJuego = new Thread(this);
 		hebraJuego.start();
 	}
+
 	@Override
 	public void run() {
 		double intervaloDibujo = 1000000000 / FPS;
@@ -61,8 +69,35 @@ public class GamePanel extends JPanel implements Runnable{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		mTi.draw(g2);
-		jugador.draw(g2);
+
+		//LOGICA DE LA CAMARA
+		//calcula la posicion teorica de la esquina superior izquierda de la camara
+		//basandose en la posicion del jugador. La camara intenta centrar al jugador
+		int camaraX = this.jugador.getMundoX() - this.jugador.getPantallaX();
+		int camaraY = this.jugador.getMundoY() - this.jugador.getPantallaY();
+
+		//limita la camara en el eje X para que no se salga del mapa por la izquierda
+		if(camaraX < 0)
+			camaraX = 0;
+
+		//limita la camara en el eje X para que no se salga del mapa por la derecha
+		if(camaraX > this.getAnchoMundo() -this.getAnchoPantalla())
+			camaraX = this.getAnchoMundo() - this.getAnchoPantalla();
+
+		//limita la camara en el eje Y para que no se salga del mapa por arriba
+		if(camaraY < 0)
+			camaraY = 0;
+
+		//limita la camara en el eje Y para que no se salga del mapa por abajo
+		//el limite es el alto del mundo menos el alto de la pantalla
+		if(camaraY > this.getAltoMundo() - this.getAltoPantalla())
+			camaraY = this.getAltoMundo() - this.getAltoPantalla();
+
+		//dibuja el mapa primero, pasandole la posicion corregida de la camara	
+		this.mTi.draw(g2, camaraX, camaraY);
+		//dibuja al jugador despues, pasandole la posicion de la camara
+		this.jugador.draw(g2, camaraX, camaraY);
+		
 		g2.dispose();
 	}
 	public int getTamTile(){
@@ -80,5 +115,23 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	public int getAltoPantalla(){
 		return this.altoPantalla;
+	}
+	public int getMaxRenMundo(){
+		return this.maxRenMundo;
+	}
+	public int getMaxColMundo(){
+		return this.maxColMundo;
+	}
+	public int getAnchoMundo(){
+		return this.anchoMundo;
+	}
+	public int getAltoMundo(){
+		return this.altoMundo;
+	}
+	public Jugador getJugador(){
+		return this.jugador;
+	}
+	public DetectorColisiones getDetectorColisiones(){
+		return this.dC;
 	}
 }

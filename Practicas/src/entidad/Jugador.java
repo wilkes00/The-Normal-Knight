@@ -3,6 +3,7 @@ package entidad;
 import Main.GamePanel;
 import Main.ManejadorTeclas;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -15,8 +16,9 @@ public class Jugador extends Entidad{
     public Jugador(GamePanel gP, ManejadorTeclas mT){
         this.gP = gP;
         this.mT = mT;
-        this.pantallaX = gP.getAnchoPantalla() / 2 - gP.getTamTile() / 2;
-        this.pantallaY = gP.getAltoPantalla() / 2 - gP.getTamTile() / 2;
+        this.pantallaX = gP.getAnchoPantalla() / 2 - (gP.getTamTile() / 2);
+        this.pantallaY = gP.getAltoPantalla() / 2 - (gP.getTamTile() / 2);
+        this.areaSolida = new Rectangle(8, 16, 32, 32);
         configuracionInicial();
         getSpritesJugador();
     }
@@ -42,41 +44,50 @@ public class Jugador extends Entidad{
         }
     }
     public void update(){
-        if(mT.getTeclaArriba()) {
-			setY(getY() - getVelocidad());
-            this.direccion = "arriba";
+        if(mT.getTeclaArriba() || mT.getTeclaAbajo() || mT.getTeclaIzq() || mT.getTeclaDer()){
+            if(mT.getTeclaArriba())
+                this.direccion = "arriba";
+            else if(mT.getTeclaAbajo())
+                this.direccion = "abajo";
+            else if(mT.getTeclaIzq())
+                this.direccion = "izquierda";
+            else if(mT.getTeclaDer())
+                this.direccion = "derecha";
+                
+            //revisa la colision con tiles    
+            this.colisionActivada = false;
+            gP.getDetectorColisiones().revisaTile(this);
+
+            //si no hubo colision
+            if(this.colisionActivada == false){
+                switch(this.direccion){
+                    case "arriba":
+                        setY(getY() - getVelocidad());
+                        break;
+                    case "abajo":
+                        setY(getY() + getVelocidad());
+                        break;
+                    case "izquierda":
+                        setX(getX() - getVelocidad());
+                        break;
+                    case "derecha":
+                        setX(getX() + getVelocidad());
+                        break;
+                }
+            }
             this.contadorSprites++;
 
-		}
-		if(mT.getTeclaAbajo()) {
-			setY(getY() + getVelocidad());
-            this.direccion = "abajo";
-            this.contadorSprites++;
-
-		}
-		if(mT.getTeclaDer()) {
-            setX(getX() + getVelocidad());
-            this.direccion = "derecha";
-            this.contadorSprites++;
-
+            if(this.contadorSprites > this.cambiaSprite){
+                if(this.numeroSprite == 1)
+                    this.numeroSprite = 2;
+                else
+                    this.numeroSprite = 1;
+                this.contadorSprites = 0;
+            }
         }
-		if(mT.getTeclaIzq()) {
-            setX(getX() - getVelocidad());
-            this.direccion = "izquierda";
-            this.contadorSprites++;
-
-		}
-
-        if(this.contadorSprites > this.cambiaSprite){
-            if (this.numeroSprite == 1) 
-                this.numeroSprite = 2;
-            else
-                this.numeroSprite = 1;
-
-            this.contadorSprites = 0;
-        }
+        
     }
-    public void draw(Graphics2D g2){
+    public void draw(Graphics2D g2, int camaraX, int camaraY){
         BufferedImage sprite = null;
         switch(this.direccion){
             case "arriba":
@@ -105,7 +116,14 @@ public class Jugador extends Entidad{
                 break;
 
         }
-        g2.drawImage(sprite, this.pantallaX, this.pantallaY, gP.getTamTile(), gP.getTamTile(), gP);
+
+        //calculo de la posicion en pantalla
+        //la posicion del jugador en pantalla es su posicion en el mundo menos la posicion de la esquina de la camara
+        int jugadorPantallaX = this.mundoX - camaraX;
+        int jugadorPantallaY = this.mundoY - camaraY;
+        
+        //dibuja el sprite seleccionado en las coordenadas calculadas
+        g2.drawImage(sprite, jugadorPantallaX, jugadorPantallaY, gP.getTamTile(), gP.getTamTile(), null);
     }
 
     public int getX(){
@@ -123,4 +141,32 @@ public class Jugador extends Entidad{
     public void setY(int valor){
         this.mundoY = valor;
     }
+    public int getMundoX(){
+        return this.mundoX;
+    }
+    public int getMundoY(){
+        return this.mundoY;
+    }
+    public int getPantallaX(){
+        return this.pantallaX;
+    }
+    public int getPantallaY(){
+        return this.pantallaY;
+    }
+    public int getAreaSolidaX(){
+        return this.areaSolida.x;
+    }
+    public int getAreaSolidaY(){
+        return this.areaSolida.y;
+    }
+    public int getAreaSolidaAncho(){
+        return this.areaSolida.width;
+    }
+    public int getAreaSolidaAlto(){
+        return this.areaSolida.height;
+    }
+    public String getDireccion(){
+        return this.direccion;
+    }
+    
 }

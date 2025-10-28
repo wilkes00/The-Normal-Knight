@@ -1,5 +1,6 @@
 package entidad;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Entidad {
@@ -10,4 +11,11 @@ public class Entidad {
     protected int numeroSprite = 1;
     protected int cambiaSprite = 10;
     
+    //para colisones
+    protected Rectangle areaSolida;
+    protected boolean colisionActivada = false;
+
+    public void setColisionActivada(boolean valor){
+        this.colisionActivada = valor;
+    }
 }

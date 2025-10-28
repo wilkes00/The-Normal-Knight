@@ -15,4 +15,7 @@ public class Tile {
     public boolean getColision(){
         return this.colision;
     }
+    public void setColision(boolean colision){
+        this.colision = colision;
+    }
 }
