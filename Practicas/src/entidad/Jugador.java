@@ -60,7 +60,7 @@ public class Jugador extends Entidad{
             this.direccion = "salto";  
 		}
         setY(getY() + (int) dy);
-        // temporal
+        // temporal para probar el salto
         if (getY() > 100) { // Asumiendo que el suelo está en y=100
             setY(100);
             enElSuelo = true;

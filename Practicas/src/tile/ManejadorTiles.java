@@ -2,19 +2,57 @@ package tile;
 
 import Main.GamePanel;
 import java.awt.Graphics2D;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 
 public class ManejadorTiles {
     private GamePanel gP;
     private int maxTiles = 10;
     Tile[] arregloTiles;
+    private int codigosMapaTiles[][];
 
     public ManejadorTiles(GamePanel gP){
         this.gP = gP;
         this.arregloTiles = new Tile[this.maxTiles];
+        this.codigosMapaTiles = new int[gP.getMaxRenPantalla()][gP.getMaxColPantalla()];
         getImagenesTiles();
+        cargaMapa("/mapas/mundo01.txt");
     }
+
+    public void cargaMapa(String ruta){
+        try{
+            InputStream mapa = getClass().getResourceAsStream(ruta);
+            BufferedReader br = new BufferedReader(new InputStreamReader(mapa));
+            int ren = 0, col = 0;
+
+            while(ren < gP.getMaxRenPantalla() && col < gP.getMaxColPantalla()){
+                String renglonDatos = br.readLine();
+                if(renglonDatos == null)
+                    break;
+
+                String[] codigos = renglonDatos.split(" ");
+                
+                while(col < gP.getMaxColPantalla()){
+                    
+                    int codigoTile = Integer.parseInt(codigos[col]);
+                    this.codigosMapaTiles[ren][col] = codigoTile;
+                    col++;
+                }
+                if(col == gP.getMaxColPantalla()){
+                    ren++;
+                    col = 0;
+                }
+            }
+            br.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public void getImagenesTiles(){
         try {
             arregloTiles[0] = new Tile();
@@ -38,8 +76,8 @@ public class ManejadorTiles {
         int ren = 0, col = 0;
         int x = 0, y = 0;
         
-        while (ren < gP.getAltoPantalla() && col < gP.getAnchoPantalla()) { 
-            g2.drawImage(arregloTiles[4].getImagen(), x, y, gP.getTamTile(), gP.getTamTile(), null);
+        while (ren < gP.getMaxRenPantalla() && col < gP.getMaxColPantalla()) { 
+            g2.drawImage(arregloTiles[codigosMapaTiles[ren][col]].getImagen(), x, y, gP.getTamTile(), gP.getTamTile(), null);
             col++;
             x += gP.getTamTile();
             if(col == gP.getMaxColPantalla()){
