@@ -1,6 +1,5 @@
 package Main;
 
-import java.awt.Component;
 
 import javax.swing.JFrame;
 
@@ -9,7 +8,7 @@ public class Main {
 		JFrame ventana = new JFrame();
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.setResizable(false);
-		ventana.setTitle("TOO - Practicas");
+		ventana.setTitle("The Normal Knight");
 		
 		GamePanel panelJuego = new GamePanel();
 		ventana.add(panelJuego);

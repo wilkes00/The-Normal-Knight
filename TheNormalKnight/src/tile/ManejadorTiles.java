@@ -2,6 +2,7 @@ package tile;
 
 import Main.GamePanel;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,19 +11,22 @@ import javax.imageio.ImageIO;
 
 public class ManejadorTiles {
     private GamePanel gP;
-    private int maxTiles = 10;
+    private int maxTiles = 30;
     Tile[] arregloTiles;
-    private int codigosMapaTiles[][];
+    private int codigosMapaTiles[][][];
+    private int maxMapas = 10;
 
     public ManejadorTiles(GamePanel gP){
         this.gP = gP;
         this.arregloTiles = new Tile[this.maxTiles];
-        this.codigosMapaTiles = new int[gP.getMaxRenMundo()][gP.getMaxColMundo()];
+        this.codigosMapaTiles = new int[maxMapas][gP.getMaxRenMundo()][gP.getMaxColMundo()];
         getImagenesTiles();
-        cargaMapa("/mapas/mundo01.txt");
+        cargaMapa("/mapas/mundo01.txt", gP.getMapaMundo());
+        cargaMapa("/mapas/mapa01.txt", gP.getMapaMazmorra1());
+        
     }
 
-    public void cargaMapa(String ruta){
+    public void cargaMapa(String ruta, int indiceMapa){
         try {
             InputStream mapa = getClass().getResourceAsStream(ruta);
             BufferedReader br = new BufferedReader(new InputStreamReader(mapa));
@@ -53,26 +57,29 @@ public class ManejadorTiles {
                     // Nos aseguramos que la línea del archivo no sea más corta
                     if(col < codigos.length) {
                         int codigo = Integer.parseInt(codigos[col]);
-                        this.codigosMapaTiles[ren][col] = codigo;
+                        this.codigosMapaTiles[indiceMapa][ren][col] = codigo;
                     } else {
                         // Si la línea es más corta, rellenamos con 0 (agua)
-                         this.codigosMapaTiles[ren][col] = 0;
+                         this.codigosMapaTiles[indiceMapa][ren][col] = 0;
                     }
                     col++;
                 }
-                
                 // Ya procesamos una fila válida, pasamos a la siguiente
                 ren++;
             }
             br.close();
             
         } catch (Exception e) {
+            //System.out.println("Error al cargar el mapa: " + ruta); //depuracion
             e.printStackTrace();
         }
     }
 
     public void getImagenesTiles(){
         try {
+            BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/tiles/allTiles.png"));
+            int sizeTile = 16;
+            
             arregloTiles[0] = new Tile();
             arregloTiles[0].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/agua.png")));
             arregloTiles[0].setColision(true);
@@ -93,6 +100,10 @@ public class ManejadorTiles {
             
             arregloTiles[5] = new Tile();
             arregloTiles[5].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/suelo.png")));
+
+            arregloTiles[6] = new Tile();
+            arregloTiles[6].setImagen(spritesheet.getSubimage(6 * sizeTile, 7 * sizeTile, sizeTile, sizeTile));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,7 +113,7 @@ public class ManejadorTiles {
         int renMundo = 0, colMundo = 0;
         
         while (renMundo < gP.getMaxRenMundo() && colMundo < gP.getMaxColMundo()) {
-            int codigoTile = this.codigosMapaTiles[renMundo][colMundo];
+            int codigoTile = this.codigosMapaTiles[gP.getMapaActual()][renMundo][colMundo];
             int mundoX = colMundo * gP.getTamTile();
             int mundoY = renMundo * gP.getTamTile();
 
@@ -133,7 +144,7 @@ public class ManejadorTiles {
     }
 
     public int getCodigoMapaTiles(int ren, int col){
-        return this.codigosMapaTiles[ren][col];
+        return this.codigosMapaTiles[gP.getMapaActual()][ren][col];
     }
     public boolean getColisionDeTile(int index){
         return this.arregloTiles[index].getColision();

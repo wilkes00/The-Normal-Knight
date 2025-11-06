@@ -58,6 +58,7 @@ public class Jugador extends Entidad{
             this.colisionActivada = false;
             gP.getDetectorColisiones().revisaTile(this);
 
+
             //si no hubo colision
             if(this.colisionActivada == false){
                 switch(this.direccion){

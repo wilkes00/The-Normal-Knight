@@ -30,6 +30,10 @@ public class GamePanel extends JPanel implements Runnable{
 	private final int maxColMundo = 78;
 	private final int anchoMundo = this.sizeTile * this.maxColMundo;
 	private final int altoMundo = this.sizeTile * this.maxRenMundo;
+	//Estados del mapa
+	private final int mapaMundo = 0;
+	private final int mapaMazmorra1 = 1;
+	private final int mapaActual = mapaMundo;
 	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(this.anchoPantalla, this.altoPantalla));
@@ -133,5 +137,14 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	public DetectorColisiones getDetectorColisiones(){
 		return this.dC;
+	}
+	public int getMapaMundo(){
+		return this.mapaMundo;
+	}
+	public int getMapaMazmorra1(){
+		return this.mapaMazmorra1;
+	}
+	public int getMapaActual(){
+		return this.mapaActual;
 	}
 }
