@@ -14,18 +14,17 @@ public class ManejadorTiles {
     private int maxTiles = 30;
     Tile[] arregloTiles;
     private int codigosMapaTiles[][][];
-    private int maxMapas = 10;
 
     public ManejadorTiles(GamePanel gP){
         this.gP = gP;
         this.arregloTiles = new Tile[this.maxTiles];
-        this.codigosMapaTiles = new int[maxMapas][gP.getMaxRenMundo()][gP.getMaxColMundo()];
+        this.codigosMapaTiles = new int[gP.getMaxMapas()][gP.getMaxRenMundo()][gP.getMaxColMundo()];
         getImagenesTiles();
         cargaMapa("/mapas/mundo01.txt", gP.getMapaMundo());
         cargaMapa("/mapas/mapa01.txt", gP.getMapaMazmorra1());
         
     }
-
+    
     public void cargaMapa(String ruta, int indiceMapa){
         try {
             InputStream mapa = getClass().getResourceAsStream(ruta);
@@ -79,7 +78,7 @@ public class ManejadorTiles {
         try {
             BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/tiles/allTiles.png"));
             int sizeTile = 16;
-            
+
             arregloTiles[0] = new Tile();
             arregloTiles[0].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/agua.png")));
             arregloTiles[0].setColision(true);
@@ -149,4 +148,5 @@ public class ManejadorTiles {
     public boolean getColisionDeTile(int index){
         return this.arregloTiles[index].getColision();
     }
+   
 }

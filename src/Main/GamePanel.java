@@ -18,22 +18,32 @@ public class GamePanel extends JPanel implements Runnable{
 	final int anchoPantalla = sizeTile * maxColPantalla;
 	final int altoPantalla = sizeTile * maxRenPantalla;
 	
+	//Sistema de juego
 	Thread hebraJuego;
-	ManejadorTeclas mT = new ManejadorTeclas();
+	ManejadorTeclas mT = new ManejadorTeclas(this);
 	ManejadorTiles mTi = new ManejadorTiles(this);
 	Jugador jugador = new Jugador(this, mT);
+	InterfazUsuario iU = new InterfazUsuario(this);
 	DetectorColisiones dC = new DetectorColisiones(this);
+	ControladorEventos cE = new ControladorEventos(this);
 	private int FPS = 60;
 
+	//estado del juego
+	private int estadoJuego;
+	private int playState = 1;
+	private int pauseState = 2;
+
 	//configuracion del mundo
-	private final int maxRenMundo = 45;
-	private final int maxColMundo = 78;
+	private final int maxRenMundo = 50;
+	private final int maxColMundo = 50;
 	private final int anchoMundo = this.sizeTile * this.maxColMundo;
 	private final int altoMundo = this.sizeTile * this.maxRenMundo;
+	
 	//Estados del mapa
 	private final int mapaMundo = 0;
 	private final int mapaMazmorra1 = 1;
-	private final int mapaActual = mapaMundo;
+	private final int maxMapas = 3;
+	private int mapaActual = mapaMundo;
 	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(this.anchoPantalla, this.altoPantalla));
@@ -67,7 +77,10 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 	}
 	public void update() {
+		//ACTUALIZAR EL JUEGO
 		jugador.update();
+		//EVENTOS
+		cE.revisaEventos();
 	}
 	@Override
 	public void paintComponent(Graphics g) {
@@ -101,9 +114,13 @@ public class GamePanel extends JPanel implements Runnable{
 		this.mTi.draw(g2, camaraX, camaraY);
 		//dibuja al jugador despues, pasandole la posicion de la camara
 		this.jugador.draw(g2, camaraX, camaraY);
+		//dibuja la interfaz de usuario al final
+		this.iU.draw(g2);
 		
 		g2.dispose();
 	}
+
+	//getters y setters
 	public int getTamTile(){
 		return this.sizeTile;
 	}
@@ -146,5 +163,17 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	public int getMapaActual(){
 		return this.mapaActual;
+	}
+	public void setMapaActual(int mapaActual){
+		this.mapaActual = mapaActual;
+	}
+	public int getMaxMapas(){
+		return this.maxMapas;
+	}
+	public int getEstadoJuego(){
+		return this.estadoJuego;
+	}
+	public void setEstadoJuego(int estadoJuego){
+		this.estadoJuego = estadoJuego;
 	}
 }

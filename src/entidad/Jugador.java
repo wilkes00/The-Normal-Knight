@@ -23,8 +23,8 @@ public class Jugador extends Entidad{
         getSpritesJugador();
     }
     public void configuracionInicial(){
-        this.mundoX = gP.getTamTile() * 38;
-        this.mundoY = gP.getTamTile() * 23;
+        this.mundoX = gP.getTamTile() * 23;
+        this.mundoY = gP.getTamTile() * 21;
         this.velocidad = 4;
         this.direccion = "abajo";
     }
@@ -127,6 +127,7 @@ public class Jugador extends Entidad{
         g2.drawImage(sprite, jugadorPantallaX, jugadorPantallaY, gP.getTamTile(), gP.getTamTile(), null);
     }
 
+    //Getters y Setters
     public int getX(){
         return this.mundoX;
     }
@@ -154,11 +155,20 @@ public class Jugador extends Entidad{
     public int getPantallaY(){
         return this.pantallaY;
     }
+    public Rectangle getAreaSolida(){
+        return this.areaSolida;
+    }
     public int getAreaSolidaX(){
         return this.areaSolida.x;
     }
     public int getAreaSolidaY(){
         return this.areaSolida.y;
+    }
+    public void setAreaSolidaX(int x){
+        this.areaSolida.x = x;
+    }
+    public void setAreaSolidaY(int y){
+        this.areaSolida.y = y;
     }
     public int getAreaSolidaAncho(){
         return this.areaSolida.width;
@@ -169,5 +179,4 @@ public class Jugador extends Entidad{
     public String getDireccion(){
         return this.direccion;
     }
-    
 }

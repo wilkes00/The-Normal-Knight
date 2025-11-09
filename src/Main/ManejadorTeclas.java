@@ -4,7 +4,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class ManejadorTeclas implements KeyListener{
+	GamePanel gP;
 	private boolean teclaArriba, teclaAbajo, teclaIzq, teclaDer;
+
+
+	public ManejadorTeclas(GamePanel gP) {
+		this.gP = gP;
+	}
+
 	@Override
 	public void keyTyped (KeyEvent e) {
 		
