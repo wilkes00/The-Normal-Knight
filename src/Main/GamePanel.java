@@ -23,15 +23,16 @@ public class GamePanel extends JPanel implements Runnable{
 	ManejadorTeclas mT = new ManejadorTeclas(this);
 	ManejadorTiles mTi = new ManejadorTiles(this);
 	Jugador jugador = new Jugador(this, mT);
-	InterfazUsuario iU = new InterfazUsuario(this);
-	DetectorColisiones dC = new DetectorColisiones(this);
 	ControladorEventos cE = new ControladorEventos(this);
+	InterfazUsuario iU = new InterfazUsuario(this, cE);
+	DetectorColisiones dC = new DetectorColisiones(this);
 	private int FPS = 60;
 
 	//estado del juego
 	private int estadoJuego;
-	private int playState = 1;
-	private int pauseState = 2;
+	private final int playState = 1;
+	private final int pauseState = 2;
+	private final int transitionState = 3;
 
 	//configuracion del mundo
 	private final int maxRenMundo = 50;
@@ -176,4 +177,11 @@ public class GamePanel extends JPanel implements Runnable{
 	public void setEstadoJuego(int estadoJuego){
 		this.estadoJuego = estadoJuego;
 	}
+	public int getTransitionState(){
+		return this.transitionState;
+	}
+	public int getPlayState(){
+		return this.playState;
+	}
+
 }

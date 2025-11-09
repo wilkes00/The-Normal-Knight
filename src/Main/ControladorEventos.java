@@ -4,9 +4,9 @@ package Main;
 public class ControladorEventos {
     GamePanel gP;
     EventRect eventRect[][][];
-    boolean touchEvent = false;
-    int anteriorEventoX, anteriorEventoY;
-    
+    private boolean touchEvent = false;
+    private int anteriorEventoX, anteriorEventoY;
+    private int mapaDestino, renDestino, colDestino;
     
     public ControladorEventos(GamePanel gP){
         this.gP = gP;
@@ -14,12 +14,10 @@ public class ControladorEventos {
         this.anteriorEventoY = gP.jugador.getMundoY();
         eventRect = new EventRect[gP.getMaxMapas()][gP.getMaxRenMundo()][gP.getMaxColMundo()];
 
-        int col;
-        int ren;
-        int mapa;
-        for(mapa = 0; mapa < gP.getMaxMapas(); mapa++) {
-            for(ren = 0; ren < gP.getMaxRenMundo(); ren++) {
-                for(col = 0; col < gP.getMaxColMundo(); col++) {     
+
+        for(int mapa = 0; mapa < gP.getMaxMapas(); mapa++) {
+            for(int ren = 0; ren < gP.getMaxRenMundo(); ren++) {
+                for(int col = 0; col < gP.getMaxColMundo(); col++) {     
                     eventRect[mapa][ren][col] = new EventRect();
                     eventRect[mapa][ren][col].x = 23;
                     eventRect[mapa][ren][col].y = 23;
@@ -40,8 +38,20 @@ public class ControladorEventos {
             touchEvent = true;
         }
         if(touchEvent){
-            if(hit(0, 6, 23, "abajo")){ teleport(1, 13, 12);}
-            else if(hit(1, 13, 12, "abajo")){ teleport(0, 6, 23);}
+            //evento de teletransporte a la mazmorra 1
+            if(hit(0, 6, 23, "abajo")){
+                mapaDestino = gP.getMapaMazmorra1();
+                renDestino = 13;
+                colDestino = 12; 
+                gP.setEstadoJuego(gP.getTransitionState()); // cambiar estado a transición
+            }
+            //evento de teletransporte de la mazmorra 1 al mundo 
+            else if(hit(1, 13, 12, "abajo")){ 
+                mapaDestino = gP.getMapaMundo();
+                renDestino = 6;
+                colDestino = 23; 
+                gP.setEstadoJuego(gP.getTransitionState()); // cambiar estado a transición
+            } 
         }
     }
 
@@ -72,10 +82,10 @@ public class ControladorEventos {
         return hit;
     }
 
-    public void teleport(int mapa, int ren, int col){
-        gP.setMapaActual(mapa);
-        gP.jugador.setX(col * gP.getTamTile());
-        gP.jugador.setY(ren * gP.getTamTile());
+    public void teleport(){
+        gP.setMapaActual(mapaDestino);
+        gP.jugador.setX(colDestino * gP.getTamTile());
+        gP.jugador.setY(renDestino* gP.getTamTile());
         anteriorEventoX = gP.jugador.getMundoX();
         anteriorEventoY = gP.jugador.getMundoY();
         touchEvent = false;
