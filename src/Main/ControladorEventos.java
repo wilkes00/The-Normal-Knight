@@ -81,7 +81,7 @@ public class ControladorEventos {
         
         return hit;
     }
-
+    //indica el teletransporte del jugador
     public void teleport(){
         gP.setMapaActual(mapaDestino);
         gP.jugador.setX(colDestino * gP.getTamTile());

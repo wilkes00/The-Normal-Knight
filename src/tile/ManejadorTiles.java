@@ -74,9 +74,24 @@ public class ManejadorTiles {
         }
     }
 
+
+    public BufferedImage combinarImagenes(BufferedImage fondo, BufferedImage encima) {
+        // Crea una nueva imagen en blanco del tamaño del fondo
+        BufferedImage imagenCombinada = new BufferedImage(fondo.getWidth(), fondo.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    
+        Graphics2D g = imagenCombinada.createGraphics(); // Obtiene los gráficos de la nueva imagen
+        g.drawImage(fondo, 0, 0, null); // 1. Dibuja la imagen de fondo
+        g.drawImage(encima, 0, 0, null); // 2. Dibuja la imagen de encima
+        g.dispose(); // Libera los recursos
+        return imagenCombinada; // Devuelve la imagen ya combinada
+
+    }
+
     public void getImagenesTiles(){
         try {
             BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/tiles/allTiles.png"));
+            BufferedImage tilesPadding = ImageIO.read(getClass().getResourceAsStream("/tiles/TilesetPadding.png"));
+            BufferedImage decorations = ImageIO.read(getClass().getResourceAsStream("/tiles/Decorations.png"));
             int sizeTile = 16;
 
             arregloTiles[0] = new Tile();
@@ -101,7 +116,29 @@ public class ManejadorTiles {
             arregloTiles[5].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/suelo.png")));
 
             arregloTiles[6] = new Tile();
-            arregloTiles[6].setImagen(spritesheet.getSubimage(6 * sizeTile, 7 * sizeTile, sizeTile, sizeTile));
+            BufferedImage gema = spritesheet.getSubimage(6 * sizeTile, 7 * sizeTile, sizeTile, sizeTile);
+            arregloTiles[6].setImagen(combinarImagenes(arregloTiles[4].getImagen(), gema));
+
+
+            int paddedSize = 17; // (16px del tile + 1px de padding)
+
+            // Tile 10: Esquina sup-izq de pasto (Col 0, Fila 0)
+            arregloTiles[10] = new Tile();
+            arregloTiles[10].setImagen(tilesPadding.getSubimage(1 + (0 * paddedSize), 1 + (0 * paddedSize), sizeTile, sizeTile));
+
+            // Tile 11: Borde superior de pasto (Col 1, Fila 0)
+            arregloTiles[11] = new Tile();
+            arregloTiles[11].setImagen(tilesPadding.getSubimage(1 + (1 * paddedSize), 1 + (0 * paddedSize), sizeTile, sizeTile));
+
+            // Tile 12: Centro de pasto (Col 1, Fila 2)
+            arregloTiles[12] = new Tile();
+            arregloTiles[12].setImagen(tilesPadding.getSubimage(1 + (1 * paddedSize), 1 + (2 * paddedSize), sizeTile, sizeTile));
+            // Este sería tu nuevo tile de pasto (como el 4)
+
+            // Tile 13: Esquina sup-izq de agua (Col 0, Fila 5)
+            arregloTiles[13] = new Tile();
+            arregloTiles[13].setImagen(tilesPadding.getSubimage(1 + (0 * paddedSize), 1 + (5 * paddedSize), sizeTile, sizeTile));
+            arregloTiles[13].setColision(true); // El agua es sólida
 
         } catch (IOException e) {
             e.printStackTrace();
