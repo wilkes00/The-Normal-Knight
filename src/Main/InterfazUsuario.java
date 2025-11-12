@@ -49,6 +49,8 @@ public class InterfazUsuario {
     /**
      * Dibuja una transición de pantalla oscura.
      * Incrementa la opacidad de un rectangulo negro hasta cubrir toda la pantalla.
+     * Despues llama a cE.teleport donde se gestiona la logica de posicion del jugador
+     * en el mapa y coordenadas
      */
     public void drawTransicion(){
         opacidadTransicion++;
@@ -60,7 +62,7 @@ public class InterfazUsuario {
             cE.teleport();
         }
     }
-    
+
     public void mostrarMensaje(String mensaje){
         this.mensaje = mensaje;
         this.estadoMensaje = true;

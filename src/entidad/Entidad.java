@@ -1,5 +1,6 @@
 package entidad;
 
+import Main.GamePanel;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 /**
@@ -10,6 +11,7 @@ import java.awt.image.BufferedImage;
  *
  */
 public abstract class Entidad {
+    GamePanel gP;
     protected int mundoX, mundoY, velocidad;
     protected BufferedImage arriba1, arriba2, abajo1, abajo2, derecha1, derecha2, izquierda1, izquierda2;
     protected String direccion;
@@ -20,6 +22,13 @@ public abstract class Entidad {
     //para colisones
     protected Rectangle areaSolida;
     protected boolean colisionActivada = false;
+    /**
+     * Constructor de la clase Entidad.
+     * @param gP referencia al GamePanel principal del juego.
+     */
+    public Entidad(GamePanel gP){
+        this.gP = gP;
+    }
 
     /**
      * Establece el estado de colisión de la entidad.
@@ -34,5 +43,8 @@ public abstract class Entidad {
      * Este método debe ser implementado por las subclases para definir
      * el comportamiento específico de cada tipo de entidad.
      */
-    public abstract void update();
+    public void update(){
+        
+    }
+    public abstract void draw(java.awt.Graphics2D g2, int camaraX, int camaraY);
 }

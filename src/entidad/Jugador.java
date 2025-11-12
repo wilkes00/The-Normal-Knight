@@ -15,7 +15,6 @@ import javax.imageio.ImageIO;
  *
  */
 public class Jugador extends Entidad{
-    private GamePanel gP;
     private ManejadorTeclas mT;
     private final int pantallaX, pantallaY;
 
@@ -28,7 +27,7 @@ public class Jugador extends Entidad{
      * @param mT Referencia al ManejadorTeclas para la entrada.
      */
     public Jugador(GamePanel gP, ManejadorTeclas mT){
-        this.gP = gP;
+        super(gP);
         this.mT = mT;
         this.pantallaX = gP.getAnchoPantalla() / 2 - (gP.getTamTile() / 2);
         this.pantallaY = gP.getAltoPantalla() / 2 - (gP.getTamTile() / 2);
@@ -126,6 +125,7 @@ public class Jugador extends Entidad{
      * @param camaraX La posición X actual de la cámara en el mundo.
      * @param camaraY La posición Y actual de la cámara en el mundo.
      */
+    @Override
     public void draw(Graphics2D g2, int camaraX, int camaraY){
         BufferedImage sprite = null;
         switch(this.direccion){

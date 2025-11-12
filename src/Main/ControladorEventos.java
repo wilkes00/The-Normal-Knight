@@ -6,7 +6,7 @@ package Main;
 public class ControladorEventos {
     GamePanel gP;
     EventRect eventRect[][][];
-    private boolean touchEvent = false;
+    private boolean touchEvent = true;
     private int anteriorEventoX, anteriorEventoY;
     private int mapaDestino, renDestino, colDestino;
     /**

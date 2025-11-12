@@ -62,7 +62,17 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		this.addKeyListener(mT);
 		this.setFocusable(true);
-		
+		this.setupGame();
+	}
+	/**
+	 * Configura el estado inicial del juego,
+	 * prepara el juego para comenzar.
+	 * Establece el estado del juego en "play".
+	 * Aqui iran mas configuraciones iniciales como el sonido.
+	 * 
+	 */
+	public void setupGame() {
+		this.estadoJuego = getPlayState();
 	}
 	/**
 	 * Inicia la hebra principal del juego.
@@ -99,10 +109,15 @@ public class GamePanel extends JPanel implements Runnable{
 	 * Llama a la actualización del jugador y revisa los eventos del juego.
 	 */
 	public void update() {
-		//ACTUALIZAR EL JUEGO
-		jugador.update();
-		//EVENTOS
-		cE.revisaEventos();
+		//solo actualiza cuando el estado es play
+		if(estadoJuego == playState) {
+			jugador.update(); //actualiza al jugador
+			cE.revisaEventos(); //revisa los eventos
+
+		}
+		else if(estadoJuego == pauseState){
+			//aqui va la logica de pausa
+		}
 	}
 	/**
 	 * Dibuja los elementos del juego en el panel.
