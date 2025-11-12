@@ -7,7 +7,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
 import tile.ManejadorTiles;
-
+/**
+ * Panel principal del juego donde se maneja la lógica del juego,
+ * la actualización de entidades, el dibujo de gráficos y la gestión
+ * de la cámara.
+ */
 public class GamePanel extends JPanel implements Runnable{
 	//Config de pantalla
 	final int sizeOriginalTile = 16;
@@ -28,6 +32,8 @@ public class GamePanel extends JPanel implements Runnable{
 	DetectorColisiones dC = new DetectorColisiones(this);
 	private int FPS = 60;
 
+	//entidades y objetos del juego
+
 	//estado del juego
 	private int estadoJuego;
 	private final int playState = 1;
@@ -45,7 +51,11 @@ public class GamePanel extends JPanel implements Runnable{
 	private final int mapaMazmorra1 = 1;
 	private final int maxMapas = 3;
 	private int mapaActual = mapaMundo;
-	
+	/**
+	 * Constructor del GamePanel.
+	 * Inicializa las configuraciones del panel, establece las dimensiones,
+	 * el fondo, y configura el manejo de entradas del teclado.
+	 */
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(this.anchoPantalla, this.altoPantalla));
 		this.setBackground(Color.black);
@@ -54,11 +64,18 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setFocusable(true);
 		
 	}
+	/**
+	 * Inicia la hebra principal del juego.
+	 */
 	public void iniciaHebraJuego() {
 		hebraJuego = new Thread(this);
 		hebraJuego.start();
 	}
-
+	/**
+	 * Método principal de la hebra del juego.
+	 * Controla el ciclo de actualización y dibujo del juego
+	 * para mantener una tasa de frames constante.
+	 */
 	@Override
 	public void run() {
 		double intervaloDibujo = 1000000000 / FPS;
@@ -77,12 +94,21 @@ public class GamePanel extends JPanel implements Runnable{
 			}
 		}
 	}
+	/**
+	 * Actualiza el estado del juego.
+	 * Llama a la actualización del jugador y revisa los eventos del juego.
+	 */
 	public void update() {
 		//ACTUALIZAR EL JUEGO
 		jugador.update();
 		//EVENTOS
 		cE.revisaEventos();
 	}
+	/**
+	 * Dibuja los elementos del juego en el panel.
+	 * Maneja la lógica de la cámara para centrar al jugador
+	 * y dibuja el mapa, el jugador y la interfaz de usuario.
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

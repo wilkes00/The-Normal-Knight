@@ -8,13 +8,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
-
+/**
+ * Gestiona todos los mosaicos (tiles) del juego.
+ * Se encarga de cargar las imágenes de los tiles, leer los archivos de mapa (.txt),
+ * almacenar la estructura del mapa y dibujar el mapa en la pantalla
+ * en función de la posición de la cámara.
+ *
+ */
 public class ManejadorTiles {
     private GamePanel gP;
     private int maxTiles = 30;
     Tile[] arregloTiles;
     private int codigosMapaTiles[][][];
-
+    /**
+     * Constructor del ManejadorTiles.
+     * Inicializa los arreglos, carga las imágenes de los tiles (getImagenesTiles)
+     * y carga los mapas desde los archivos de recursos (cargaMapa).
+     *
+     * @param gP Referencia al GamePanel principal.
+     */
     public ManejadorTiles(GamePanel gP){
         this.gP = gP;
         this.arregloTiles = new Tile[this.maxTiles];
@@ -24,7 +36,13 @@ public class ManejadorTiles {
         cargaMapa("/mapas/mapa01.txt", gP.getMapaMazmorra1());
         
     }
-    
+    /**
+     * Carga un mapa desde un archivo de texto y lo almacena en la matriz
+     * de códigos del mapa.
+     *
+     * @param ruta La ruta del recurso al archivo .txt del mapa (ej: "/mapas/mundo01.txt").
+     * @param indiceMapa El índice (ID) del mapa donde se almacenarán los datos (ej: gP.getMapaMundo()).
+     */
     public void cargaMapa(String ruta, int indiceMapa){
         try {
             InputStream mapa = getClass().getResourceAsStream(ruta);
@@ -86,7 +104,11 @@ public class ManejadorTiles {
         return imagenCombinada; // Devuelve la imagen ya combinada
 
     }
-
+    /**
+     * Carga todas las imágenes de los tiles desde los recursos y las
+     * almacena en el arreglo de Tiles.
+     * Asigna propiedades de colisión a los tiles correspondientes (agua, muro, etc.).
+     */
     public void getImagenesTiles(){
         try {
             BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/tiles/allTiles.png"));
@@ -144,7 +166,15 @@ public class ManejadorTiles {
             e.printStackTrace();
         }
     }
-    
+    /**
+     * Dibuja la porción visible del mapa en la pantalla.
+     * Calcula qué tiles están dentro del área de la cámara y los dibuja
+     * en sus posiciones correspondientes en la pantalla.
+     *
+     * @param g2 El contexto gráfico (Graphics2D) sobre el que se dibuja.
+     * @param camaraX La posición X actual de la cámara en el mundo.
+     * @param camaraY La posición Y actual de la cámara en el mundo.
+     */
     public void draw(Graphics2D g2, int camaraX, int camaraY){
         int renMundo = 0, colMundo = 0;
         
@@ -179,6 +209,7 @@ public class ManejadorTiles {
         }
     }
 
+    //getters
     public int getCodigoMapaTiles(int ren, int col){
         return this.codigosMapaTiles[gP.getMapaActual()][ren][col];
     }

@@ -7,12 +7,26 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-
+/**
+ * Representa al jugador principal del juego. Extiende de Entidad.
+ * Maneja la lógica específica del jugador, como la carga de sus sprites,
+ * la actualización de su estado basada en la entrada del teclado, y su dibujado
+ * en la pantalla.
+ *
+ */
 public class Jugador extends Entidad{
     private GamePanel gP;
     private ManejadorTeclas mT;
     private final int pantallaX, pantallaY;
 
+    /**
+     * Constructor para la clase Jugador.
+     * Establece la referencia al GamePanel y al ManejadorTeclas, define la
+     * posición del jugador en la pantalla (centrada) y su área de colisión.
+     *
+     * @param gP Referencia al GamePanel principal.
+     * @param mT Referencia al ManejadorTeclas para la entrada.
+     */
     public Jugador(GamePanel gP, ManejadorTeclas mT){
         this.gP = gP;
         this.mT = mT;
@@ -22,12 +36,20 @@ public class Jugador extends Entidad{
         configuracionInicial();
         getSpritesJugador();
     }
+    /**
+     * Establece los valores iniciales por defecto del jugador, como su
+     * posición en el mundo, velocidad y dirección.
+     */
     public void configuracionInicial(){
         this.mundoX = gP.getTamTile() * 23;
         this.mundoY = gP.getTamTile() * 21;
         this.velocidad = 4;
         this.direccion = "abajo";
     }
+    /**
+     * Carga las imágenes (sprites) del jugador para las diferentes
+     * direcciones y animaciones de movimiento desde los recursos.
+     */
     public void getSpritesJugador(){
         try {
             this.arriba1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverArriba1.png"));
@@ -43,6 +65,13 @@ public class Jugador extends Entidad{
             e.printStackTrace();
         }
     }
+    /**
+     * Actualiza el estado del jugador en cada fotograma.
+     * Revisa la entrada del teclado, actualiza la dirección,
+     * comprueba colisiones y actualiza la posición del jugador si no hay colisión.
+     * También gestiona la animación de sprites.
+     */
+    @Override
     public void update(){
         if(mT.getTeclaArriba() || mT.getTeclaAbajo() || mT.getTeclaIzq() || mT.getTeclaDer()){
             if(mT.getTeclaArriba())
@@ -88,6 +117,15 @@ public class Jugador extends Entidad{
         }
         
     }
+    /**
+     * Dibuja al jugador en la pantalla.
+     * Selecciona el sprite correcto basado en la dirección y el estado de
+     * la animación. Calcula la posición en pantalla relativa a la cámara.
+     *
+     * @param g2 El contexto gráfico (Graphics2D) sobre el que se dibuja.
+     * @param camaraX La posición X actual de la cámara en el mundo.
+     * @param camaraY La posición Y actual de la cámara en el mundo.
+     */
     public void draw(Graphics2D g2, int camaraX, int camaraY){
         BufferedImage sprite = null;
         switch(this.direccion){

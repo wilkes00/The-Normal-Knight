@@ -2,14 +2,22 @@ package Main;
 
 import entidad.Entidad;
 import entidad.Jugador;
-
+/**
+ * Clase responsable de detectar colisiones entre entidades y el entorno del juego.
+ */
 public class DetectorColisiones {
     GamePanel gP;
-
+    /**
+     * Constructor de la clase DetectorColisiones.
+     * @param gP referencia al GamePanel principal.
+     */
     public DetectorColisiones(GamePanel gP){
         this.gP = gP;
     }
-
+    /**
+     * Revisa las colisiones de una entidad con los tiles del mapa.
+     * @param entidad la entidad cuya colisión se va a revisar.
+     */
     public void revisaTile(Entidad entidad){
         if(entidad instanceof Jugador){
             int izquierdaEntidadMundoX = ((Jugador)entidad).getMundoX() + ((Jugador)entidad).getAreaSolidaX();

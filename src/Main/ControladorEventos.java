@@ -1,20 +1,27 @@
 package Main;
 
-
+/**
+ * Clase que se dedica a gestionar los eventos dentro del juego.
+ */
 public class ControladorEventos {
     GamePanel gP;
     EventRect eventRect[][][];
     private boolean touchEvent = false;
     private int anteriorEventoX, anteriorEventoY;
     private int mapaDestino, renDestino, colDestino;
-    
+    /**
+     * Constructor de ControladorEventos.
+     * 
+     * @param gP referencia a GamePanel principal.
+     */
     public ControladorEventos(GamePanel gP){
         this.gP = gP;
-        this.anteriorEventoX = gP.jugador.getMundoX();
-        this.anteriorEventoY = gP.jugador.getMundoY();
-        eventRect = new EventRect[gP.getMaxMapas()][gP.getMaxRenMundo()][gP.getMaxColMundo()];
+        this.anteriorEventoX = gP.jugador.getMundoX(); //almacena la posicion inicial del jugador
+        this.anteriorEventoY = gP.jugador.getMundoY(); //almacena la posicion inicial del jugador
+        // inicializa el array tridimensional de eventRect
+        eventRect = new EventRect[gP.getMaxMapas()][gP.getMaxRenMundo()][gP.getMaxColMundo()]; 
 
-
+        //inicializa las posiciones de los eventRect
         for(int mapa = 0; mapa < gP.getMaxMapas(); mapa++) {
             for(int ren = 0; ren < gP.getMaxRenMundo(); ren++) {
                 for(int col = 0; col < gP.getMaxColMundo(); col++) {     
@@ -29,7 +36,9 @@ public class ControladorEventos {
             }
         }
     }
-
+    /**
+     * Revisa si el jugador ha activado algún evento basado en su posición actual.
+     */
     public void revisaEventos(){
         int distanciaX = Math.abs(gP.jugador.getMundoX() - anteriorEventoX);
         int distanciaY = Math.abs(gP.jugador.getMundoY() - anteriorEventoY);
@@ -55,7 +64,14 @@ public class ControladorEventos {
         }
     }
 
-    // Verifica si el jugador ha activado un evento en una posición específica
+    /**
+     * Comprueba si el jugador ha activado un evento en una celda específica.
+     * @param mapa el mapa en el que se verifica el evento
+     * @param ren fila
+     * @param col columna
+     * @param reqDireccion la dirección requerida para activar el evento
+     * @return true si el evento ha sido activado, false en caso contrario
+     */
     public boolean hit(int mapa, int ren, int col, String reqDireccion){
         boolean hit = false;
 
@@ -81,7 +97,9 @@ public class ControladorEventos {
         
         return hit;
     }
-    //indica el teletransporte del jugador
+    /**
+     * Teletransporta al jugador a la ubicación de destino especificada.
+     */
     public void teleport(){
         gP.setMapaActual(mapaDestino);
         gP.jugador.setX(colDestino * gP.getTamTile());
