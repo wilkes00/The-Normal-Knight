@@ -113,7 +113,6 @@ public class ManejadorTiles {
         try {
             BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/tiles/allTiles.png"));
             BufferedImage tilesPadding = ImageIO.read(getClass().getResourceAsStream("/tiles/TilesetPadding.png"));
-            BufferedImage decorations = ImageIO.read(getClass().getResourceAsStream("/tiles/Decorations.png"));
             int sizeTile = 16;
 
             arregloTiles[0] = new Tile();

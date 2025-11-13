@@ -82,9 +82,10 @@ public class Jugador extends Entidad{
             else if(mT.getTeclaDer())
                 this.direccion = "derecha";
                 
-            //revisa la colision con tiles    
+            //revisa la colision con tiles y objetos    
             this.colisionActivada = false;
             gP.getDetectorColisiones().revisaTile(this);
+            gP.getDetectorColisiones().revisaObjeto(this, gP.getManejadorObjetos().getListaGameObjects());
 
 
             //si no hubo colision
@@ -172,49 +173,16 @@ public class Jugador extends Entidad{
     public int getY(){
         return this.mundoY;
     }
-    public int getVelocidad(){
-        return this.velocidad;
-    }
     public void setX(int valor){
         this.mundoX = valor;
     }
     public void setY(int valor){
         this.mundoY = valor;
     }
-    public int getMundoX(){
-        return this.mundoX;
-    }
-    public int getMundoY(){
-        return this.mundoY;
-    }
     public int getPantallaX(){
         return this.pantallaX;
     }
     public int getPantallaY(){
         return this.pantallaY;
-    }
-    public Rectangle getAreaSolida(){
-        return this.areaSolida;
-    }
-    public int getAreaSolidaX(){
-        return this.areaSolida.x;
-    }
-    public int getAreaSolidaY(){
-        return this.areaSolida.y;
-    }
-    public void setAreaSolidaX(int x){
-        this.areaSolida.x = x;
-    }
-    public void setAreaSolidaY(int y){
-        this.areaSolida.y = y;
-    }
-    public int getAreaSolidaAncho(){
-        return this.areaSolida.width;
-    }
-    public int getAreaSolidaAlto(){
-        return this.areaSolida.height;
-    }
-    public String getDireccion(){
-        return this.direccion;
     }
 }

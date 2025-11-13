@@ -1,6 +1,7 @@
 package Main;
 
 import entidad.Jugador;
+import entidad.ManejadorObjetos;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -26,13 +27,12 @@ public class GamePanel extends JPanel implements Runnable{
 	Thread hebraJuego;
 	ManejadorTeclas mT = new ManejadorTeclas(this);
 	ManejadorTiles mTi = new ManejadorTiles(this);
+	ManejadorObjetos mObj = new ManejadorObjetos(this);
 	Jugador jugador = new Jugador(this, mT);
 	ControladorEventos cE = new ControladorEventos(this);
 	InterfazUsuario iU = new InterfazUsuario(this, cE);
 	DetectorColisiones dC = new DetectorColisiones(this);
 	private int FPS = 60;
-
-	//entidades y objetos del juego
 
 	//estado del juego
 	private int estadoJuego;
@@ -62,7 +62,10 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		this.addKeyListener(mT);
 		this.setFocusable(true);
+		this.requestFocusInWindow();
+		//inicializa el mundo
 		this.setupGame();
+		mObj.agregarGameObject(jugador);
 	}
 	/**
 	 * Configura el estado inicial del juego,
@@ -111,7 +114,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void update() {
 		//solo actualiza cuando el estado es play
 		if(estadoJuego == playState) {
-			jugador.update(); //actualiza al jugador
+			mObj.update();
 			cE.revisaEventos(); //revisa los eventos
 
 		}
@@ -154,8 +157,10 @@ public class GamePanel extends JPanel implements Runnable{
 
 		//dibuja el mapa primero, pasandole la posicion corregida de la camara	
 		this.mTi.draw(g2, camaraX, camaraY);
-		//dibuja al jugador despues, pasandole la posicion de la camara
-		this.jugador.draw(g2, camaraX, camaraY);
+
+		//dibuja todos los objetos (jugador, npcs, enemigos, items, etc).
+        mObj.draw(g2, camaraX, camaraY);
+
 		//dibuja la interfaz de usuario al final
 		this.iU.draw(g2);
 		
@@ -196,6 +201,9 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	public DetectorColisiones getDetectorColisiones(){
 		return this.dC;
+	}
+	public ManejadorObjetos getManejadorObjetos(){
+		return this.mObj;
 	}
 	public int getMapaMundo(){
 		return this.mapaMundo;

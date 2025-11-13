@@ -48,7 +48,7 @@ public class ControladorEventos {
         }
         if(touchEvent){
             //evento de teletransporte a la mazmorra 1
-            if(hit(0, 6, 23, "abajo")){
+            if(hit(0, 7, 23, "abajo")){
                 mapaDestino = gP.getMapaMazmorra1();
                 renDestino = 13;
                 colDestino = 12; 

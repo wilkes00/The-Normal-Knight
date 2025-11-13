@@ -1,27 +1,22 @@
 package entidad;
 
 import Main.GamePanel;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 /**
- * Clase base abstracta para todas las entidades del juego, como el jugador,
- * enemigos e ítems.
- * Contiene propiedades comunes como la posición en el mundo, velocidad, dirección,
- * sprites de animación y gestión de colisiones.
- *
+ * Clase base abstracta para todas las entidades del juego que se mueven, como el jugador,
+ * enemigos y NPCs.
+ * Contiene propiedades comunes como la posición en el mundo (heredado de GameObject), 
+ * velocidad, dirección, sprites de animación y gestión de colisiones.
  */
-public abstract class Entidad {
+public abstract class Entidad extends GameObject {
     GamePanel gP;
-    protected int mundoX, mundoY, velocidad;
+    protected int velocidad;
     protected BufferedImage arriba1, arriba2, abajo1, abajo2, derecha1, derecha2, izquierda1, izquierda2;
     protected String direccion;
     protected int contadorSprites = 0;
     protected int numeroSprite = 1;
     protected int cambiaSprite = 10;
-    
-    //para colisones
-    protected Rectangle areaSolida;
-    protected boolean colisionActivada = false;
+ 
     /**
      * Constructor de la clase Entidad.
      * @param gP referencia al GamePanel principal del juego.
@@ -41,10 +36,15 @@ public abstract class Entidad {
     /**
      * Actualiza el estado de la entidad.
      * Este método debe ser implementado por las subclases para definir
-     * el comportamiento específico de cada tipo de entidad.
+     * el comportamiento específico de cada tipo de entidad en caso de necesitarlo.
      */
-    public void update(){
-        
+    public void update(){}
+    
+    public int getVelocidad() {
+        return this.velocidad;
     }
-    public abstract void draw(java.awt.Graphics2D g2, int camaraX, int camaraY);
+    
+    public String getDireccion() {
+        return this.direccion;
+    }
 }

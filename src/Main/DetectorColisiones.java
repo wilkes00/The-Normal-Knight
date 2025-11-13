@@ -1,7 +1,10 @@
 package Main;
 
 import entidad.Entidad;
+import entidad.GameObject;
 import entidad.Jugador;
+import java.awt.Rectangle;
+import java.util.ArrayList;
 /**
  * Clase responsable de detectar colisiones entre entidades y el entorno del juego.
  */
@@ -69,6 +72,54 @@ public class DetectorColisiones {
                     }
                     break;
                 default: break;
+            }
+        }
+    }
+    /**
+     * Revisa la colisión de una entidad contra la lista de todos los GameObjects.
+     * @param entidad La entidad que se mueve (ej. Jugador)
+     * @param lista La lista de todos los GameObjects del ManejadorObjetos
+     */
+    public void revisaObjeto(Entidad entidad, ArrayList<GameObject> lista) {
+        
+        // Usamos un bucle "for-each" que es más limpio para ArrayLists
+        for (GameObject obj : lista) {
+            
+            // 1. Una entidad no puede colisionar consigo misma
+            if (obj == entidad) {
+                continue;
+            }
+
+            // 2. Si el objeto no es sólido, saltar
+            if (!obj.getColision()) { 
+                continue;
+            }
+
+            // 3. Obtén el área sólida de la entidad (Jugador)
+            Rectangle areaEntidad = new Rectangle(
+                entidad.getMundoX() + entidad.getAreaSolida().x, 
+                entidad.getMundoY() + entidad.getAreaSolida().y,
+                entidad.getAreaSolida().width, 
+                entidad.getAreaSolida().height);
+
+            // 4. Obtén el área sólida del Objeto (Árbol, Roca)
+            Rectangle areaObjeto = new Rectangle(
+                obj.getMundoX() + obj.getAreaSolida().x,
+                obj.getMundoY() + obj.getAreaSolida().y,
+                obj.getAreaSolida().width,
+                obj.getAreaSolida().height);
+
+            // 5. Simula el próximo movimiento de la entidad
+            switch (entidad.getDireccion()) {
+                case "arriba": areaEntidad.y -= entidad.getVelocidad(); break;
+                case "abajo":  areaEntidad.y += entidad.getVelocidad(); break;
+                case "izquierda": areaEntidad.x -= entidad.getVelocidad(); break;
+                case "derecha":   areaEntidad.x += entidad.getVelocidad(); break;
+            }
+
+            // 6. Comprueba si se intersectarían
+            if (areaEntidad.intersects(areaObjeto)) {
+                entidad.setColisionActivada(true);
             }
         }
     }
