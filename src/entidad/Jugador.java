@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 /**
  * Representa al jugador principal del juego. Extiende de Entidad.
@@ -44,6 +45,7 @@ public class Jugador extends Entidad{
         this.mundoY = gP.getTamTile() * 21;
         this.velocidad = 4;
         this.direccion = "abajo";
+        this.setMapa(gP.getMapaActual());
     }
     /**
      * Carga las imágenes (sprites) del jugador para las diferentes
@@ -86,7 +88,7 @@ public class Jugador extends Entidad{
             this.colisionActivada = false;
             gP.getDetectorColisiones().revisaTile(this);
             gP.getDetectorColisiones().revisaObjeto(this, gP.getManejadorObjetos().getListaGameObjects());
-
+            
 
             //si no hubo colision
             if(this.colisionActivada == false){
@@ -115,8 +117,59 @@ public class Jugador extends Entidad{
                 this.contadorSprites = 0;
             }
         }
+        // despues de moverse verifica si esta encima de un item
+        revisarInteraccionItems();
         
     }
+    /**
+     * Revisa si el jugador está colisionando con objetos NO sólidos (items)
+     * para recogerlos.
+     */
+    public void revisarInteraccionItems() {
+        
+        ArrayList<GameObject> lista = gP.getManejadorObjetos().getListaGameObjects();
+        
+        // Hitbox actual del jugador
+        Rectangle areaJugador = new Rectangle(
+            this.mundoX + this.areaSolida.x, 
+            this.mundoY + this.areaSolida.y,
+            this.areaSolida.width, 
+            this.areaSolida.height);
+
+        // Bucle inverso para poder eliminar objetos de la lista de forma segura
+        for (int i = lista.size() - 1; i >= 0; i--) {
+            GameObject obj = lista.get(i);
+            
+            // El jugador no puede recogerse a si mismo.
+            if(obj == this)
+                continue;
+            // Si el objeto ES sólido (colision=true), lo ignoramos.
+            // (El DetectorColisiones ya se encargó de él).
+            if (obj.getColision())
+                continue;
+
+            //Si es un item (colision=false), revisamos intersección
+            Rectangle areaObjeto = new Rectangle(
+                obj.getMundoX() + obj.getAreaSolida().x,
+                obj.getMundoY() + obj.getAreaSolida().y,
+                obj.getAreaSolida().width,
+                obj.getAreaSolida().height);
+
+            //El jugador está tocando el item?
+            if (areaJugador.intersects(areaObjeto)) {
+                
+                //Si? Recogido.
+                System.out.println("¡Objeto recogido!");
+                
+                //Aquí va la logica para revisar que objeto recogio y
+                //llamar al metodo necesario
+
+                //Elimina el objeto del juego
+                gP.getManejadorObjetos().removerGameObject(obj);
+            }
+        }
+    }
+
     /**
      * Dibuja al jugador en la pantalla.
      * Selecciona el sprite correcto basado en la dirección y el estado de

@@ -13,11 +13,15 @@ public abstract class GameObject {
     protected int mundoX, mundoY;
     protected boolean colisionActivada = false;
     protected Rectangle areaSolida;
+    protected int mapa;
 
     public abstract void draw(java.awt.Graphics2D g2, int camaraX, int camaraY);
 
     public boolean getColision(){
         return this.colisionActivada;
+    }
+    public void setColision(boolean colisionActivada){
+        this.colisionActivada = colisionActivada;
     }
     public int getMundoX(){
         return this.mundoX;
@@ -57,5 +61,12 @@ public abstract class GameObject {
     }
     public void setImagen(BufferedImage imagen){
         this.imagen = imagen;
+    }
+    public int getMapa() {
+        return this.mapa;
+    }
+
+    public void setMapa(int mapa) {
+        this.mapa = mapa;
     }
 }

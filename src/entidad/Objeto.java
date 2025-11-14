@@ -3,7 +3,9 @@ package entidad;
 import Main.GamePanel;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-
+/**
+ * Representa un objeto dentro del juego
+ */
 public class Objeto extends GameObject{
     GamePanel gP;
 
@@ -30,7 +32,7 @@ public class Objeto extends GameObject{
             mundoY + imagen.getHeight() > camaraY &&
             mundoY - imagen.getHeight() < camaraY + gP.getAltoPantalla()) { 
             
-            // Dibuja el sprite del objeto 
+            // Dibuja el sprite del objeto con las dimensiones a escala 
             g2.drawImage(imagen, pantallaX, pantallaY, gP.getTamTile(), gP.getTamTile(), null);
         }
     }

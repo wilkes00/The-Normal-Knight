@@ -26,8 +26,8 @@ public class ControladorEventos {
             for(int ren = 0; ren < gP.getMaxRenMundo(); ren++) {
                 for(int col = 0; col < gP.getMaxColMundo(); col++) {     
                     eventRect[mapa][ren][col] = new EventRect();
-                    eventRect[mapa][ren][col].x = 23;
-                    eventRect[mapa][ren][col].y = 23;
+                    eventRect[mapa][ren][col].x = 8;
+                    eventRect[mapa][ren][col].y = 16;
                     eventRect[mapa][ren][col].width = 2;
                     eventRect[mapa][ren][col].height = 2;
                     eventRect[mapa][ren][col].setEventRectDefaultX(eventRect[mapa][ren][col].x); 
@@ -57,7 +57,7 @@ public class ControladorEventos {
             //evento de teletransporte de la mazmorra 1 al mundo 
             else if(hit(1, 13, 12, "abajo")){ 
                 mapaDestino = gP.getMapaMundo();
-                renDestino = 6;
+                renDestino = 7;
                 colDestino = 23; 
                 gP.setEstadoJuego(gP.getTransitionState()); // cambiar estado a transición
             } 
@@ -104,6 +104,7 @@ public class ControladorEventos {
         gP.setMapaActual(mapaDestino);
         gP.jugador.setX(colDestino * gP.getTamTile());
         gP.jugador.setY(renDestino* gP.getTamTile());
+        gP.jugador.setMapa(mapaDestino);
         anteriorEventoX = gP.jugador.getMundoX();
         anteriorEventoY = gP.jugador.getMundoY();
         touchEvent = false;
