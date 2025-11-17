@@ -27,7 +27,9 @@ public class ManejadorObjetos {
         getImagenesObjetos();
         colocarObjetosEstaticos();
     }
-
+    /**
+     * 
+     */
     public void getImagenesObjetos() {
         try {
             // Carga la hoja de sprites completa

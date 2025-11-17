@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 /**
- * Representa al jugador principal del juego. Extiende de Entidad.
+ * Representa al jugador principal del juego. Hereda de Entidad.
  * Maneja la lógica específica del jugador, como la carga de sus sprites,
  * la actualización de su estado basada en la entrada del teclado, y su dibujado
  * en la pantalla.
@@ -159,7 +159,8 @@ public class Jugador extends Entidad{
             if (areaJugador.intersects(areaObjeto)) {
                 
                 //Si? Recogido.
-                System.out.println("¡Objeto recogido!");
+                gP.setEstadoJuego(gP.getDialogueState());
+                
                 
                 //Aquí va la logica para revisar que objeto recogio y
                 //llamar al metodo necesario

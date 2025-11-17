@@ -9,14 +9,16 @@ import java.awt.event.KeyListener;
  */
 public class ManejadorTeclas implements KeyListener{
 	GamePanel gP;
-	private boolean teclaArriba, teclaAbajo, teclaIzq, teclaDer;
+	InterfazUsuario iU;
+	private boolean teclaArriba, teclaAbajo, teclaIzq, teclaDer, enter;
 
 	/**
 	 * Constructor del ManejadorTeclas.
 	 * @param gP Referencia al GamePanel principal.
 	 */
-	public ManejadorTeclas(GamePanel gP) {
+	public ManejadorTeclas(GamePanel gP, InterfazUsuario iU) {
 		this.gP = gP;
+		this.iU = iU;
 	}
 	/**
 	 * Maneja el evento de tipeo de tecla.
@@ -33,15 +35,37 @@ public class ManejadorTeclas implements KeyListener{
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		switch(e.getKeyCode()) {
-			case KeyEvent.VK_W : teclaArriba = true;
-				break;
-			case KeyEvent.VK_S : teclaAbajo = true;
-				break;
-			case KeyEvent.VK_A : teclaIzq = true;
-				break;
-			case KeyEvent.VK_D : teclaDer = true;
-				break;
+		//Controles en pantalla de inicio
+		if(gP.getEstadoJuego() == gP.getStartState()){
+			switch(e.getKeyCode()){
+				case KeyEvent.VK_W : iU.decrementaNumOpcion();
+					break;
+				case KeyEvent.VK_S : iU.incrementaNumOpcion();
+					break;
+				case KeyEvent.VK_ENTER:
+					if(iU.getNumOpcion() == 0){
+						gP.setEstadoJuego(gP.getPlayState());
+					}
+					else if(iU.getNumOpcion() == 1){
+						//Pantalla de ayuda
+					}
+					else if(iU.getNumOpcion() == 2){
+						System.exit(0);
+					}
+			}
+		}
+		//Controles dentro del juego
+		else if(gP.getEstadoJuego() == gP.getPlayState()){
+			switch(e.getKeyCode()) {
+				case KeyEvent.VK_W : teclaArriba = true;
+					break;
+				case KeyEvent.VK_S : teclaAbajo = true;
+					break;
+				case KeyEvent.VK_A : teclaIzq = true;
+					break;
+				case KeyEvent.VK_D : teclaDer = true;
+					break;
+			}
 		}
 	}
 	/**
@@ -51,15 +75,20 @@ public class ManejadorTeclas implements KeyListener{
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		switch(e.getKeyCode()) {
-		case KeyEvent.VK_W : teclaArriba = false;
-			break;
-		case KeyEvent.VK_S : teclaAbajo = false;
-			break;
-		case KeyEvent.VK_A : teclaIzq = false;
-			break;
-		case KeyEvent.VK_D : teclaDer = false;
-			break;
+		if(gP.getEstadoJuego() == gP.getStartState()){
+
+		}
+		else if(gP.getEstadoJuego() == gP.getPlayState()){
+			switch(e.getKeyCode()) {
+				case KeyEvent.VK_W : teclaArriba = false;
+					break;
+				case KeyEvent.VK_S : teclaAbajo = false;
+					break;
+				case KeyEvent.VK_A : teclaIzq = false;
+					break;
+				case KeyEvent.VK_D : teclaDer = false;
+					break;
+			}
 		}
 	}
 	

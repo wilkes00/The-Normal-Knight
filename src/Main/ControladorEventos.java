@@ -1,10 +1,13 @@
 package Main;
 
+import entidad.Jugador;
+
 /**
  * Clase que se dedica a gestionar los eventos dentro del juego.
  */
 public class ControladorEventos {
     GamePanel gP;
+    private Jugador jugador;
     EventRect eventRect[][][];
     private boolean touchEvent = true;
     private int anteriorEventoX, anteriorEventoY;
@@ -16,8 +19,9 @@ public class ControladorEventos {
      */
     public ControladorEventos(GamePanel gP){
         this.gP = gP;
-        this.anteriorEventoX = gP.jugador.getMundoX(); //almacena la posicion inicial del jugador
-        this.anteriorEventoY = gP.jugador.getMundoY(); //almacena la posicion inicial del jugador
+        this.anteriorEventoX = 0; //almacena la posicion inicial del jugador
+        this.anteriorEventoY = 0; //almacena la posicion inicial del jugador
+        
         // inicializa el array tridimensional de eventRect
         eventRect = new EventRect[gP.getMaxMapas()][gP.getMaxRenMundo()][gP.getMaxColMundo()]; 
 
@@ -40,8 +44,10 @@ public class ControladorEventos {
      * Revisa si el jugador ha activado algún evento basado en su posición actual.
      */
     public void revisaEventos(){
-        int distanciaX = Math.abs(gP.jugador.getMundoX() - anteriorEventoX);
-        int distanciaY = Math.abs(gP.jugador.getMundoY() - anteriorEventoY);
+        if(jugador == null) return; // Evitar NPE si aún no se ha asignado
+        
+        int distanciaX = Math.abs(jugador.getMundoX() - anteriorEventoX);
+        int distanciaY = Math.abs(jugador.getMundoY() - anteriorEventoY);
         int distancia = Math.max(distanciaX, distanciaY);
         if(distancia > gP.getTamTile()){
             touchEvent = true;
@@ -73,41 +79,55 @@ public class ControladorEventos {
      * @return true si el evento ha sido activado, false en caso contrario
      */
     public boolean hit(int mapa, int ren, int col, String reqDireccion){
+        if(jugador == null) return false;
+        
         boolean hit = false;
 
         if(mapa == gP.getMapaActual()){
             // Ajustar las coordenadas para la colisión
-            gP.jugador.setAreaSolidaX(gP.jugador.getMundoX() + gP.jugador.getAreaSolidaX());
-            gP.jugador.setAreaSolidaY(gP.jugador.getMundoY() + gP.jugador.getAreaSolidaY());
+            jugador.setAreaSolidaX(jugador.getMundoX() + jugador.getAreaSolidaX());
+            jugador.setAreaSolidaY(jugador.getMundoY() + jugador.getAreaSolidaY());
             eventRect[mapa][ren][col].x = col * gP.getTamTile() + eventRect[mapa][ren][col].x;
             eventRect[mapa][ren][col].y = ren * gP.getTamTile() + eventRect[mapa][ren][col].y;
             // Revisar intersección
-            if(gP.jugador.getAreaSolida().intersects(eventRect[mapa][ren][col])){
-                if(gP.jugador.getDireccion().contentEquals(reqDireccion) || reqDireccion.contentEquals("cualquiera")){
+            if(jugador.getAreaSolida().intersects(eventRect[mapa][ren][col])){
+                if(jugador.getDireccion().contentEquals(reqDireccion) || reqDireccion.contentEquals("cualquiera")){
                     hit = true;
                 }
             }
             // Reajustar las coordenadas después de la colisión
-            gP.jugador.setAreaSolidaX(gP.jugador.getAreaSolidaX() - gP.jugador.getMundoX());
-            gP.jugador.setAreaSolidaY(gP.jugador.getAreaSolidaY() - gP.jugador.getMundoY());
+            jugador.setAreaSolidaX(jugador.getAreaSolidaX() - jugador.getMundoX());
+            jugador.setAreaSolidaY(jugador.getAreaSolidaY() - jugador.getMundoY());
             eventRect[mapa][ren][col].x = eventRect[mapa][ren][col].x - col * gP.getTamTile();
             eventRect[mapa][ren][col].y = eventRect[mapa][ren][col].y - ren * gP.getTamTile();
-
         }
         
         return hit;
     }
+    
     /**
      * Teletransporta al jugador a la ubicación de destino especificada.
      */
     public void teleport(){
+        if(jugador == null) return;
+        
         gP.setMapaActual(mapaDestino);
-        gP.jugador.setX(colDestino * gP.getTamTile());
-        gP.jugador.setY(renDestino* gP.getTamTile());
-        gP.jugador.setMapa(mapaDestino);
-        anteriorEventoX = gP.jugador.getMundoX();
-        anteriorEventoY = gP.jugador.getMundoY();
+        jugador.setX(colDestino * gP.getTamTile());
+        jugador.setY(renDestino * gP.getTamTile());
+        jugador.setMapa(mapaDestino);
+        anteriorEventoX = jugador.getMundoX();
+        anteriorEventoY = jugador.getMundoY();
         touchEvent = false;
-
+    }
+    /**
+     * Apunta a la instancia de jugador del GamePanel.
+     * Guarda la posicion del jugador en X y Y en el mundo para
+     * la logica de controlar eventos.
+     * @param jugador referencia del Jugador en GamePanel
+     */
+    public void setJugador(Jugador jugador){
+        this.jugador = jugador;
+        this.anteriorEventoX = jugador.getMundoX();
+        this.anteriorEventoY = jugador.getMundoY();
     }
 }

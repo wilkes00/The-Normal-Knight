@@ -25,20 +25,22 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//Sistema de juego
 	Thread hebraJuego;
-	ManejadorTeclas mT = new ManejadorTeclas(this);
-	ManejadorTiles mTi = new ManejadorTiles(this);
-	ManejadorObjetos mObj = new ManejadorObjetos(this);
-	Jugador jugador = new Jugador(this, mT);
-	ControladorEventos cE = new ControladorEventos(this);
-	InterfazUsuario iU = new InterfazUsuario(this, cE);
-	DetectorColisiones dC = new DetectorColisiones(this);
+    ManejadorTiles mTi = new ManejadorTiles(this);
+    ManejadorObjetos mObj = new ManejadorObjetos(this);
+    ControladorEventos cE = new ControladorEventos(this);
+    InterfazUsuario iU = new InterfazUsuario(this, cE);
+    ManejadorTeclas mT = new ManejadorTeclas(this, iU);
+    Jugador jugador = new Jugador(this, mT);
+    DetectorColisiones dC = new DetectorColisiones(this);
 	private int FPS = 60;
 
 	//estado del juego
 	private int estadoJuego;
+	private final int startState = 0;
 	private final int playState = 1;
 	private final int pauseState = 2;
 	private final int transitionState = 3;
+	private final int dialogueState = 4;
 
 	//configuracion del mundo
 	private final int maxRenMundo = 50;
@@ -70,12 +72,13 @@ public class GamePanel extends JPanel implements Runnable{
 	/**
 	 * Configura el estado inicial del juego,
 	 * prepara el juego para comenzar.
-	 * Establece el estado del juego en "play".
+	 * Establece el estado del juego en "start".
 	 * Aqui iran mas configuraciones iniciales como el sonido.
 	 * 
 	 */
 	public void setupGame() {
-		this.estadoJuego = getPlayState();
+		cE.setJugador(this.jugador);
+		this.estadoJuego = this.startState;
 	}
 	/**
 	 * Inicia la hebra principal del juego.
@@ -155,16 +158,20 @@ public class GamePanel extends JPanel implements Runnable{
 		if(camaraY > this.getAltoMundo() - this.getAltoPantalla())
 			camaraY = this.getAltoMundo() - this.getAltoPantalla();
 
-		//dibuja el mapa primero, pasandole la posicion corregida de la camara	
-		this.mTi.draw(g2, camaraX, camaraY);
+		if(this.estadoJuego == this.startState){
+			iU.draw(g2);
+		}
+		else{
+			//dibuja el mapa primero, pasandole la posicion corregida de la camara	
+			this.mTi.draw(g2, camaraX, camaraY);
 
-		//dibuja todos los objetos (jugador, npcs, enemigos, items, etc).
-        mObj.draw(g2, camaraX, camaraY);
+			//dibuja todos los objetos (jugador, npcs, enemigos, items, etc).
+			mObj.draw(g2, camaraX, camaraY);
 
-		//dibuja la interfaz de usuario al final
-		this.iU.draw(g2);
-		
-		g2.dispose();
+			//dibuja la interfaz de usuario al final
+			this.iU.draw(g2);
+		}
+		g2.dispose();	
 	}
 
 	//getters y setters
@@ -231,6 +238,13 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	public int getPlayState(){
 		return this.playState;
+	}
+
+    public int getDialogueState() {
+		return this.dialogueState;
+    }
+	public int getStartState(){
+		return this.startState;
 	}
 
 }
