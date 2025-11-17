@@ -75,10 +75,20 @@ public class ManejadorTeclas implements KeyListener{
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(gP.getEstadoJuego() == gP.getStartState()){
 
+		if(gP.getEstadoJuego() == gP.getPlayState()){
+			switch(e.getKeyCode()) {
+				case KeyEvent.VK_W : teclaArriba = false;
+					break;
+				case KeyEvent.VK_S : teclaAbajo = false;
+					break;
+				case KeyEvent.VK_A : teclaIzq = false;
+					break;
+				case KeyEvent.VK_D : teclaDer = false;
+					break;
+			}
 		}
-		else if(gP.getEstadoJuego() == gP.getPlayState()){
+		else if(gP.getEstadoJuego() == gP.getTransitionState()){
 			switch(e.getKeyCode()) {
 				case KeyEvent.VK_W : teclaArriba = false;
 					break;
