@@ -25,6 +25,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//Sistema de juego
 	Thread hebraJuego;
+	Sound sound = new Sound();
     ManejadorTiles mTi = new ManejadorTiles(this);
     ManejadorObjetos mObj = new ManejadorObjetos(this);
     ControladorEventos cE = new ControladorEventos(this);
@@ -32,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable{
     ManejadorTeclas mT = new ManejadorTeclas(this, iU);
     Jugador jugador = new Jugador(this, mT);
     DetectorColisiones dC = new DetectorColisiones(this);
-	private int FPS = 60;
+	private final int FPS = 60;
 
 	//estado del juego
 	private int estadoJuego;
@@ -79,6 +80,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void setupGame() {
 		cE.setJugador(this.jugador);
 		this.estadoJuego = this.startState;
+		playMusic(0);
 	}
 	/**
 	 * Inicia la hebra principal del juego.
@@ -174,6 +176,18 @@ public class GamePanel extends JPanel implements Runnable{
 		g2.dispose();	
 	}
 
+	public void playMusic(int index){
+		sound.setFile(index);
+		sound.play();
+		sound.loop();
+	}
+	public void stopMusic(){
+		sound.stop();
+	}
+	public void playSoundEfect(int index){
+		sound.setFile(index);
+		sound.play();
+	}
 	//getters y setters
 	public int getTamTile(){
 		return this.sizeTile;
@@ -239,7 +253,6 @@ public class GamePanel extends JPanel implements Runnable{
 	public int getPlayState(){
 		return this.playState;
 	}
-
     public int getDialogueState() {
 		return this.dialogueState;
     }

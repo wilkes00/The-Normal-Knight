@@ -67,6 +67,13 @@ public class ManejadorTeclas implements KeyListener{
 					break;
 			}
 		}
+		//Controles en pantalla de dialogo
+		else if(gP.getEstadoJuego() == gP.getDialogueState()){
+			switch(e.getKeyCode()){
+				case KeyEvent.VK_ENTER : gP.setEstadoJuego(gP.getPlayState());
+					break;
+			}
+		}
 	}
 	/**
 	 * Maneja el evento de liberar una tecla.
@@ -74,31 +81,16 @@ public class ManejadorTeclas implements KeyListener{
 	 * @param e el evento de tecla liberada.
 	 */
 	@Override
-	public void keyReleased(KeyEvent e) {
-
-		if(gP.getEstadoJuego() == gP.getPlayState()){
-			switch(e.getKeyCode()) {
-				case KeyEvent.VK_W : teclaArriba = false;
-					break;
-				case KeyEvent.VK_S : teclaAbajo = false;
-					break;
-				case KeyEvent.VK_A : teclaIzq = false;
-					break;
-				case KeyEvent.VK_D : teclaDer = false;
-					break;
-			}
-		}
-		else if(gP.getEstadoJuego() == gP.getTransitionState()){
-			switch(e.getKeyCode()) {
-				case KeyEvent.VK_W : teclaArriba = false;
-					break;
-				case KeyEvent.VK_S : teclaAbajo = false;
-					break;
-				case KeyEvent.VK_A : teclaIzq = false;
-					break;
-				case KeyEvent.VK_D : teclaDer = false;
-					break;
-			}
+	public void keyReleased(KeyEvent e){
+		switch(e.getKeyCode()) {
+			case KeyEvent.VK_W : teclaArriba = false;
+				break;
+			case KeyEvent.VK_S : teclaAbajo = false;
+				break;
+			case KeyEvent.VK_A : teclaIzq = false;
+				break;
+			case KeyEvent.VK_D : teclaDer = false;
+				break;
 		}
 	}
 	

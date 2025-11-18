@@ -30,10 +30,10 @@ public class ControladorEventos {
             for(int ren = 0; ren < gP.getMaxRenMundo(); ren++) {
                 for(int col = 0; col < gP.getMaxColMundo(); col++) {     
                     eventRect[mapa][ren][col] = new EventRect();
-                    eventRect[mapa][ren][col].x = 8;
+                    eventRect[mapa][ren][col].x = 16;
                     eventRect[mapa][ren][col].y = 16;
-                    eventRect[mapa][ren][col].width = 2;
-                    eventRect[mapa][ren][col].height = 2;
+                    eventRect[mapa][ren][col].width = 4;
+                    eventRect[mapa][ren][col].height = 4;
                     eventRect[mapa][ren][col].setEventRectDefaultX(eventRect[mapa][ren][col].x); 
                     eventRect[mapa][ren][col].setEventRectDefaultY(eventRect[mapa][ren][col].y);
                 }
@@ -79,8 +79,6 @@ public class ControladorEventos {
      * @return true si el evento ha sido activado, false en caso contrario
      */
     public boolean hit(int mapa, int ren, int col, String reqDireccion){
-        if(jugador == null) return false;
-        
         boolean hit = false;
 
         if(mapa == gP.getMapaActual()){
@@ -109,8 +107,6 @@ public class ControladorEventos {
      * Teletransporta al jugador a la ubicación de destino especificada.
      */
     public void teleport(){
-        if(jugador == null) return;
-        
         gP.setMapaActual(mapaDestino);
         jugador.setX(colDestino * gP.getTamTile());
         jugador.setY(renDestino * gP.getTamTile());
