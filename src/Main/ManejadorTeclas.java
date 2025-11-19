@@ -44,6 +44,8 @@ public class ManejadorTeclas implements KeyListener{
 					break;
 				case KeyEvent.VK_ENTER:
 					if(iU.getNumOpcion() == 0){
+						gP.stopMusic();
+						gP.playMusic(1);
 						gP.setEstadoJuego(gP.getPlayState());
 					}
 					else if(iU.getNumOpcion() == 1){
@@ -64,6 +66,8 @@ public class ManejadorTeclas implements KeyListener{
 				case KeyEvent.VK_A : teclaIzq = true;
 					break;
 				case KeyEvent.VK_D : teclaDer = true;
+					break;
+				case KeyEvent.VK_ENTER:
 					break;
 			}
 		}
