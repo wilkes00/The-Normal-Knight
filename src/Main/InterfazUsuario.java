@@ -42,7 +42,7 @@ public class InterfazUsuario {
         // Mostrar coordenadas del jugador para depuracion
         int renJugador = gP.jugador.getMundoY() / gP.getTamTile();
         int colJugador = gP.jugador.getMundoX() / gP.getTamTile();
-        //g2.drawString("Col: " + colJugador + " Ren: " + renJugador, 20, 40);
+        g2.drawString("Col: " + colJugador + " Ren: " + renJugador, 20, 40);
 
         //Pantalla de inicio del juego
         if(gP.getEstadoJuego() == gP.getStartState()){

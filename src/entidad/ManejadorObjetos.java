@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 public class ManejadorObjetos {
     ArrayList<Entidad> entidades = new ArrayList<>();
     ArrayList<Objeto> objetos = new ArrayList<>();
+    Entidad npc[] = new Entidad[10];
     BufferedImage[] objetoImagen;
     private final int maxObjetosImagenes = 20;
     private GamePanel gP;
@@ -26,6 +27,7 @@ public class ManejadorObjetos {
         objetoImagen = new BufferedImage[maxObjetosImagenes];
         getImagenesObjetos();
         colocarObjetosEstaticos();
+        setNPC();
     }
     /**
      * 
@@ -49,10 +51,17 @@ public class ManejadorObjetos {
 
         } catch (IOException e) { 
             e.printStackTrace(); 
-            System.err.println("Error al cargar el spritesheet de decoraciones.");
+            System.err.println("Error al cargar el spritesheet.");
         }
     }
 
+    public void setNPC(){
+        npc[0] = new NPC(gP);
+        npc[0].mundoX = gP.getTamTile() *28;
+        npc[0].mundoY = gP.getTamTile() *16;
+        npc[0].setMapa(gP.getMapaMundo());
+        agregarGameObject(npc[0]);
+    }
     public void colocarObjetosEstaticos() {
         Objeto pocion = new Objeto(this.gP);
         pocion.setMundoX(17 * gP.getTamTile());
@@ -61,7 +70,7 @@ public class ManejadorObjetos {
         pocion.setColision(false);
         pocion.getAreaSolida().setBounds(8, 32, 16, 16);
         pocion.setMapa(gP.getMapaMundo());
-        objetos.add(pocion); // Añade el árbol a la lista de objetos estaticos      
+        objetos.add(pocion); // Añade la pocion a la lista de objetos estaticos      
     }
 
     /**

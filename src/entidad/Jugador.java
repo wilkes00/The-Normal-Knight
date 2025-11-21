@@ -45,6 +45,7 @@ public class Jugador extends Entidad{
         this.mundoY = gP.getTamTile() * 21;
         this.velocidad = 4;
         this.direccion = "abajo";
+        this.colision = true;
         this.setMapa(gP.getMapaActual());
     }
     /**
@@ -53,6 +54,30 @@ public class Jugador extends Entidad{
      */
     public void getSpritesJugador(){
         try {
+            // Carga el spritesheet completo
+            BufferedImage spritesheetJugador = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/player_spritesheet.png")); // ¡CAMBIA ESTA RUTA!
+
+            // El tamaño de cada frame en tu spritesheet es 16x16
+            int frameWidth = 24;
+            int frameHeight = 24;
+
+            // --- Recortar las imágenes del spritesheet ---
+            // Movimiento hacia abajo
+            abajo1= spritesheetJugador.getSubimage(0 * frameWidth, 0 * frameHeight, frameWidth, frameHeight);
+            abajo2= spritesheetJugador.getSubimage(1 * frameWidth, 0 * frameHeight, frameWidth, frameHeight);
+
+            // Movimiento hacia izq
+            izquierda1 = spritesheetJugador.getSubimage(0 * frameWidth, 1 * frameHeight, frameWidth, frameHeight);
+            izquierda2 = spritesheetJugador.getSubimage(1 * frameWidth, 1 * frameHeight, frameWidth, frameHeight);
+
+            //Movimiento hacia la derecha
+            derecha1 = spritesheetJugador.getSubimage(0 * frameWidth, 2 * frameHeight, frameWidth, frameHeight);
+            derecha2 = spritesheetJugador.getSubimage(1 * frameWidth, 2 * frameHeight, frameWidth, frameHeight);
+
+            //Movimiento hacia arriba
+            arriba1 = spritesheetJugador.getSubimage(0 * frameWidth, 3 * frameHeight, frameWidth, frameHeight);
+            arriba2 = spritesheetJugador.getSubimage(1 * frameWidth, 3 * frameHeight, frameWidth, frameHeight);
+            /* 
             this.arriba1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverArriba1.png"));
             this.arriba2 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverArriba2.png"));
             this.abajo1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverAbajo1.png"));
@@ -61,9 +86,10 @@ public class Jugador extends Entidad{
             this.izquierda2 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverIzquierda2.png"));
             this.derecha1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverDerecha1.png"));
             this.derecha2 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverDerecha2.png"));
-
+            */
         }catch(IOException e){
             e.printStackTrace();
+            System.err.println("Error al cargar el spritesheet del jugador.");
         }
     }
     /**
@@ -145,7 +171,7 @@ public class Jugador extends Entidad{
                 continue;
             // Si el objeto ES sólido (colision=true), lo ignoramos.
             // (El DetectorColisiones ya se encargó de él).
-            if (obj.getColision())
+            if(obj.getColision())
                 continue;
 
             //Si es un item (colision=false), revisamos intersección
@@ -157,11 +183,8 @@ public class Jugador extends Entidad{
 
             //El jugador está tocando el item?
             if (areaJugador.intersects(areaObjeto)) {
-                
                 //Si? Recogido.
                 gP.setEstadoJuego(gP.getDialogueState());
-                
-                
                 //Aquí va la logica para revisar que objeto recogio y
                 //llamar al metodo necesario
 

@@ -11,17 +11,30 @@ import java.awt.image.BufferedImage;
 public abstract class GameObject {
     BufferedImage imagen;
     protected int mundoX, mundoY;
+    protected boolean colision = false;
     protected boolean colisionActivada = false;
-    protected Rectangle areaSolida;
+    //rectangulo para colisiones predeterminado para todos los objetos
+    protected Rectangle areaSolida = new Rectangle(0,0,32,32);
     protected int mapa;
 
     public abstract void draw(java.awt.Graphics2D g2, int camaraX, int camaraY);
 
+    
     public boolean getColision(){
+        return this.colision;
+    }
+    public void setColision(boolean colision){
+        this.colision = colision;
+    }
+    public boolean  getColisionActivada(){
         return this.colisionActivada;
     }
-    public void setColision(boolean colisionActivada){
-        this.colisionActivada = colisionActivada;
+    /**
+     * Establece el estado de colisión de la entidad.
+     * @param valor true si la colisión está activada, false si no.
+     */
+    public void setColisionActivada(boolean valor){
+        this.colisionActivada = valor;
     }
     public int getMundoX(){
         return this.mundoX;

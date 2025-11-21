@@ -186,7 +186,8 @@ public class ManejadorTiles {
             //menos la posicion actual de la camara
             int pantallaX = mundoX - camaraX;
             int pantallaY = mundoY - camaraY;
-
+            
+    
             //comprueba si el mosaico actual esta dentro del area visible de la camara
             //crucial para el rendimiento, para no dibujar el mapa entero
             if(mundoX + gP.getTamTile() > camaraX && 

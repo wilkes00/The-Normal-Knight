@@ -26,19 +26,39 @@ public abstract class Entidad extends GameObject {
     }
 
     /**
-     * Establece el estado de colisión de la entidad.
-     *
-     * @param valor true si la colisión está activada, false si no.
-     */
-    public void setColisionActivada(boolean valor){
-        this.colisionActivada = valor;
-    }
-    /**
      * Actualiza el estado de la entidad.
      * Este método debe ser implementado por las subclases para definir
      * el comportamiento específico de cada tipo de entidad en caso de necesitarlo.
      */
-    public void update(){}
+    public void update(){ 
+        accion();
+        //verifica colisiones
+        this.colisionActivada = false;  
+        gP.getDetectorColisiones().revisaTile(this);
+        gP.getDetectorColisiones().revisaObjeto(this, gP.getManejadorObjetos().getListaGameObjects());
+    
+         //si no hubo colision
+        if(this.colisionActivada == false){
+            switch(this.direccion){
+                case "arriba":
+                    setMundoY(getMundoY() - getVelocidad());
+                    break;
+                case "abajo":
+                    setMundoY(getMundoY() + getVelocidad());
+                    break;
+                case "izquierda":
+                    setMundoX(getMundoX() - getVelocidad());
+                    break;
+                case "derecha":
+                    setMundoX(getMundoX() + getVelocidad());
+                    break;
+            }
+        }
+        
+    }
+    public void accion(){}
+    
+
     
     public int getVelocidad() {
         return this.velocidad;

@@ -2,7 +2,6 @@ package Main;
 
 import entidad.Entidad;
 import entidad.GameObject;
-import entidad.Jugador;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 /**
@@ -22,57 +21,55 @@ public class DetectorColisiones {
      * @param entidad la entidad cuya colisión se va a revisar.
      */
     public void revisaTile(Entidad entidad){
-        if(entidad instanceof Jugador){
-            int izquierdaEntidadMundoX = ((Jugador)entidad).getMundoX() + ((Jugador)entidad).getAreaSolidaX();
-            int derechaEntidadMundoX = ((Jugador)entidad).getMundoX() + ((Jugador)entidad).getAreaSolidaX() +
-            ((Jugador)entidad).getAreaSolidaAncho();
+        int izquierdaEntidadMundoX = (entidad).getMundoX() + (entidad).getAreaSolidaX();
+        int derechaEntidadMundoX = (entidad).getMundoX() + (entidad).getAreaSolidaX() +
+        (entidad).getAreaSolidaAncho();
 
-            int arribaEntidadMundoY = ((Jugador)entidad).getMundoY() + ((Jugador)entidad).getAreaSolidaY();
-            int abajoEntidadMundoY = ((Jugador)entidad).getMundoY() + ((Jugador)entidad).getAreaSolidaY() +
-            ((Jugador)entidad).getAreaSolidaAlto();
+        int arribaEntidadMundoY = (entidad).getMundoY() + (entidad).getAreaSolidaY();
+        int abajoEntidadMundoY = (entidad).getMundoY() + (entidad).getAreaSolidaY() +
+        (entidad).getAreaSolidaAlto();
 
-            int colIzquierdaEntidad = izquierdaEntidadMundoX / this.gP.getTamTile();
-            int colDerechaEntidad = derechaEntidadMundoX / this.gP.getTamTile();
-            int renArribaEntidad = arribaEntidadMundoY / this.gP.getTamTile();
-            int renAbajoEntidad = abajoEntidadMundoY / this.gP.getTamTile();
+        int colIzquierdaEntidad = izquierdaEntidadMundoX / this.gP.getTamTile();
+        int colDerechaEntidad = derechaEntidadMundoX / this.gP.getTamTile();
+        int renArribaEntidad = arribaEntidadMundoY / this.gP.getTamTile();
+        int renAbajoEntidad = abajoEntidadMundoY / this.gP.getTamTile();
 
-            int numTile1, numTile2;
+        int numTile1, numTile2;
 
-            switch(((Jugador)entidad).getDireccion()){
-                case "arriba":
-                    renArribaEntidad = (arribaEntidadMundoY - ((Jugador)entidad).getVelocidad()) / this.gP.getTamTile();
-                    numTile1 = gP.mTi.getCodigoMapaTiles(renArribaEntidad, colIzquierdaEntidad);
-                    numTile2 = gP.mTi.getCodigoMapaTiles(renArribaEntidad, colDerechaEntidad);
-                    if(gP.mTi.getColisionDeTile(numTile1) || gP.mTi.getColisionDeTile(numTile2)){
-                        ((Jugador)entidad).setColisionActivada(true);
-                    }
-                    break;
-                case "abajo":
-                    renAbajoEntidad = (abajoEntidadMundoY + ((Jugador)entidad).getVelocidad()) / this.gP.getTamTile();
-                    numTile1 = gP.mTi.getCodigoMapaTiles(renAbajoEntidad, colIzquierdaEntidad);
-                    numTile2 = gP.mTi.getCodigoMapaTiles(renAbajoEntidad, colDerechaEntidad);
-                    if(gP.mTi.getColisionDeTile(numTile1) || gP.mTi.getColisionDeTile(numTile2)){
-                        ((Jugador)entidad).setColisionActivada(true);
-                    }
-                    break;
-                case "izquierda":
-                    colIzquierdaEntidad = (izquierdaEntidadMundoX - ((Jugador)entidad).getVelocidad()) / this.gP.getTamTile();
-                    numTile1 = gP.mTi.getCodigoMapaTiles(renArribaEntidad, colIzquierdaEntidad);
-                    numTile2 = gP.mTi.getCodigoMapaTiles(renAbajoEntidad, colIzquierdaEntidad);
-                    if(gP.mTi.getColisionDeTile(numTile1) || gP.mTi.getColisionDeTile(numTile2)){
-                        ((Jugador)entidad).setColisionActivada(true);
-                    }
-                    break;
-                case "derecha":
-                    colDerechaEntidad = (derechaEntidadMundoX + ((Jugador)entidad).getVelocidad()) / this.gP.getTamTile();
-                    numTile1 = gP.mTi.getCodigoMapaTiles(renArribaEntidad, colDerechaEntidad);
-                    numTile2 = gP.mTi.getCodigoMapaTiles(renAbajoEntidad, colDerechaEntidad);
-                    if(gP.mTi.getColisionDeTile(numTile1) || gP.mTi.getColisionDeTile(numTile2)){
-                        ((Jugador)entidad).setColisionActivada(true);
-                    }
-                    break;
-                default: break;
-            }
+        switch((entidad).getDireccion()){
+            case "arriba":
+                renArribaEntidad = (arribaEntidadMundoY - (entidad).getVelocidad()) / this.gP.getTamTile();
+                numTile1 = gP.mTi.getCodigoMapaTiles(renArribaEntidad, colIzquierdaEntidad);
+                numTile2 = gP.mTi.getCodigoMapaTiles(renArribaEntidad, colDerechaEntidad);
+                if(gP.mTi.getColisionDeTile(numTile1) || gP.mTi.getColisionDeTile(numTile2)){
+                    (entidad).setColisionActivada(true);
+                }
+                break;
+            case "abajo":
+                renAbajoEntidad = (abajoEntidadMundoY + (entidad).getVelocidad()) / this.gP.getTamTile();
+                numTile1 = gP.mTi.getCodigoMapaTiles(renAbajoEntidad, colIzquierdaEntidad);
+                numTile2 = gP.mTi.getCodigoMapaTiles(renAbajoEntidad, colDerechaEntidad);
+                if(gP.mTi.getColisionDeTile(numTile1) || gP.mTi.getColisionDeTile(numTile2)){
+                    (entidad).setColisionActivada(true);
+                }
+                break;
+            case "izquierda":
+                colIzquierdaEntidad = (izquierdaEntidadMundoX - (entidad).getVelocidad()) / this.gP.getTamTile();
+                numTile1 = gP.mTi.getCodigoMapaTiles(renArribaEntidad, colIzquierdaEntidad);
+                numTile2 = gP.mTi.getCodigoMapaTiles(renAbajoEntidad, colIzquierdaEntidad);
+                if(gP.mTi.getColisionDeTile(numTile1) || gP.mTi.getColisionDeTile(numTile2)){
+                    (entidad).setColisionActivada(true);
+                }
+                break;
+            case "derecha":
+                colDerechaEntidad = (derechaEntidadMundoX + (entidad).getVelocidad()) / this.gP.getTamTile();
+                numTile1 = gP.mTi.getCodigoMapaTiles(renArribaEntidad, colDerechaEntidad);
+                numTile2 = gP.mTi.getCodigoMapaTiles(renAbajoEntidad, colDerechaEntidad);
+                if(gP.mTi.getColisionDeTile(numTile1) || gP.mTi.getColisionDeTile(numTile2)){
+                    (entidad).setColisionActivada(true);
+                }
+                break;
+            default: break;
         }
     }
     /**
@@ -81,15 +78,11 @@ public class DetectorColisiones {
      * @param lista La lista de todos los GameObjects del ManejadorObjetos
      */
     public void revisaObjeto(Entidad entidad, ArrayList<GameObject> lista) {
-        
-        // Usamos un bucle "for-each" que es más limpio para ArrayLists
         for (GameObject obj : lista) {
-            
             // 1. Una entidad no puede colisionar consigo misma
             if (obj == entidad) {
                 continue;
             }
-
             // 2. Si el objeto no es sólido, saltar
             if (!obj.getColision()) { 
                 continue;

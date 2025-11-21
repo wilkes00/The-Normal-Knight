@@ -31,9 +31,12 @@ public class GamePanel extends JPanel implements Runnable{
     ControladorEventos cE = new ControladorEventos(this);
     InterfazUsuario iU = new InterfazUsuario(this, cE);
     ManejadorTeclas mT = new ManejadorTeclas(this, iU);
-    Jugador jugador = new Jugador(this, mT);
+	Jugador jugador = new Jugador(this, mT);
     DetectorColisiones dC = new DetectorColisiones(this);
 	private final int FPS = 60;
+
+	
+	
 
 	//estado del juego
 	private int estadoJuego;
@@ -68,6 +71,7 @@ public class GamePanel extends JPanel implements Runnable{
 		this.requestFocusInWindow();
 		//inicializa el mundo
 		this.setupGame();
+		//agrega al jugador a la lista de objetos del ManejadorObjetos
 		mObj.agregarGameObject(jugador);
 	}
 	/**
