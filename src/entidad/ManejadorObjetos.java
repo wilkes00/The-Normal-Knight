@@ -61,6 +61,12 @@ public class ManejadorObjetos {
         npc[0].mundoY = gP.getTamTile() *16;
         npc[0].setMapa(gP.getMapaMundo());
         agregarGameObject(npc[0]);
+
+        npc[1] = new Enemigo(gP);
+        npc[1].mundoX = gP.getTamTile() *19;
+        npc[1].mundoY = gP.getTamTile() *16;
+        npc[1].setMapa(gP.getMapaMundo());
+        agregarGameObject(npc[1]);
     }
     public void colocarObjetosEstaticos() {
         Objeto pocion = new Objeto(this.gP);

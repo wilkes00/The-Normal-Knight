@@ -1,6 +1,8 @@
 package entidad;
 
 import Main.GamePanel;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 /**
  * Clase base abstracta para todas las entidades del juego que se mueven, como el jugador,
@@ -27,8 +29,8 @@ public abstract class Entidad extends GameObject {
 
     /**
      * Actualiza el estado de la entidad.
-     * Este método debe ser implementado por las subclases para definir
-     * el comportamiento específico de cada tipo de entidad en caso de necesitarlo.
+     * Debe ser implementado en las subclases de Entidad que tengan un comportamiento
+     * diferente que no se haya implementado en accion
      */
     public void update(){ 
         accion();
@@ -56,10 +58,78 @@ public abstract class Entidad extends GameObject {
         }
         
     }
+    /**
+     * Metodo abstracto que incluye la logica de accion y movimiento de
+     * la Entidad especifica. Debe implementarse en las subclases de Entidad,
+     * con excepcion de la subclase Jugador.
+     */
     public void accion(){}
-    
+    /**
+     * Dibuja la entidad en la pantalla.
+     * @param g2 el objeto Graphics2D para dibujar.
+     * @param camaraX La coordenada X de la camara.
+     * @param camaraY La coordenada Y de la camara.
+     */
+    @Override
+    public void draw(Graphics2D g2, int camaraX, int camaraY){
+        BufferedImage sprite = null;
+        switch(this.direccion){
+            case "arriba":
+                if(this.numeroSprite == 1)
+                    sprite = this.arriba1;
+                if(this.numeroSprite == 2)
+                    sprite = this.arriba2;
+                break;
+            case "abajo":
+                if(this.numeroSprite == 1)
+                    sprite = this.abajo1;
+                if(this.numeroSprite == 2)
+                    sprite = this.abajo2;
+                break;
+            case "izquierda":
+                if(this.numeroSprite == 1)
+                    sprite = this.izquierda1;
+                if(this.numeroSprite == 2)
+                    sprite = this.izquierda2;
+                break;
+            case "derecha":
+                if(this.numeroSprite == 1)
+                    sprite = this.derecha1;
+                if(this.numeroSprite == 2)
+                    sprite = this.derecha2;
+                break;
+        }
+        this.contadorSprites++;
 
+            if(this.contadorSprites > this.cambiaSprite){
+                if(this.numeroSprite == 1)
+                    this.numeroSprite = 2;
+                else
+                    this.numeroSprite = 1;
+                this.contadorSprites = 0;
+            }
+
+        //calculo de la posicion en pantalla
+        //la posicion del jugador en pantalla es su posicion en el mundo menos la posicion de la esquina de la camara
+        int EntidadPantallaX = this.mundoX - camaraX;
+        int EntidadPantallaY = this.mundoY - camaraY;
+        
+        //dibuja el sprite seleccionado en las coordenadas calculadas
+        g2.drawImage(sprite, EntidadPantallaX, EntidadPantallaY, gP.getTamTile(), gP.getTamTile(), null);
+        
+        g2.setColor(new Color(255, 0, 0, 100));
+        int hitboxX = EntidadPantallaX + areaSolida.x;
+        int hitboxY = EntidadPantallaY + areaSolida.y;
+        
+        //Dibuja el rectángulo relleno
+        g2.fillRect(hitboxX, hitboxY, areaSolida.width, areaSolida.height);
+        
+        //Dibuja un borde blanco para que se vea mejor
+        g2.setColor(Color.white);
+        g2.drawRect(hitboxX, hitboxY, areaSolida.width, areaSolida.height);
+    }
     
+    //getters y setters
     public int getVelocidad() {
         return this.velocidad;
     }

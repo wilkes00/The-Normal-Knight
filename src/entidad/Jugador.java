@@ -2,6 +2,7 @@ package entidad;
 
 import Main.GamePanel;
 import Main.ManejadorTeclas;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -57,7 +58,7 @@ public class Jugador extends Entidad{
             // Carga el spritesheet completo
             BufferedImage spritesheetJugador = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/player_spritesheet.png")); // ¡CAMBIA ESTA RUTA!
 
-            // El tamaño de cada frame en tu spritesheet es 16x16
+            // El tamaño de cada frame en tu spritesheet es 24x24
             int frameWidth = 24;
             int frameHeight = 24;
 
@@ -241,6 +242,21 @@ public class Jugador extends Entidad{
         
         //dibuja el sprite seleccionado en las coordenadas calculadas
         g2.drawImage(sprite, jugadorPantallaX, jugadorPantallaY, gP.getTamTile(), gP.getTamTile(), null);
+
+        // ==== LA SIGUIENTE SECCION DE CODIGO ES PARA DEPURACION ====
+        g2.setColor(new Color(255, 0, 0, 100));
+        
+        // Calcula la posición exacta de la hitbox en la pantalla
+        // Sumamos la posición relativa del área sólida (x, y) a la posición del jugador en pantalla
+        int hitboxX = jugadorPantallaX + areaSolida.x;
+        int hitboxY = jugadorPantallaY + areaSolida.y;
+        
+        //Dibuja el rectángulo relleno
+        g2.fillRect(hitboxX, hitboxY, areaSolida.width, areaSolida.height);
+        
+        //Dibuja un borde blanco para que se vea mejor
+        g2.setColor(Color.white);
+        g2.drawRect(hitboxX, hitboxY, areaSolida.width, areaSolida.height);
     }
 
     //Getters y Setters

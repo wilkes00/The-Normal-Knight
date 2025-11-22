@@ -1,11 +1,14 @@
 package entidad;
 import Main.GamePanel;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
+/**
+ * Subclase de Entidad. Representa a un NPC dentro del juego.
+ * Tiene un comportamiento unico implementado en el metodo accion.
+ * Maneja la logica especifica de esta entidad.
+ */
 public class NPC extends Entidad{
     private int cont = 0;
     public NPC(GamePanel gP){
@@ -16,7 +19,9 @@ public class NPC extends Entidad{
         this.velocidad = 2;
         this.getSpritesNPC();
     }
-
+    /**
+     * Carga los sprites especificos del NPC.
+     */
     public void getSpritesNPC(){
         try{
             this.arriba1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverArriba1.png"));
@@ -31,54 +36,11 @@ public class NPC extends Entidad{
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void draw(Graphics2D g2, int camaraX, int camaraY){
-        BufferedImage sprite = null;
-        switch(this.direccion){
-            case "arriba":
-                if(this.numeroSprite == 1)
-                    sprite = this.arriba1;
-                if(this.numeroSprite == 2)
-                    sprite = this.arriba2;
-                break;
-            case "abajo":
-                if(this.numeroSprite == 1)
-                    sprite = this.abajo1;
-                if(this.numeroSprite == 2)
-                    sprite = this.abajo2;
-                break;
-            case "izquierda":
-                if(this.numeroSprite == 1)
-                    sprite = this.izquierda1;
-                if(this.numeroSprite == 2)
-                    sprite = this.izquierda2;
-                break;
-            case "derecha":
-                if(this.numeroSprite == 1)
-                    sprite = this.derecha1;
-                if(this.numeroSprite == 2)
-                    sprite = this.derecha2;
-                break;
-        }
-        this.contadorSprites++;
-
-            if(this.contadorSprites > this.cambiaSprite){
-                if(this.numeroSprite == 1)
-                    this.numeroSprite = 2;
-                else
-                    this.numeroSprite = 1;
-                this.contadorSprites = 0;
-            }
-
-        //calculo de la posicion en pantalla
-        //la posicion del jugador en pantalla es su posicion en el mundo menos la posicion de la esquina de la camara
-        int NPCPantallaX = this.mundoX - camaraX;
-        int NPCPantallaY = this.mundoY - camaraY;
-        
-        //dibuja el sprite seleccionado en las coordenadas calculadas
-        g2.drawImage(sprite, NPCPantallaX, NPCPantallaY, gP.getTamTile(), gP.getTamTile(), null);
-    }
+    /**
+     * Define la logica de accion y movimiento del NPC.
+     * Debe implementarse en las subclases de Entidad,
+     * con excepcion de la subclase Jugador.
+     */
     @Override
     public void accion(){
         cont++;
