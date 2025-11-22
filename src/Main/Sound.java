@@ -4,7 +4,9 @@ import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-
+/**
+ * Clase para manejar efectos de sonido y música de fondo.
+ */
 public class Sound {
     Clip clip;
     URL soundURL[] = new URL[10];
@@ -14,6 +16,10 @@ public class Sound {
         soundURL[1] = getClass().getResource("/sounds/base.wav");
     }
     
+    /**
+     * Establece el archivo de sonido a reproducir.
+     * @param index Índice del archivo de sonido en el arreglo soundURL.
+     */
     public void setFile(int index){
         try {
             AudioInputStream audio = AudioSystem.getAudioInputStream(soundURL[index]);
@@ -24,12 +30,21 @@ public class Sound {
         }
         
     }
+    /**
+     * Reproduce el sonido configurado.
+     */
     public void play(){
         clip.start();
     }
+    /**
+     * Reproduce el sonido en un bucle continuo.
+     */
     public void loop(){
         clip.loop(clip.LOOP_CONTINUOUSLY);
     }
+    /**
+     * Detiene la reproducción del sonido.
+     */
     public void stop(){
         clip.stop();
     }

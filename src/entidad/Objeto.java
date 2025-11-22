@@ -4,7 +4,7 @@ import Main.GamePanel;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 /**
- * Representa un objeto dentro del juego
+ * Representa un objeto estatico dentro del juego
  */
 public class Objeto extends GameObject{
     GamePanel gP;
@@ -13,7 +13,12 @@ public class Objeto extends GameObject{
         this.gP = gP;
         this.areaSolida = new Rectangle(8, 16, 32, 32);
     }
-
+    /**
+     * Dibuja el objeto en la pantalla considerando la posición de la cámara.
+     * @param g2 el contexto gráfico donde se dibuja el objeto
+     * @param camaraX la posición X de la cámara
+     * @param camaraY la posición Y de la cámara
+     */
     @Override
     public void draw(Graphics2D g2, int camaraX, int camaraY) {
         

@@ -58,7 +58,10 @@ public class InterfazUsuario {
         }
             
     }
-
+    /**
+     * Dibuja la pantalla de inicio del juego.
+     * Muestra el título del juego y las opciones del menú.
+     */
     public void drawPantallaInicio(){
         // Titulo del juego
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
@@ -112,7 +115,9 @@ public class InterfazUsuario {
             cE.teleport();
         }
     }
-
+    /**
+     * Dibuja la ventana de diálogo en pantalla.
+     */
     public void dibujaPantallaDialogo(){
         int x = gP.getTamTile() * 2;
         int y = gP.getTamTile() / 2;
@@ -120,7 +125,13 @@ public class InterfazUsuario {
         int ancho = gP.getAnchoPantalla() - (gP.getTamTile() * 4);
         dibujaSubVentana(x, y, alto, ancho);
     }
-
+    /**
+     * Dibuja una subventana con bordes redondeados.
+     * @param x la posición X de la subventana
+     * @param y la posición Y de la subventana
+     * @param alto la altura de la subventana
+     * @param ancho el ancho de la subventana
+     */
     public void dibujaSubVentana(int x, int y, int alto, int ancho){
         Color c = new Color(0,0, 0, 200);
         g2.setColor(c);
@@ -133,30 +144,45 @@ public class InterfazUsuario {
 
 
     }
-
+    /**
+     * Muestra un mensaje en pantalla.
+     * @param mensaje el mensaje a mostrar.
+     */
     public void mostrarMensaje(String mensaje){
         this.mensaje = mensaje;
         this.estadoMensaje = true;
     }
-
+    /**
+     * Calcula la posición X centrada para un texto dado.
+     * @param text el texto a centrar.
+     * @return la posición X centrada.
+     */
     public int getXCentrado(String text){
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gP.getAnchoPantalla() / 2 - length/2;
         return x;
     }
+    /**
+     * Decrementa el número de opción del menú.
+     * Si el número de opción es menor que 0, lo reinicia a 2
+     */
     public void decrementaNumOpcion(){
         if(this.numOpcion < 0)
             this.numOpcion = 2;
         else
             this.numOpcion--;
     }
+    /**
+     * Incrementa el número de opción del menú.
+     * Si el número de opción es mayor que 2, lo reinicia a 0
+     */
     public void incrementaNumOpcion(){
         if(this.numOpcion > 2)
             this.numOpcion = 0;
         else
             this.numOpcion++;
     }
-
+    //getters y setters
     public int getNumOpcion() {
         return this.numOpcion;
     }

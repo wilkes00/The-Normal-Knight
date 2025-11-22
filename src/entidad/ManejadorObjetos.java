@@ -54,7 +54,9 @@ public class ManejadorObjetos {
             System.err.println("Error al cargar el spritesheet.");
         }
     }
-
+    /**
+     * Configura los NPCs y enemigos en el juego.
+     */
     public void setNPC(){
         npc[0] = new NPC(gP);
         npc[0].mundoX = gP.getTamTile() *28;
@@ -68,6 +70,9 @@ public class ManejadorObjetos {
         npc[1].setMapa(gP.getMapaMundo());
         agregarGameObject(npc[1]);
     }
+    /**
+     * Coloca los objetos estaticos en el mapa.
+     */
     public void colocarObjetosEstaticos() {
         Objeto pocion = new Objeto(this.gP);
         pocion.setMundoX(17 * gP.getTamTile());
@@ -80,7 +85,7 @@ public class ManejadorObjetos {
     }
 
     /**
-     * Actualiza solo las Entidades (cosas que se mueven).
+     * Actualiza solo las Entidades (objetos que se mueven).
      */
     public void update() {
         for (Entidad ent : entidades){
@@ -112,7 +117,11 @@ public class ManejadorObjetos {
                 obj.draw(g2, camaraX, camaraY);
         }
     }
-    // para agregar un objeto a la lista, en caso de ser necesario
+
+    /**
+     * Agrega un objeto a la lista correspondiente (Entidad u Objeto).
+     * @param obj el elemento a agregar
+     */
     public void agregarGameObject(GameObject obj) {
         if (obj instanceof Entidad entidad)
             entidades.add(entidad);

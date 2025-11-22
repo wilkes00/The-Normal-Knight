@@ -20,10 +20,7 @@ public class ManejadorTeclas implements KeyListener{
 		this.gP = gP;
 		this.iU = iU;
 	}
-	/**
-	 * Maneja el evento de tipeo de tecla.
-	 * @param e el evento de tecla tipeada.
-	 */
+	
 	@Override
 	public void keyTyped (KeyEvent e) {
 		

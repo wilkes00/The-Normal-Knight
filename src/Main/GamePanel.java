@@ -179,24 +179,34 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 		g2.dispose();	
 	}
-
+	/**
+	 * Reproduce música de fondo en bucle.
+	 * @param index Índice del archivo de música a reproducir.
+	 */
 	public void playMusic(int index){
 		sound.setFile(index);
 		sound.play();
 		sound.loop();
 	}
+	/**
+	 * Detiene la música de fondo.
+	 */
 	public void stopMusic(){
 		sound.stop();
 	}
+	/**
+	 * Reproduce un efecto de sonido.
+	 * @param index Índice del archivo de sonido a reproducir.
+	 */
 	public void playSoundEfect(int index){
 		sound.setFile(index);
 		sound.play();
 	}
+	
 	//getters y setters
 	public int getTamTile(){
 		return this.sizeTile;
 	}
-
 	public int getMaxRenPantalla(){
 		return this.maxRenPantalla;
 	}

@@ -92,7 +92,7 @@ public class ManejadorTiles {
         }
     }
 
-
+    //funcion auxiliar para combinar dos imagenes
     public BufferedImage combinarImagenes(BufferedImage fondo, BufferedImage encima) {
         // Crea una nueva imagen en blanco del tamaño del fondo
         BufferedImage imagenCombinada = new BufferedImage(fondo.getWidth(), fondo.getHeight(), BufferedImage.TYPE_INT_ARGB);
