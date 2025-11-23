@@ -2,8 +2,10 @@ package entidad;
 
 import Main.GamePanel;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,19 +37,17 @@ public class ManejadorObjetos {
     public void getImagenesObjetos() {
         try {
             // Carga la hoja de sprites completa
-            BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/tiles/allTiles.png"));
+            BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/allTiles.png"));
             int sizeTile = 16; // El tamaño base de la cuadrícula
 
-            // --- Recortar Sprites (usando coordenadas de Decorations.png) ---
-            // Poción Azul: (Col 0, Fila 7) -> (x=0, y=112)
-            BufferedImage pocionAzul;
-
-            // Poción Rosa: (Col 1, Fila 7) -> (x=16, y=112)
-            BufferedImage pocionRosa = spritesheet.getSubimage(1 * sizeTile, 7 * sizeTile, sizeTile, sizeTile);
-
-            // Poción Naranja/Amarilla: (Col 0, Fila 8) -> (x=0, y=128)
-            BufferedImage pocionNaranja = spritesheet.getSubimage(0 * sizeTile, 8 * sizeTile, sizeTile, sizeTile);
+            // pocion verde
             objetoImagen[0] = spritesheet.getSubimage(0 * sizeTile, 8 * sizeTile, sizeTile, sizeTile);
+            //pocion naranja
+            objetoImagen[1] = spritesheet.getSubimage(0 * sizeTile, 9 * sizeTile, sizeTile, sizeTile);
+            //pocion roja
+            objetoImagen[2] = spritesheet.getSubimage(1 * sizeTile, 8 * sizeTile, sizeTile, sizeTile);
+            //cofre cerrado
+            objetoImagen[3] = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/Cofre_Cerrado.png"));
 
         } catch (IOException e) { 
             e.printStackTrace(); 
@@ -81,7 +81,26 @@ public class ManejadorObjetos {
         pocion.setColision(false);
         pocion.getAreaSolida().setBounds(8, 32, 16, 16);
         pocion.setMapa(gP.getMapaMundo());
-        objetos.add(pocion); // Añade la pocion a la lista de objetos estaticos      
+        objetos.add(pocion); // Añade la pocion a la lista de objetos estaticos
+        
+        ArrayList<Objeto> cofres = new ArrayList<>();
+        cofres.add(new Objeto(this.gP));
+        cofres.get(0).setMundoX(3 * gP.getTamTile()); // x = 3
+        cofres.get(0).setMundoY(3 * gP.getTamTile());
+        cofres.get(0).setImagen(objetoImagen[3]);
+        cofres.get(0).setColision(true);
+        cofres.get(0).getAreaSolida().setBounds(16, 32, 16, 16);
+        cofres.get(0).setMapa(gP.getMapaMazmorra1());
+        objetos.add(cofres.get(0)); // Añade el cofre a la lista de objetos estaticos
+
+        cofres.add(new Objeto(this.gP));
+        cofres.get(1).setMundoX(8 * gP.getTamTile()); // x = 8
+        cofres.get(1).setMundoY(3 * gP.getTamTile());
+        cofres.get(1).setImagen(objetoImagen[3]);
+        cofres.get(1).setColision(true);
+        cofres.get(1).getAreaSolida().setBounds(16, 32, 16, 16);
+        cofres.get(1).setMapa(gP.getMapaMazmorra1());
+        objetos.add(cofres.get(1)); // Añade el cofre a la lista de objetos estaticos
     }
 
     /**
@@ -89,7 +108,9 @@ public class ManejadorObjetos {
      */
     public void update() {
         for (Entidad ent : entidades){
-            ent.update();
+            if(ent.getMapa() == gP.getMapaActual()) {
+                ent.update();
+            }
         }
     }
 

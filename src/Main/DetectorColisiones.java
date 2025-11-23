@@ -16,18 +16,18 @@ public class DetectorColisiones {
     public DetectorColisiones(GamePanel gP){
         this.gP = gP;
     }
+    
     /**
      * Revisa las colisiones de una entidad con los tiles del mapa.
      * @param entidad la entidad cuya colisión se va a revisar.
      */
     public void revisaTile(Entidad entidad){
         int izquierdaEntidadMundoX = (entidad).getMundoX() + (entidad).getAreaSolidaX();
-        int derechaEntidadMundoX = (entidad).getMundoX() + (entidad).getAreaSolidaX() +
-        (entidad).getAreaSolidaAncho();
+        int derechaEntidadMundoX = (entidad).getMundoX() + (entidad).getAreaSolidaX() + (entidad).getAreaSolidaAncho() - 1;
 
         int arribaEntidadMundoY = (entidad).getMundoY() + (entidad).getAreaSolidaY();
         int abajoEntidadMundoY = (entidad).getMundoY() + (entidad).getAreaSolidaY() +
-        (entidad).getAreaSolidaAlto();
+        (entidad).getAreaSolidaAlto() - 1;
 
         int colIzquierdaEntidad = izquierdaEntidadMundoX / this.gP.getTamTile();
         int colDerechaEntidad = derechaEntidadMundoX / this.gP.getTamTile();

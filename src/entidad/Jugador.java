@@ -42,8 +42,8 @@ public class Jugador extends Entidad{
      * posición en el mundo, velocidad y dirección.
      */
     public void configuracionInicial(){
-        this.mundoX = gP.getTamTile() * 23;
-        this.mundoY = gP.getTamTile() * 21;
+        this.mundoX = gP.getTamTile() * 22;
+        this.mundoY = gP.getTamTile() * 32;
         this.velocidad = 4;
         this.direccion = "abajo";
         this.colision = true;
@@ -56,7 +56,7 @@ public class Jugador extends Entidad{
     public void getSpritesJugador(){
         try {
             // Carga el spritesheet completo
-            BufferedImage spritesheetJugador = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/player_spritesheet.png"));
+            BufferedImage spritesheetJugador = ImageIO.read(getClass().getResourceAsStream("/resources/spritesjugador/player_spritesheet.png"));
 
             // El tamaño de cada frame en tu spritesheet es 24x24
             int frameWidth = 24;

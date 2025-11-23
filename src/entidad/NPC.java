@@ -26,7 +26,7 @@ public class NPC extends Entidad{
     public void getSpritesNPC(){
         try{
             int size = 16;
-            BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/npcs/layered.png"));
+            BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/resources/npcs/layered.png"));
             this.abajo1 = spritesheet.getSubimage(3*size, 2*size, size, size);
             this.abajo2 = spritesheet.getSubimage(6*size, 2*size, size, size);
             this.arriba1 = spritesheet.getSubimage(5*size, 2*size, size, size);

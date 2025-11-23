@@ -25,7 +25,7 @@ public class Enemigo extends Entidad {
      */
     public void getSprites(){
         try {
-            BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/npcs/Kolyog.png"));
+            BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/resources/npcs/Kolyog.png"));
 
             int frameWidth = 24;
             int frameHeight = 24;
