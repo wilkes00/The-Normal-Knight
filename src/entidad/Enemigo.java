@@ -15,7 +15,7 @@ public class Enemigo extends Entidad {
     public Enemigo(GamePanel gP) {
         super(gP);
         this.colision = true;
-        this.areaSolida = new java.awt.Rectangle(8, 16, 32, 32);
+        this.areaSolida = new java.awt.Rectangle(12, 16, 22, 22);
         this.direccion = "abajo";
         this.velocidad = 1;
         this.getSprites();

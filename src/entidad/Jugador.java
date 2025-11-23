@@ -33,7 +33,7 @@ public class Jugador extends Entidad{
         this.mT = mT;
         this.pantallaX = gP.getAnchoPantalla() / 2 - (gP.getTamTile() / 2);
         this.pantallaY = gP.getAltoPantalla() / 2 - (gP.getTamTile() / 2);
-        this.areaSolida = new Rectangle(8, 16, 29, 33);
+        this.areaSolida = new Rectangle(20, 30, 25, 36);
         configuracionInicial();
         getSpritesJugador();
     }
@@ -56,7 +56,7 @@ public class Jugador extends Entidad{
     public void getSpritesJugador(){
         try {
             // Carga el spritesheet completo
-            BufferedImage spritesheetJugador = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/player_spritesheet.png")); // ¡CAMBIA ESTA RUTA!
+            BufferedImage spritesheetJugador = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/player_spritesheet.png"));
 
             // El tamaño de cada frame en tu spritesheet es 24x24
             int frameWidth = 24;
@@ -78,16 +78,6 @@ public class Jugador extends Entidad{
             //Movimiento hacia arriba
             arriba1 = spritesheetJugador.getSubimage(0 * frameWidth, 3 * frameHeight, frameWidth, frameHeight);
             arriba2 = spritesheetJugador.getSubimage(1 * frameWidth, 3 * frameHeight, frameWidth, frameHeight);
-            /* 
-            this.arriba1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverArriba1.png"));
-            this.arriba2 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverArriba2.png"));
-            this.abajo1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverAbajo1.png"));
-            this.abajo2 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverAbajo2.png"));
-            this.izquierda1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverIzquierda1.png"));
-            this.izquierda2 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverIzquierda2.png"));
-            this.derecha1 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverDerecha1.png"));
-            this.derecha2 = ImageIO.read(getClass().getResourceAsStream("/spritesjugador/moverDerecha2.png"));
-            */
         }catch(IOException e){
             e.printStackTrace();
             System.err.println("Error al cargar el spritesheet del jugador.");
@@ -241,7 +231,7 @@ public class Jugador extends Entidad{
         int jugadorPantallaY = this.mundoY - camaraY;
         
         //dibuja el sprite seleccionado en las coordenadas calculadas
-        g2.drawImage(sprite, jugadorPantallaX, jugadorPantallaY, gP.getTamTile(), gP.getTamTile(), null);
+        g2.drawImage(sprite, jugadorPantallaX, jugadorPantallaY, gP.getTamTile() + 20, gP.getTamTile() + 20, null);
 
         // ==== LA SIGUIENTE SECCION DE CODIGO ES PARA DEPURACION ====
         g2.setColor(new Color(255, 0, 0, 100));

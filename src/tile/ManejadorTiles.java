@@ -45,28 +45,23 @@ public class ManejadorTiles {
      * @param indiceMapa El índice (ID) del mapa donde se almacenarán los datos (ej: gP.getMapaMundo()).
      */
     public void cargaMapa(String ruta, int indiceMapa){
+        //inicializa el mapa con -1 (sin tile)
+        for(int ren = 0; ren < gP.getMaxRenMundo(); ren++){
+            for(int col = 0; col < gP.getMaxColMundo(); col++){
+                this.codigosMapaTiles[indiceMapa][ren][col] = -1;
+            }
+        }
         try {
             InputStream mapa = getClass().getResourceAsStream(ruta);
             BufferedReader br = new BufferedReader(new InputStreamReader(mapa));
-            
+             
+
             int ren = 0; // La fila actual que estamos llenando en nuestro arreglo
             
             // Haremos un bucle mientras tengamos filas por llenar en el mapa
             while (ren < gP.getMaxRenMundo()) { 
                 String renglonDatos = br.readLine(); // Lee la siguiente línea del archivo
-                
-                // Caso 1: Se acabó el archivo (fin de fichero)
-                if(renglonDatos == null) {
-                    break; // Salimos del bucle
-                }
-                
-                // Caso 2: La línea está vacía (solucion del bug)
-                if(renglonDatos.trim().isEmpty()) {
-                    continue; // Salta esta iteración y lee la siguiente línea
-                              // 'ren' no se incrementa, así que no perdemos una fila del mapa
-                }
-                
-                // Caso 3: La línea tiene datos
+                if(renglonDatos == null) break; // Si no hay más líneas, salimos del bucle
                 String codigos[] = renglonDatos.split(" ");
                 
                 int col = 0;
@@ -76,9 +71,6 @@ public class ManejadorTiles {
                     if(col < codigos.length) {
                         int codigo = Integer.parseInt(codigos[col]);
                         this.codigosMapaTiles[indiceMapa][ren][col] = codigo;
-                    } else {
-                        // Si la línea es más corta, rellenamos con 0 (agua)
-                         this.codigosMapaTiles[indiceMapa][ren][col] = 0;
                     }
                     col++;
                 }
@@ -244,6 +236,15 @@ public class ManejadorTiles {
         
         while (renMundo < gP.getMaxRenMundo() && colMundo < gP.getMaxColMundo()) {
             int codigoTile = this.codigosMapaTiles[gP.getMapaActual()][renMundo][colMundo];
+            // Si el código es -1, saltar (no dibujar nada, dejar fondo negro)
+            if(codigoTile == -1){
+                colMundo++;
+                if(colMundo == gP.getMaxColMundo()){
+                    colMundo = 0;
+                    renMundo++;
+                }
+                continue;
+            }
             int mundoX = colMundo * gP.getTamTile();
             int mundoY = renMundo * gP.getTamTile();
 
@@ -279,6 +280,9 @@ public class ManejadorTiles {
         return this.codigosMapaTiles[gP.getMapaActual()][ren][col];
     }
     public boolean getColisionDeTile(int index){
+        if(index == -1 || index >= maxTiles){
+            return false;
+        }
         return this.arregloTiles[index].getColision();
     }
    

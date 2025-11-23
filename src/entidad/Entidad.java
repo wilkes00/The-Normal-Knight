@@ -3,6 +3,8 @@ package entidad;
 import Main.GamePanel;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 /**
  * Clase base abstracta para todas las entidades del juego que se mueven, como el jugador,
@@ -127,6 +129,15 @@ public abstract class Entidad extends GameObject {
         //Dibuja un borde blanco para que se vea mejor
         g2.setColor(Color.white);
         g2.drawRect(hitboxX, hitboxY, areaSolida.width, areaSolida.height);
+    }
+     /**
+     * Voltea horizontalmente una imagen.
+     */
+    protected BufferedImage voltearHorizontal(BufferedImage img){
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-img.getWidth(), 0);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        return op.filter(img, null);
     }
     
     //getters y setters
