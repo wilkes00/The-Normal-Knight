@@ -55,7 +55,7 @@ public class ControladorEventos {
         if(touchEvent){
 
             //evento de teletransporte a la mazmorra 1
-            if(hit(0, 7, 23, "arriba")){
+            if(hit(0, 7, 22, "arriba") || hit(0, 7, 23, "arriba") ){
                 mapaDestino = gP.getMapaMazmorra1();
                 renDestino = 13;
                 colDestino = 12; 
@@ -70,14 +70,15 @@ public class ControladorEventos {
             }
             
             //evento de teletransporte a la mazmorra 2
-            if(hit(0, 31, 5, "arriba")){
+            if(hit(0, 31, 5, "arriba") || hit(0, 31, 4, "arriba")){
                 mapaDestino = gP.getMapaMazmorra2();
-                renDestino = 13;
-                colDestino = 12; 
+                renDestino = 1;
+                colDestino = 0; 
                 gP.setEstadoJuego(gP.getTransitionState()); // cambiar estado a transición
             }
             //evento de teletransporte de la mazmorra 2 al mundo
-            else if(hit(2, 13, 12, "abajo")){ 
+            else if(hit(2, 1, 0, "izquierda") || hit(2, 2, 0, "izquierda") ||
+                    hit(2, 3, 0, "izquierda")){ 
                 mapaDestino = gP.getMapaMundo();
                 renDestino = 31;
                 colDestino = 5; 
