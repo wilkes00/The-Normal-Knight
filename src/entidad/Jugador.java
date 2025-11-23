@@ -33,7 +33,7 @@ public class Jugador extends Entidad{
         this.mT = mT;
         this.pantallaX = gP.getAnchoPantalla() / 2 - (gP.getTamTile() / 2);
         this.pantallaY = gP.getAltoPantalla() / 2 - (gP.getTamTile() / 2);
-        this.areaSolida = new Rectangle(8, 16, 32, 32);
+        this.areaSolida = new Rectangle(8, 16, 29, 33);
         configuracionInicial();
         getSpritesJugador();
     }

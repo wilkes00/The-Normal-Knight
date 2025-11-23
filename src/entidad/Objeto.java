@@ -6,8 +6,9 @@ import java.awt.Rectangle;
 /**
  * Representa un objeto estatico dentro del juego
  */
-public class Objeto extends GameObject{
+public class Objeto extends GameObject implements Llave{
     GamePanel gP;
+    private boolean tieneLlave = false;
 
     public Objeto(GamePanel gP){
         this.gP = gP;
@@ -40,5 +41,13 @@ public class Objeto extends GameObject{
             // Dibuja el sprite del objeto con las dimensiones a escala 
             g2.drawImage(imagen, pantallaX, pantallaY, gP.getTamTile(), gP.getTamTile(), null);
         }
+    }
+    @Override
+    public boolean getLlave() {
+        return this.tieneLlave;
+    }
+    @Override
+    public void setLlave(boolean tieneLlave) {
+        this.tieneLlave = tieneLlave;
     }
 }

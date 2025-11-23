@@ -75,7 +75,7 @@ public class ManejadorObjetos {
      */
     public void colocarObjetosEstaticos() {
         Objeto pocion = new Objeto(this.gP);
-        pocion.setMundoX(17 * gP.getTamTile());
+        pocion.setMundoX(18 * gP.getTamTile());
         pocion.setMundoY(16 * gP.getTamTile());
         pocion.setImagen(objetoImagen[0]);
         pocion.setColision(false);

@@ -44,7 +44,7 @@ public class ControladorEventos {
      * Revisa si el jugador ha activado algún evento basado en su posición actual.
      */
     public void revisaEventos(){
-        if(jugador == null) return; // Evitar NPE si aún no se ha asignado
+        if(jugador == null) return; // Evitar Null pointer exception si aún no se ha asignado
         
         int distanciaX = Math.abs(jugador.getMundoX() - anteriorEventoX);
         int distanciaY = Math.abs(jugador.getMundoY() - anteriorEventoY);
@@ -53,8 +53,9 @@ public class ControladorEventos {
             touchEvent = true;
         }
         if(touchEvent){
+
             //evento de teletransporte a la mazmorra 1
-            if(hit(0, 7, 23, "abajo")){
+            if(hit(0, 7, 23, "arriba")){
                 mapaDestino = gP.getMapaMazmorra1();
                 renDestino = 13;
                 colDestino = 12; 
@@ -66,7 +67,23 @@ public class ControladorEventos {
                 renDestino = 7;
                 colDestino = 23; 
                 gP.setEstadoJuego(gP.getTransitionState()); // cambiar estado a transición
-            } 
+            }
+            
+            //evento de teletransporte a la mazmorra 2
+            if(hit(0, 31, 5, "arriba")){
+                mapaDestino = gP.getMapaMazmorra2();
+                renDestino = 13;
+                colDestino = 12; 
+                gP.setEstadoJuego(gP.getTransitionState()); // cambiar estado a transición
+            }
+            //evento de teletransporte de la mazmorra 2 al mundo
+            else if(hit(2, 13, 12, "abajo")){ 
+                mapaDestino = gP.getMapaMundo();
+                renDestino = 31;
+                colDestino = 5; 
+                gP.setEstadoJuego(gP.getTransitionState()); // cambiar estado a transición
+            }
+            
         }
     }
 
@@ -89,7 +106,7 @@ public class ControladorEventos {
             eventRect[mapa][ren][col].y = ren * gP.getTamTile() + eventRect[mapa][ren][col].y;
             // Revisar intersección
             if(jugador.getAreaSolida().intersects(eventRect[mapa][ren][col])){
-                if(jugador.getDireccion().contentEquals(reqDireccion) || reqDireccion.contentEquals("cualquiera")){
+                if(jugador.getDireccion().contentEquals(reqDireccion) || reqDireccion.contentEquals("any")){
                     hit = true;
                 }
             }

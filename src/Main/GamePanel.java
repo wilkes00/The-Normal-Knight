@@ -55,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable{
 	//Estados del mapa
 	private final int mapaMundo = 0;
 	private final int mapaMazmorra1 = 1;
+	private final int mapaMazmorra2 = 2;
 	private final int maxMapas = 3;
 	private int mapaActual = mapaMundo;
 	/**
@@ -245,6 +246,9 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	public int getMapaMazmorra1(){
 		return this.mapaMazmorra1;
+	}
+	public int getMapaMazmorra2(){
+		return this.mapaMazmorra2;
 	}
 	public int getMapaActual(){
 		return this.mapaActual;

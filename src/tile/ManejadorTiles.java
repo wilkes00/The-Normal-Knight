@@ -32,8 +32,9 @@ public class ManejadorTiles {
         this.arregloTiles = new Tile[this.maxTiles];
         this.codigosMapaTiles = new int[gP.getMaxMapas()][gP.getMaxRenMundo()][gP.getMaxColMundo()];
         getImagenesTiles();
-        cargaMapa("/mapas/mundo01.txt", gP.getMapaMundo());
-        cargaMapa("/mapas/mapa01.txt", gP.getMapaMazmorra1());
+        cargaMapa("/mapas/Mundo01_nuevo.txt", gP.getMapaMundo());
+        cargaMapa("/mapas/mapa01_mazmorra.txt", gP.getMapaMazmorra1());
+        cargaMapa("/mapas/mapa02_mazmorra.txt", gP.getMapaMazmorra2());
         
     }
     /**
@@ -92,7 +93,12 @@ public class ManejadorTiles {
         }
     }
 
-    //funcion auxiliar para combinar dos imagenes
+    /**
+     * Funcion auxiliar que combina dos imágenes superponiendo una sobre la otra.
+     * @param fondo La imagen de fondo.
+     * @param encima La imagen que se dibujará encima.
+     * @return Una nueva imagen que es la combinación de fondo y encima.
+     */
     public BufferedImage combinarImagenes(BufferedImage fondo, BufferedImage encima) {
         // Crea una nueva imagen en blanco del tamaño del fondo
         BufferedImage imagenCombinada = new BufferedImage(fondo.getWidth(), fondo.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -116,7 +122,7 @@ public class ManejadorTiles {
             int sizeTile = 16;
 
             arregloTiles[0] = new Tile();
-            arregloTiles[0].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/agua.png")));
+            arregloTiles[0].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Aagua.png")));
             arregloTiles[0].setColision(true);
 
             arregloTiles[1] = new Tile();
@@ -127,7 +133,7 @@ public class ManejadorTiles {
             arregloTiles[2].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/arena.png")));
 
             arregloTiles[3] = new Tile();
-            arregloTiles[3].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/muro.png")));
+            arregloTiles[3].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Muro.png")));
             arregloTiles[3].setColision(true);
 
             arregloTiles[4] = new Tile();
@@ -139,8 +145,7 @@ public class ManejadorTiles {
             arregloTiles[6] = new Tile();
             BufferedImage gema = spritesheet.getSubimage(6 * sizeTile, 7 * sizeTile, sizeTile, sizeTile);
             arregloTiles[6].setImagen(combinarImagenes(arregloTiles[4].getImagen(), gema));
-
-
+            
             int paddedSize = 17; // (16px del tile + 1px de padding)
 
             // Tile 10: Esquina sup-izq de pasto (Col 0, Fila 0)
@@ -160,6 +165,66 @@ public class ManejadorTiles {
             arregloTiles[13] = new Tile();
             arregloTiles[13].setImagen(tilesPadding.getSubimage(1 + (0 * paddedSize), 1 + (5 * paddedSize), sizeTile, sizeTile));
             arregloTiles[13].setColision(true); // El agua es sólida
+            
+            arregloTiles[14] = new Tile();
+            arregloTiles[14].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Arbusto.png")));
+            arregloTiles[14].setColision(true);
+            
+            arregloTiles[15] = new Tile();
+            arregloTiles[15].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Aarbol.png")));
+            arregloTiles[15].setColision(true);
+            
+            arregloTiles[16] = new Tile();
+            arregloTiles[16].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Fuente.png")));
+            arregloTiles[16].setColision(true);
+            
+            arregloTiles[17] = new Tile();
+            arregloTiles[17].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Cofre_Cerrado.png")));
+            arregloTiles[17].setColision(true);
+            
+            arregloTiles[18] = new Tile();
+            arregloTiles[18].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Lapida.png")));
+            arregloTiles[18].setColision(true);
+            
+            arregloTiles[20] = new Tile();
+            arregloTiles[20].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Camino_Tierra.png")));
+            //arregloTiles[20].setColision(true);
+            
+            arregloTiles[21] = new Tile();
+            arregloTiles[21].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Muro_Mazmorra.png")));
+            arregloTiles[21].setColision(true);
+            
+            arregloTiles[22] = new Tile();
+            arregloTiles[22].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Rejaa.png")));
+            arregloTiles[22].setColision(true);
+            
+            arregloTiles[23] = new Tile();
+            arregloTiles[23].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Barda.png")));
+            arregloTiles[23].setColision(true);
+            
+            arregloTiles[24] = new Tile();
+            arregloTiles[24].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Suelo_Adoquin.png")));
+            //arregloTiles[24].setColision(true);
+            
+            arregloTiles[25] = new Tile();
+            arregloTiles[25].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Muro_Bandera.png")));
+            arregloTiles[25].setColision(true);
+            
+            arregloTiles[26] = new Tile();
+            arregloTiles[26].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Muro_Bandera2.png")));
+            arregloTiles[26].setColision(true);
+                        
+            arregloTiles[28] = new Tile();
+            arregloTiles[28].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Mundo_Bandera4.png")));
+            arregloTiles[28].setColision(true);
+            
+            arregloTiles[29] = new Tile();
+            arregloTiles[29].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Antorcha1.png")));
+            arregloTiles[29].setColision(true);
+            
+            arregloTiles[27] = new Tile();
+            arregloTiles[27].setImagen(ImageIO.read(getClass().getResourceAsStream("/tiles/Antorcha2.png")));
+            arregloTiles[27].setColision(true);
 
         } catch (IOException e) {
             e.printStackTrace();

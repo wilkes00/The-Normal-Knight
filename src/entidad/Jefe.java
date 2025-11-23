@@ -20,7 +20,7 @@ public class Jefe extends Entidad implements Llave {
         // Lógica de dibujo del jefe
     }
     @Override
-    public void setLlave(){
+    public void setLlave(boolean tieneLlave){
         // Lógica para establecer la llave
     }
     @Override

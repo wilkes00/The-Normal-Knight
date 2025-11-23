@@ -6,5 +6,5 @@ package entidad;
  */
 public interface Llave {
     public boolean getLlave();
-    public void setLlave();
+    public void setLlave(boolean tieneLlave);
 }
