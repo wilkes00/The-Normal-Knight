@@ -32,7 +32,7 @@ public class ControladorEventos {
                     eventRect[mapa][ren][col] = new EventRect();
                     eventRect[mapa][ren][col].x = 16;
                     eventRect[mapa][ren][col].y = 16;
-                    eventRect[mapa][ren][col].width = 4;
+                    eventRect[mapa][ren][col].width = 8;
                     eventRect[mapa][ren][col].height = 4;
                     eventRect[mapa][ren][col].setEventRectDefaultX(eventRect[mapa][ren][col].x); 
                     eventRect[mapa][ren][col].setEventRectDefaultY(eventRect[mapa][ren][col].y);
