@@ -124,7 +124,7 @@ public class ManejadorTiles {
             arregloTiles[2] = new Tile();
             arregloTiles[2].setImagen(ImageIO.read(getClass().getResourceAsStream("/resources/tiles/arena.png")));
             arregloTiles[3] = new Tile();
-            arregloTiles[3].setImagen(ImageIO.read(getClass().getResourceAsStream("/resources/tiles/Muro.png")));
+            arregloTiles[3].setImagen(ImageIO.read(getClass().getResourceAsStream("/resources/tiles/muro.png")));
             arregloTiles[3].setColision(true);
 
             arregloTiles[4] = new Tile();
@@ -198,7 +198,7 @@ public class ManejadorTiles {
             //arregloTiles[24].setColision(true);
             
             arregloTiles[25] = new Tile();
-            arregloTiles[25].setImagen(ImageIO.read(getClass().getResourceAsStream("/resources/tiles/Muro_Bandera.png")));
+            arregloTiles[25].setImagen(ImageIO.read(getClass().getResourceAsStream("/resources/tiles/Muro_bandera.png")));
             arregloTiles[25].setColision(true);
             
             arregloTiles[26] = new Tile();
