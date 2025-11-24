@@ -6,8 +6,9 @@ import java.awt.Rectangle;
 /**
  * Representa un objeto estatico dentro del juego
  */
-public class Objeto extends GameObject implements Llave{
+public class Objeto extends GameObject{
     GamePanel gP;
+    protected String nombre;
     private boolean tieneLlave = false;
 
     public Objeto(GamePanel gP){
@@ -27,9 +28,6 @@ public class Objeto extends GameObject implements Llave{
         int pantallaY = mundoY - camaraY;
 
         if (this.imagen == null) {
-            // Opción: dibujar marcador de depuración o simplemente devolver
-            // g2.setColor(Color.magenta);
-            // g2.fillRect(mundoX - camaraX, mundoY - camaraY, 16, 16);
             System.err.println("Objeto.draw: imagen null en objeto en (" + this.mundoX + "," + this.mundoY + ")");
             return;
         }
@@ -41,13 +39,5 @@ public class Objeto extends GameObject implements Llave{
             // Dibuja el sprite del objeto con las dimensiones a escala 
             g2.drawImage(imagen, pantallaX, pantallaY, gP.getTamTile(), gP.getTamTile(), null);
         }
-    }
-    @Override
-    public boolean getLlave() {
-        return this.tieneLlave;
-    }
-    @Override
-    public void setLlave(boolean tieneLlave) {
-        this.tieneLlave = tieneLlave;
     }
 }

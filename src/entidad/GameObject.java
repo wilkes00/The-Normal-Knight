@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
  * la imagen del objeto y la gestión de colisiones.
  */
 public abstract class GameObject {
-    BufferedImage imagen;
+    protected BufferedImage imagen, imagen2;
     protected int mundoX, mundoY;
     protected boolean colision = false; //indica si el objeto tiene colision
     protected boolean colisionActivada = false; //indica si la colision esta activada
@@ -68,8 +68,14 @@ public abstract class GameObject {
     public BufferedImage getImagen(){
         return this.imagen;
     }
+    public BufferedImage getImagen2(){
+        return this.imagen2;
+    }
     public void setImagen(BufferedImage imagen){
         this.imagen = imagen;
+    }
+    public void setImagen2(BufferedImage imagen2){
+        this.imagen2 = imagen2;
     }
     public int getMapa() {
         return this.mapa;

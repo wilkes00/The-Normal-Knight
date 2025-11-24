@@ -232,15 +232,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public int getAltoMundo(){
 		return this.altoMundo;
 	}
-	public Jugador getJugador(){
-		return this.jugador;
-	}
-	public DetectorColisiones getDetectorColisiones(){
-		return this.dC;
-	}
-	public ManejadorObjetos getManejadorObjetos(){
-		return this.mObj;
-	}
+	//getters  y setters de los estados de los mapas
 	public int getMapaMundo(){
 		return this.mapaMundo;
 	}
@@ -259,6 +251,8 @@ public class GamePanel extends JPanel implements Runnable{
 	public int getMaxMapas(){
 		return this.maxMapas;
 	}
+
+	//getters y setters del estado del juego
 	public int getEstadoJuego(){
 		return this.estadoJuego;
 	}
@@ -277,5 +271,22 @@ public class GamePanel extends JPanel implements Runnable{
 	public int getStartState(){
 		return this.startState;
 	}
+	public int getPauseState(){
+		return this.pauseState;
+	}
 
+	//getters de los sistemas
+	public Jugador getJugador(){
+		return this.jugador;
+	}
+	public DetectorColisiones getDetectorColisiones(){
+		return this.dC;
+	}
+	public ManejadorObjetos getManejadorObjetos(){
+		return this.mObj;
+	}
+	public InterfazUsuario getIU(){
+		return this.iU;
+	}
+	
 }

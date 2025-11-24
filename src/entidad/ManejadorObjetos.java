@@ -2,14 +2,9 @@ package entidad;
 
 import Main.GamePanel;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import javax.imageio.ImageIO;
 /**
  * Gestiona todos los objetos dentro del juego, tanto al jugador
  * como NPCs, enemigos e items.
@@ -20,40 +15,14 @@ public class ManejadorObjetos {
     ArrayList<Entidad> entidades = new ArrayList<>();
     ArrayList<Objeto> objetos = new ArrayList<>();
     Entidad npc[] = new Entidad[10];
-    BufferedImage[] objetoImagen;
-    private final int maxObjetosImagenes = 20;
     private GamePanel gP;
 
     public ManejadorObjetos(GamePanel gP) {
         this.gP = gP;
-        objetoImagen = new BufferedImage[maxObjetosImagenes];
-        getImagenesObjetos();
         colocarObjetosEstaticos();
         setNPC();
     }
-    /**
-     * 
-     */
-    public void getImagenesObjetos() {
-        try {
-            // Carga la hoja de sprites completa
-            BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/allTiles.png"));
-            int sizeTile = 16; // El tamaño base de la cuadrícula
-
-            // pocion verde
-            objetoImagen[0] = spritesheet.getSubimage(0 * sizeTile, 8 * sizeTile, sizeTile, sizeTile);
-            //pocion naranja
-            objetoImagen[1] = spritesheet.getSubimage(0 * sizeTile, 9 * sizeTile, sizeTile, sizeTile);
-            //pocion roja
-            objetoImagen[2] = spritesheet.getSubimage(1 * sizeTile, 8 * sizeTile, sizeTile, sizeTile);
-            //cofre cerrado
-            objetoImagen[3] = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/Cofre_Cerrado.png"));
-
-        } catch (IOException e) { 
-            e.printStackTrace(); 
-            System.err.println("Error al cargar el spritesheet.");
-        }
-    }
+    
     /**
      * Configura los NPCs y enemigos en el juego.
      */
@@ -74,33 +43,20 @@ public class ManejadorObjetos {
      * Coloca los objetos estaticos en el mapa.
      */
     public void colocarObjetosEstaticos() {
-        Objeto pocion = new Objeto(this.gP);
-        pocion.setMundoX(18 * gP.getTamTile());
-        pocion.setMundoY(16 * gP.getTamTile());
-        pocion.setImagen(objetoImagen[0]);
-        pocion.setColision(false);
-        pocion.getAreaSolida().setBounds(8, 32, 16, 16);
-        pocion.setMapa(gP.getMapaMundo());
-        objetos.add(pocion); // Añade la pocion a la lista de objetos estaticos
+        // Añade la pocion a la lista de objetos estaticos
+        objetos.add(new Pocion(this.gP, this.gP.getMapaMundo(),18, 16)); 
         
-        ArrayList<Objeto> cofres = new ArrayList<>();
-        cofres.add(new Objeto(this.gP));
-        cofres.get(0).setMundoX(3 * gP.getTamTile()); // x = 3
-        cofres.get(0).setMundoY(3 * gP.getTamTile());
-        cofres.get(0).setImagen(objetoImagen[3]);
-        cofres.get(0).setColision(true);
-        cofres.get(0).getAreaSolida().setBounds(16, 32, 16, 16);
-        cofres.get(0).setMapa(gP.getMapaMazmorra1());
-        objetos.add(cofres.get(0)); // Añade el cofre a la lista de objetos estaticos
-
-        cofres.add(new Objeto(this.gP));
-        cofres.get(1).setMundoX(8 * gP.getTamTile()); // x = 8
-        cofres.get(1).setMundoY(3 * gP.getTamTile());
-        cofres.get(1).setImagen(objetoImagen[3]);
-        cofres.get(1).setColision(true);
-        cofres.get(1).getAreaSolida().setBounds(16, 32, 16, 16);
-        cofres.get(1).setMapa(gP.getMapaMazmorra1());
-        objetos.add(cofres.get(1)); // Añade el cofre a la lista de objetos estaticos
+        // Cofres
+        objetos.add(new Cofre(this.gP, gP.getMapaMazmorra1(), 3, 3, false));
+        objetos.add(new Cofre(this.gP, gP.getMapaMazmorra1(), 8, 3, false));
+        objetos.add(new Cofre(this.gP, gP.getMapaMazmorra1(), 13, 3, false));
+        objetos.add(new Cofre(this.gP, gP.getMapaMazmorra1(), 18, 3, false));
+        objetos.add(new Cofre(this.gP, gP.getMapaMazmorra1(), 3, 6, false));
+        objetos.add(new Cofre(this.gP, gP.getMapaMazmorra1(), 8, 6, true));
+        objetos.add(new Cofre(this.gP, gP.getMapaMazmorra1(), 13, 6, false));
+        objetos.add(new Cofre(this.gP, gP.getMapaMazmorra1(), 18, 6, false));
+        objetos.add(new Cofre(this.gP, gP.getMapaMazmorra2(), 2, 13, false));
+        
     }
 
     /**

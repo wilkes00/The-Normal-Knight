@@ -17,6 +17,7 @@ public class InterfazUsuario {
     Font font;
     private boolean estadoMensaje = false;
     private String mensaje = "";
+    private String dialogoActual = "";
     private final int MaxOpacidad = 50;
     private int opacidadTransicion = 0;
     private boolean juegoTerminado = false;
@@ -39,10 +40,12 @@ public class InterfazUsuario {
         this.g2 = g2;
         g2.setFont(font);
         g2.setColor(Color.white);
-        // Mostrar coordenadas del jugador para depuracion
+        
+        /* //  ==== Coordenadas del jugador DEPURACION ====
         int renJugador = gP.jugador.getMundoY() / gP.getTamTile();
         int colJugador = gP.jugador.getMundoX() / gP.getTamTile();
         g2.drawString("Col: " + colJugador + " Ren: " + renJugador, 20, 40);
+        */ // ============================================
 
         //Pantalla de inicio del juego
         if(gP.getEstadoJuego() == gP.getStartState()){
@@ -55,6 +58,9 @@ public class InterfazUsuario {
         //Ventana de dialogo
         else if(gP.getEstadoJuego() == gP.getDialogueState()){
             dibujaPantallaDialogo();
+        }
+        else if(gP.getEstadoJuego() == gP.getPauseState()){
+            drawMenuPausa();
         }
             
     }
@@ -124,6 +130,11 @@ public class InterfazUsuario {
         int alto = gP.getTamTile() * 4;
         int ancho = gP.getAnchoPantalla() - (gP.getTamTile() * 4);
         dibujaSubVentana(x, y, alto, ancho);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+        x += gP.getTamTile();
+        y += gP.getTamTile();
+        g2.drawString(dialogoActual, x, y);
     }
     /**
      * Dibuja una subventana con bordes redondeados.
@@ -143,6 +154,45 @@ public class InterfazUsuario {
         g2.drawRoundRect(x+5, y+5, ancho-10, alto-10, 25, 25);
 
 
+    }
+    /**
+     * Dibuja el menú de pausa en pantalla.
+     */
+    public void drawMenuPausa(){
+        //Dibuja pantalla de pausa
+        dibujaSubVentana(gP.getTamTile()*4, gP.getTamTile()*2, gP.getAltoPantalla() - gP.getTamTile()*4, gP.getAnchoPantalla() - gP.getTamTile()*8);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 72F));
+        String texto = "PAUSA";
+        int x = getXCentrado(texto);
+        int y = gP.getAltoPantalla() / 4;
+        g2.drawString(texto, x, y);
+
+        texto = "Opciones";
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
+        x = getXCentrado(texto);
+        y += gP.getTamTile() * 3;
+        g2.drawString(texto, x, y);
+        if(numOpcion == 0)
+            //reemplazar por drawImage y usar una imagen de cursor en lugar de ">"
+            g2.drawString(">", x - gP.getTamTile(), y);
+            
+        texto = "Controles";
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
+        x = getXCentrado(texto);
+        y += gP.getTamTile();
+        g2.drawString(texto, x, y);
+        if(numOpcion == 1)
+            //reemplazar por drawImage y usar una imagen de cursor en lugar de ">"
+            g2.drawString(">", x - gP.getTamTile(), y);
+
+        texto = "Salir del juego";
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
+        x = getXCentrado(texto);
+        y += gP.getTamTile();
+        g2.drawString(texto, x, y);
+        if(numOpcion == 2)
+            //reemplazar por drawImage y usar una imagen de cursor en lugar de ">"
+            g2.drawString(">", x - gP.getTamTile(), y);
     }
     /**
      * Muestra un mensaje en pantalla.
@@ -185,5 +235,8 @@ public class InterfazUsuario {
     //getters y setters
     public int getNumOpcion() {
         return this.numOpcion;
+    }
+    public void setDialogoActual(String dialogoActual) {
+        this.dialogoActual = dialogoActual;
     }
 }

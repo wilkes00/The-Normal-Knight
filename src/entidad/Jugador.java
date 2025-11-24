@@ -2,7 +2,6 @@ package entidad;
 
 import Main.GamePanel;
 import Main.ManejadorTeclas;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -16,9 +15,10 @@ import javax.imageio.ImageIO;
  * en la pantalla.
  *
  */
-public class Jugador extends Entidad{
+public class Jugador extends Entidad implements Llave{
     private ManejadorTeclas mT;
     private final int pantallaX, pantallaY;
+    private boolean tieneLlave = false;
 
     /**
      * Constructor para la clase Jugador.
@@ -134,9 +134,53 @@ public class Jugador extends Entidad{
                 this.contadorSprites = 0;
             }
         }
+        // Lógica de interacción (NUEVO)
+        if(mT.getTeclaE()){
+            interactuarObjeto();
+            mT.setTeclaE(false); // Desactivar para que no se ejecute 60 veces por segundo
+        }
         // despues de moverse verifica si esta encima de un item
         revisarInteraccionItems();
         
+    }
+
+    public void interactuarObjeto(){
+        // Calculamos un área pequeña frente al jugador para ver qué está tocando
+        // Basado en la dirección actual
+        int interactuarX = this.mundoX + this.areaSolida.x;
+        int interactuarY = this.mundoY + this.areaSolida.y;
+        int interactuarAncho = this.areaSolida.width;
+        int interactuarAlto = this.areaSolida.height;
+
+        switch(direccion){
+            case "arriba": interactuarY -= getVelocidad(); break;
+            case "abajo": interactuarY += getVelocidad(); break;
+            case "izquierda": interactuarX -= getVelocidad(); break;
+            case "derecha": interactuarX += getVelocidad(); break;
+        }
+
+        Rectangle areaFutura = new Rectangle(interactuarX, interactuarY, interactuarAncho, interactuarAlto);
+
+        // Buscar si hay un objeto en esa área
+        for(GameObject obj : gP.getManejadorObjetos().getListaGameObjects()){
+            // Ignoramos objetos no solidos (como pociones, esos se recogen pisandolos)
+            // O podemos incluirlos si quieres recogerlos con E
+            if(obj == this) continue;
+
+            Rectangle areaObjeto = new Rectangle(
+                obj.getMundoX() + obj.getAreaSolida().x,
+                obj.getMundoY() + obj.getAreaSolida().y,
+                obj.getAreaSolida().width,
+                obj.getAreaSolida().height);
+
+            if(obj.getMapa() == this.getMapa() && areaFutura.intersects(areaObjeto)){
+                // Si chocamos con un Cofre, interactuamos
+                if(obj instanceof Cofre){
+                    ((Cofre)obj).interactuar();
+                }
+                // Aquí puedes agregar más interacciones (ej. hablar con NPC)
+            }
+        }
     }
     /**
      * Revisa si el jugador está colisionando con objetos NO sólidos (items)
@@ -233,7 +277,7 @@ public class Jugador extends Entidad{
         //dibuja el sprite seleccionado en las coordenadas calculadas
         g2.drawImage(sprite, jugadorPantallaX, jugadorPantallaY, gP.getTamTile() + 20, gP.getTamTile() + 20, null);
 
-        // ==== LA SIGUIENTE SECCION DE CODIGO ES PARA DEPURACION ====
+        /* // ==== LA SIGUIENTE SECCION DE CODIGO ES PARA DEPURACION ====
         g2.setColor(new Color(255, 0, 0, 100));
         
         // Calcula la posición exacta de la hitbox en la pantalla
@@ -247,6 +291,21 @@ public class Jugador extends Entidad{
         //Dibuja un borde blanco para que se vea mejor
         g2.setColor(Color.white);
         g2.drawRect(hitboxX, hitboxY, areaSolida.width, areaSolida.height);
+        */ //=========================================================
+    }
+    /**
+     * Devuelve si el jugador tiene una llave.
+     */
+    @Override
+    public boolean getLlave() {
+        return this.tieneLlave;
+    }
+    /**
+     * Establece si el jugador tiene una llave.
+     */
+    @Override
+    public void setLlave(boolean tieneLlave) {
+        this.tieneLlave = tieneLlave;
     }
 
     //Getters y Setters

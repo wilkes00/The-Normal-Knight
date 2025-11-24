@@ -1,7 +1,6 @@
 package entidad;
 
 import Main.GamePanel;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -20,6 +19,8 @@ public abstract class Entidad extends GameObject {
     protected int contadorSprites = 0;
     protected int numeroSprite = 1;
     protected int cambiaSprite = 10;
+    protected String[] dialogos = new String[20];
+    protected int indiceDialogo = 0;
  
     /**
      * Constructor de la clase Entidad.
@@ -63,9 +64,21 @@ public abstract class Entidad extends GameObject {
     /**
      * Metodo abstracto que incluye la logica de accion y movimiento de
      * la Entidad especifica. Debe implementarse en las subclases de Entidad,
-     * con excepcion de la subclase Jugador.
+     * no es un metodo con la firma abstract porque el Jugador no lo utiliza.
      */
     public void accion(){}
+    
+    public void hablar(){
+        if(dialogos[indiceDialogo] != null){
+            gP.setEstadoJuego(gP.getDialogueState());
+            gP.getIU().setDialogoActual(dialogos[indiceDialogo]);
+            indiceDialogo++;
+        }
+        else{
+            indiceDialogo = 0; //reinicia el dialogo
+            gP.setEstadoJuego(gP.getPlayState());
+        }
+    }
     /**
      * Dibuja la entidad en la pantalla.
      * @param g2 el objeto Graphics2D para dibujar.
@@ -118,7 +131,8 @@ public abstract class Entidad extends GameObject {
         
         //dibuja el sprite seleccionado en las coordenadas calculadas
         g2.drawImage(sprite, EntidadPantallaX, EntidadPantallaY, gP.getTamTile(), gP.getTamTile(), null);
-        
+
+        /* // ==== LA SIGUIENTE SECCION DE CODIGO ES PARA DEPURACION ====
         g2.setColor(new Color(255, 0, 0, 100));
         int hitboxX = EntidadPantallaX + areaSolida.x;
         int hitboxY = EntidadPantallaY + areaSolida.y;
@@ -129,6 +143,7 @@ public abstract class Entidad extends GameObject {
         //Dibuja un borde blanco para que se vea mejor
         g2.setColor(Color.white);
         g2.drawRect(hitboxX, hitboxY, areaSolida.width, areaSolida.height);
+        */ //=========================================================
     }
      /**
      * Voltea horizontalmente una imagen.

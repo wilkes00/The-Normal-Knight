@@ -11,6 +11,7 @@ public class ManejadorTeclas implements KeyListener{
 	GamePanel gP;
 	InterfazUsuario iU;
 	private boolean teclaArriba, teclaAbajo, teclaIzq, teclaDer, enter;
+	private boolean teclaInteraccion;
 
 	/**
 	 * Constructor del ManejadorTeclas.
@@ -64,7 +65,9 @@ public class ManejadorTeclas implements KeyListener{
 					break;
 				case KeyEvent.VK_D : teclaDer = true;
 					break;
-				case KeyEvent.VK_ENTER:
+				case KeyEvent.VK_ESCAPE : gP.setEstadoJuego(gP.getPauseState());
+					break;
+				case KeyEvent.VK_E: teclaInteraccion = true;
 					break;
 			}
 		}
@@ -73,6 +76,27 @@ public class ManejadorTeclas implements KeyListener{
 			switch(e.getKeyCode()){
 				case KeyEvent.VK_ENTER : gP.setEstadoJuego(gP.getPlayState());
 					break;
+			}
+		}
+		//Controles en pantalla de pausa
+		else if(gP.getEstadoJuego() == gP.getPauseState()){
+			switch(e.getKeyCode()){
+				case KeyEvent.VK_ESCAPE : gP.setEstadoJuego(gP.getPlayState());
+					break;
+				case KeyEvent.VK_W : iU.decrementaNumOpcion();
+					break;
+				case KeyEvent.VK_S : iU.incrementaNumOpcion();
+					break;
+				case KeyEvent.VK_ENTER:
+					if(iU.getNumOpcion() == 0){
+						//entra a opciones
+					}
+					else if(iU.getNumOpcion() == 1){
+						//Pantalla de ayuda
+					}
+					else if(iU.getNumOpcion() == 2){
+						System.exit(0);
+					}
 			}
 		}
 	}
@@ -92,6 +116,8 @@ public class ManejadorTeclas implements KeyListener{
 				break;
 			case KeyEvent.VK_D : teclaDer = false;
 				break;
+			case KeyEvent.VK_E: teclaInteraccion = false;
+				break;
 		}
 	}
 	
@@ -108,4 +134,6 @@ public class ManejadorTeclas implements KeyListener{
 	public boolean getTeclaDer() {
 		return this.teclaDer;
 	}
+	public boolean getTeclaE() { return this.teclaInteraccion; }
+    public void setTeclaE(boolean teclaInteraccion) { this.teclaInteraccion = teclaInteraccion; }
 }
