@@ -10,7 +10,7 @@ import java.awt.event.KeyListener;
 public class ManejadorTeclas implements KeyListener{
 	GamePanel gP;
 	InterfazUsuario iU;
-	private boolean teclaArriba, teclaAbajo, teclaIzq, teclaDer, enter;
+	private boolean teclaArriba, teclaAbajo, teclaIzq, teclaDer;
 	private boolean teclaInteraccion;
 
 	/**
@@ -74,7 +74,7 @@ public class ManejadorTeclas implements KeyListener{
 		//Controles en pantalla de dialogo
 		else if(gP.getEstadoJuego() == gP.getDialogueState()){
 			switch(e.getKeyCode()){
-				case KeyEvent.VK_ENTER : gP.setEstadoJuego(gP.getPlayState());
+				case KeyEvent.VK_E : gP.setEstadoJuego(gP.getPlayState());
 					break;
 			}
 		}

@@ -143,7 +143,11 @@ public class Jugador extends Entidad implements Llave{
         revisarInteraccionItems();
         
     }
-
+    /**
+     * Gestiona la interacción del jugador con objetos en el juego.
+     * Revisa si el jugador está frente a un objeto interactuable (como cofres o NPCs)
+     * basado en su dirección actual, y llama al método de interacción correspondiente.
+     */
     public void interactuarObjeto(){
         // Calculamos un área pequeña frente al jugador para ver qué está tocando
         // Basado en la dirección actual
@@ -178,7 +182,12 @@ public class Jugador extends Entidad implements Llave{
                 if(obj instanceof Cofre){
                     ((Cofre)obj).interactuar();
                 }
-                // Aquí puedes agregar más interacciones (ej. hablar con NPC)
+                //Interactuar con NPCs
+                else if(obj instanceof Entidad){
+                    if(((Entidad)obj).dialogos != null && ((Entidad)obj).dialogos[0] != null)
+                        ((Entidad)obj).hablar();
+                }
+                //Para otros tipos de objetos, agregar aquí
             }
         }
     }

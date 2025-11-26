@@ -1,31 +1,25 @@
 package entidad;
+
 import Main.GamePanel;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
-/**
- * Subclase de Entidad. Representa a un NPC dentro del juego.
- * Tiene un comportamiento unico implementado en el metodo accion.
- * Maneja la logica especifica de esta entidad.
- */
-public class NPC extends Entidad{
+public class NPC_Velador extends Entidad {
     private int cont = 0;
-    public NPC(GamePanel gP){
+    public NPC_Velador(GamePanel gP) {
         super(gP);
         this.colision = true;
         this.areaSolida = new java.awt.Rectangle(8, 16, 30, 25);
         this.direccion = "abajo";
-        this.velocidad = 2;
+        this.velocidad = 0;
         this.getSpritesNPC();
         this.setDialogos();
     }
     public void setDialogos(){
-        this.dialogos[0] = "Tened cuidado forastero, este cementerio es peligroso.";
-        this.dialogos[1] = "Ni un alma ha regresado de la mazmorra.";
-        this.dialogos[2] = "Dicen que hay un gran tesoro escondido alli.";
-        this.dialogos[3] = "Si tan solo fuese mas joven, yo mismo iria a buscarlo...";
+        this.dialogos[0] = "No deberias estar aqui...";
+        this.dialogos[1] = "Vete antes de que sea demasiado tarde.";
     }
     /**
      * Carga los sprites especificos del NPC.
@@ -34,12 +28,12 @@ public class NPC extends Entidad{
         try{
             int size = 16;
             BufferedImage spritesheet = ImageIO.read(getClass().getResourceAsStream("/resources/npcs/layered.png"));
-            this.abajo1 = spritesheet.getSubimage(3*size, 2*size, size, size);
-            this.abajo2 = spritesheet.getSubimage(6*size, 2*size, size, size);
-            this.arriba1 = spritesheet.getSubimage(5*size, 2*size, size, size);
-            this.arriba2 = spritesheet.getSubimage(8*size, 2*size, size, size);
-            this.izquierda1 = spritesheet.getSubimage(4*size, 2*size, size, size);
-            this.izquierda2 = spritesheet.getSubimage(7*size, 2*size, size, size);
+            this.abajo1 = spritesheet.getSubimage(3*size, 1*size, size, size);
+            this.abajo2 = spritesheet.getSubimage(6*size, 1*size, size, size);
+            this.arriba1 = spritesheet.getSubimage(5*size, 1*size, size, size);
+            this.arriba2 = spritesheet.getSubimage(8*size, 1*size, size, size);
+            this.izquierda1 = spritesheet.getSubimage(4*size, 1*size, size, size);
+            this.izquierda2 = spritesheet.getSubimage(7*size, 1*size, size, size);
             this.derecha1 = voltearHorizontal(izquierda1);
             this.derecha2 = voltearHorizontal(izquierda2);
         } catch(IOException e){

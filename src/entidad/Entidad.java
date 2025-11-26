@@ -78,6 +78,21 @@ public abstract class Entidad extends GameObject {
             indiceDialogo = 0; //reinicia el dialogo
             gP.setEstadoJuego(gP.getPlayState());
         }
+
+        switch(gP.getJugador().getDireccion()){
+            case "arriba":
+                direccion = "abajo";
+                break;
+            case "abajo":
+                direccion = "arriba";
+                break;
+            case "izquierda":
+                direccion = "derecha";
+                break;
+            case "derecha":
+                direccion = "izquierda";
+                break;
+        }
     }
     /**
      * Dibuja la entidad en la pantalla.
