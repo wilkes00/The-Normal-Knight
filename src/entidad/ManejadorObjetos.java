@@ -38,6 +38,12 @@ public class ManejadorObjetos {
         npc[1].mundoY = gP.getTamTile() *16;
         npc[1].setMapa(gP.getMapaMundo());
         agregarGameObject(npc[1]);
+
+        npc[2] = new NPC_Velador(gP);
+        npc[2].mundoX = gP.getTamTile() *28;
+        npc[2].mundoY = gP.getTamTile() *20;
+        npc[2].setMapa(gP.getMapaMundo());
+        agregarGameObject(npc[2]);
     }
     /**
      * Coloca los objetos estaticos en el mapa.

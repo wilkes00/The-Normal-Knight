@@ -2,11 +2,21 @@ package entidad;
 
 import Main.GamePanel;
 import javax.imageio.ImageIO;
-
+/**
+ * Clase que representa un cofre en el juego.
+ */
 public class Cofre extends Objeto implements Llave{
     private boolean abierto;
     private boolean tieneLlave;
     private String texto;
+    /**
+     * Constructor de la clase Cofre.
+     * @param gP Panel del juego.
+     * @param mapa Número del mapa donde se encuentra el cofre.
+     * @param x Coordenada X en el mundo.
+     * @param y Coordenada Y en el mundo.
+     * @param tieneLlave Indica si el cofre contiene una llave.
+     */
     public Cofre(GamePanel gP, int mapa, int x, int y, boolean tieneLlave) {
         super(gP);
         this.mundoX = x * gP.getTamTile();
@@ -23,6 +33,9 @@ public class Cofre extends Objeto implements Llave{
 
         cargarImagen();
     }
+    /**
+     * Carga las imágenes del cofre cerrado y abierto.
+     */
     private void cargarImagen(){
         try {
             setImagen(ImageIO.read(getClass().getResourceAsStream("/resources/tiles/Cofre_Cerrado.png")));
@@ -32,12 +45,16 @@ public class Cofre extends Objeto implements Llave{
             e.printStackTrace();
         }
     }
+    /**
+     * Interacción del jugador con el cofre.
+     */
     public void interactuar(){
         if(abierto == false){
             try {
+                gP.playSoundEffect(2); //Reproduce el sonido de abrir cofre
                 setImagen(getImagen2());
                 abierto = true;
-                System.out.println("Cofre abierto!");
+                
                 if(tieneLlave){
                     gP.getJugador().setLlave(true);
                     gP.setEstadoJuego(gP.getDialogueState());

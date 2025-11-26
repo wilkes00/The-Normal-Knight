@@ -10,10 +10,11 @@ import javax.sound.sampled.Clip;
 public class Sound {
     Clip clip;
     URL soundURL[] = new URL[10];
-
+    
     public Sound(){
         soundURL[0] = getClass().getResource("/resources/sounds/inicio.wav");
         soundURL[1] = getClass().getResource("/resources/sounds/base.wav");
+        soundURL[2] = getClass().getResource("/resources/sounds/open_chest1.wav");
     }
     
     /**
@@ -35,6 +36,10 @@ public class Sound {
      */
     public void play(){
         clip.start();
+    }
+    public void playSoundEfect(int index){
+        setFile(index);
+        play();
     }
     /**
      * Reproduce el sonido en un bucle continuo.

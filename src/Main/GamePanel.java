@@ -199,7 +199,7 @@ public class GamePanel extends JPanel implements Runnable{
 	 * Reproduce un efecto de sonido.
 	 * @param index Índice del archivo de sonido a reproducir.
 	 */
-	public void playSoundEfect(int index){
+	public void playSoundEffect(int index){
 		sound.setFile(index);
 		sound.play();
 	}
