@@ -78,6 +78,20 @@ public class Jugador extends Entidad implements Llave{
             //Movimiento hacia arriba
             arriba1 = spritesheetJugador.getSubimage(0 * frameWidth, 3 * frameHeight, frameWidth, frameHeight);
             arriba2 = spritesheetJugador.getSubimage(1 * frameWidth, 3 * frameHeight, frameWidth, frameHeight);
+        
+            /*
+            arriba1 = ImageIO.read(getClass().getResourceAsStream("/resources/spritesjugador/arriba 1.png"));
+            arriba2 = ImageIO.read(getClass().getResourceAsStream("/resources/spritesjugador/arriba 2.png"));
+
+            abajo1 = ImageIO.read(getClass().getResourceAsStream("/resources/spritesjugador/abajo 1.png"));
+            abajo2 = ImageIO.read(getClass().getResourceAsStream("/resources/spritesjugador/abajo 2.png"));
+
+            derecha1 = ImageIO.read(getClass().getResourceAsStream("/resources/spritesjugador/derecha 1.png"));
+            derecha2 = ImageIO.read(getClass().getResourceAsStream("/resources/spritesjugador/derecha 2.png"));
+
+            izquierda1 = ImageIO.read(getClass().getResourceAsStream("/resources/spritesjugador/izquierda 1.png"));
+            izquierda2 = ImageIO.read(getClass().getResourceAsStream("/resources/spritesjugador/izquierda 2.png"));
+            */
         }catch(IOException e){
             e.printStackTrace();
             System.err.println("Error al cargar el spritesheet del jugador.");

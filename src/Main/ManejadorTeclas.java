@@ -11,7 +11,7 @@ public class ManejadorTeclas implements KeyListener{
 	GamePanel gP;
 	InterfazUsuario iU;
 	private boolean teclaArriba, teclaAbajo, teclaIzq, teclaDer, enter;
-	private boolean teclaInteraccion;
+	private boolean teclaInteraccion, teclaAtaque;
 
 	/**
 	 * Constructor del ManejadorTeclas.
@@ -69,6 +69,8 @@ public class ManejadorTeclas implements KeyListener{
 					break;
 				case KeyEvent.VK_E: teclaInteraccion = true;
 					break;
+				case KeyEvent.VK_K: teclaAtaque = true;
+					break;
 			}
 		}
 		//Controles en pantalla de dialogo
@@ -118,6 +120,8 @@ public class ManejadorTeclas implements KeyListener{
 				break;
 			case KeyEvent.VK_E: teclaInteraccion = false;
 				break;
+			case KeyEvent.VK_K: teclaAtaque = false;
+				break;
 		}
 	}
 	
@@ -136,4 +140,5 @@ public class ManejadorTeclas implements KeyListener{
 	}
 	public boolean getTeclaE() { return this.teclaInteraccion; }
     public void setTeclaE(boolean teclaInteraccion) { this.teclaInteraccion = teclaInteraccion; }
+	public boolean getTeclaK(){ return this.teclaAtaque;}
 }
