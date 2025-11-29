@@ -12,6 +12,7 @@ public class ManejadorTeclas implements KeyListener{
 	InterfazUsuario iU;
 	private boolean teclaArriba, teclaAbajo, teclaIzq, teclaDer;
 	private boolean teclaInteraccion;
+	private boolean teclaAtaque;
 	
 
 	/**
@@ -48,11 +49,18 @@ public class ManejadorTeclas implements KeyListener{
 						gP.setEstadoJuego(gP.getPlayState());
 					}
 					else if(iU.getNumOpcion() == 1){
-						//Pantalla de ayuda
+						gP.setEstadoJuego(gP.getHelpState());
 					}
 					else if(iU.getNumOpcion() == 2){
 						System.exit(0);
 					}
+			}
+		}
+		//Controles en pantalla de ayuda
+		else if(gP.getEstadoJuego() == gP.getHelpState()){
+			switch(e.getKeyCode()){
+				case KeyEvent.VK_ESCAPE : gP.setEstadoJuego(gP.getStartState());
+					break;
 			}
 		}
 		//Controles dentro del juego
@@ -68,7 +76,7 @@ public class ManejadorTeclas implements KeyListener{
 					break;
 				case KeyEvent.VK_ESCAPE : gP.setEstadoJuego(gP.getPauseState());
 					break;
-				case KeyEvent.VK_E: teclaInteraccion = true;
+				case KeyEvent.VK_ENTER: teclaInteraccion = true;
 					break;
 				case KeyEvent.VK_K: teclaAtaque = true;
 					break;
@@ -77,7 +85,7 @@ public class ManejadorTeclas implements KeyListener{
 		//Controles en pantalla de dialogo
 		else if(gP.getEstadoJuego() == gP.getDialogueState()){
 			switch(e.getKeyCode()){
-				case KeyEvent.VK_E : gP.setEstadoJuego(gP.getPlayState());
+				case KeyEvent.VK_ENTER : gP.setEstadoJuego(gP.getPlayState());
 					break;
 			}
 		}

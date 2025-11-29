@@ -1,9 +1,15 @@
 package Main;
 
+import entidad.Heart;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
 /**
  * Gestiona la interfaz de usuario (UI) del juego.
  * Se encarga de dibujar elementos en pantalla como mensajes,
@@ -14,7 +20,8 @@ public class InterfazUsuario {
     GamePanel gP;
     ControladorEventos cE;
     Graphics2D g2;
-    Font font;
+    Font pixelFont;
+    Heart heart;
     private boolean estadoMensaje = false;
     private String mensaje = "";
     private String dialogoActual = "";
@@ -30,7 +37,16 @@ public class InterfazUsuario {
     public InterfazUsuario(GamePanel gP, ControladorEventos cE){
         this.gP = gP;
         this.cE = cE;
-        this.font = new Font("Arial", Font.PLAIN, 30);
+        try {
+            InputStream f = getClass().getResourceAsStream("/resources/fonts/PixelScriptRegular-0WnDG.otf");
+            pixelFont = Font.createFont(Font.TRUETYPE_FONT, f);
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //Inicializa los corazones de vida
+        heart = new Heart(gP);
     }
     /**
      * Dibuja los elementos de la interfaz de usuario en pantalla.
@@ -38,7 +54,7 @@ public class InterfazUsuario {
      */
     public void draw(Graphics2D g2){
         this.g2 = g2;
-        g2.setFont(font);
+        g2.setFont(pixelFont);
         g2.setColor(Color.white);
         
         /* //  ==== Coordenadas del jugador DEPURACION ====
@@ -51,15 +67,24 @@ public class InterfazUsuario {
         if(gP.getEstadoJuego() == gP.getStartState()){
             drawPantallaInicio();
         }
+        //Pantalla de ayuda
+        else if(gP.getEstadoJuego() == gP.getHelpState()){
+            drawPantallaAyuda();
+        }
         //Transicion entre mapas    
         else if(gP.getEstadoJuego() == gP.getTransitionState()){
             drawTransicion();
         }
+        else if(gP.getEstadoJuego() == gP.getPlayState()){
+            drawVidaJugador();
+        }
         //Ventana de dialogo
         else if(gP.getEstadoJuego() == gP.getDialogueState()){
+            drawVidaJugador();
             dibujaPantallaDialogo();
         }
         else if(gP.getEstadoJuego() == gP.getPauseState()){
+            drawVidaJugador();
             drawMenuPausa();
         }
             
@@ -69,11 +94,20 @@ public class InterfazUsuario {
      * Muestra el título del juego y las opciones del menú.
      */
     public void drawPantallaInicio(){
+        //Fondo
+        BufferedImage img = null, cursor = null;
+        try {
+            img = ImageIO.read(getClass().getResourceAsStream("/resources/menus/Menu-nuevo.png"));
+            cursor = ImageIO.read(getClass().getResourceAsStream("/resources/menus/cursor.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        g2.drawImage(img, 0, 0, gP.getAnchoPantalla(), gP.getAltoPantalla(), null);
         // Titulo del juego
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
+        g2.setFont(g2.getFont().deriveFont(Font.TRUETYPE_FONT, 86F));
         String txt = "The Normal Knight";
-        int x = getXCentrado(txt);
-        int y = gP.getTamTile() * 3;
+        int x = getXCentrado(txt) - 15;
+        int y = gP.getTamTile() * 5;
         //Sombra
         g2.setColor(Color.gray);
         g2.drawString(txt, x+5, y+5);
@@ -81,29 +115,84 @@ public class InterfazUsuario {
         g2.setColor(Color.white);
         g2.drawString(txt, x, y);
         //Menu
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
+        g2.setFont(g2.getFont().deriveFont(Font.TRUETYPE_FONT, 48F));
         txt = "Nuevo Juego";
         x = getXCentrado(txt);
-        y += gP.getTamTile() * 6;
+        y += gP.getTamTile() * 4;
+        //sombra
+        g2.setColor(Color.gray);
+        g2.drawString(txt, x+5, y+5);
+        //texto
+        g2.setColor(Color.white);
         g2.drawString(txt, x, y);
         if(numOpcion == 0)
-            //reemplazar por drawImage y usar una imagen de cursor en lugar de ">"
-            g2.drawString(">", x - gP.getTamTile(), y);
+            g2.drawImage(cursor, x - gP.getTamTile(), y - gP.getTamTile(), gP.getTamTile(), gP.getTamTile(), null);
 
         txt = "Ayuda";
         x = getXCentrado(txt);
         y += gP.getTamTile();
+        //sombra
+        g2.setColor(Color.gray);
+        g2.drawString(txt, x+5, y+5);
+        //texto
+        g2.setColor(Color.white);
         g2.drawString(txt, x, y);
         if(numOpcion == 1)
-            g2.drawString(">", x - gP.getTamTile(), y);
+            g2.drawImage(cursor, x - gP.getTamTile(), y - gP.getTamTile(), gP.getTamTile(), gP.getTamTile(), null);
+
 
         txt = "Salir";
         x = getXCentrado(txt);
         y += gP.getTamTile();
+        //sombra
+        g2.setColor(Color.gray);
+        g2.drawString(txt, x+5, y+5);
+        //texto
+        g2.setColor(Color.white);
         g2.drawString(txt, x, y);
         if(numOpcion == 2)
-            g2.drawString(">", x - gP.getTamTile(), y);
+            g2.drawImage(cursor, x - gP.getTamTile(), y - gP.getTamTile(), gP.getTamTile(), gP.getTamTile(), null);
 
+
+    }
+    public void drawVidaJugador(){
+        int x = gP.getTamTile() / 2;
+        int y = gP.getTamTile() / 2;
+        int i = 0;
+        gP.jugador.setVida(gP.jugador.getVidaMax());
+        //Dibuja corazones completos
+        while(i < gP.jugador.getVida() / 2){
+            g2.drawImage(heart.getFullHeart(), x, y, gP.getTamTile(), gP.getTamTile(), null);
+            i++;
+            x += gP.getTamTile();
+        }
+        //Dibuja medio corazon si la vida es impar
+        if(gP.jugador.getVida() % 2 == 1){
+            g2.drawImage(heart.getHalfHeart(), x, y, gP.getTamTile(), gP.getTamTile(), null);
+            i++;
+            x += gP.getTamTile();
+        }
+        //Dibuja corazones vacios
+        while(i < gP.jugador.getVidaMax() / 2){
+            g2.drawImage(heart.getEmptyHeart(), x, y, gP.getTamTile(), gP.getTamTile(), null);
+            i++;
+            x += gP.getTamTile();
+        }
+       
+    }
+    /**
+     * Dibuja la pantalla de ayuda del juego.
+     * Muestra los controles y las instrucciones básicas.
+     */
+    public void drawPantallaAyuda(){
+        //Fondo
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(getClass().getResourceAsStream("/resources/menus/menu_controles.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        g2.drawImage(img, 0, 0, gP.getAnchoPantalla(), gP.getAltoPantalla(), null);
     }
     /**
      * Dibuja una transición de pantalla oscura.
@@ -161,14 +250,14 @@ public class InterfazUsuario {
     public void drawMenuPausa(){
         //Dibuja pantalla de pausa
         dibujaSubVentana(gP.getTamTile()*4, gP.getTamTile()*2, gP.getAltoPantalla() - gP.getTamTile()*4, gP.getAnchoPantalla() - gP.getTamTile()*8);
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 72F));
+        g2.setFont(g2.getFont().deriveFont(Font.TRUETYPE_FONT, 72F));
         String texto = "PAUSA";
         int x = getXCentrado(texto);
         int y = gP.getAltoPantalla() / 4;
         g2.drawString(texto, x, y);
 
+        g2.setFont(g2.getFont().deriveFont(Font.TRUETYPE_FONT, 32F));
         texto = "Opciones";
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
         x = getXCentrado(texto);
         y += gP.getTamTile() * 3;
         g2.drawString(texto, x, y);
@@ -177,7 +266,6 @@ public class InterfazUsuario {
             g2.drawString(">", x - gP.getTamTile(), y);
             
         texto = "Controles";
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
         x = getXCentrado(texto);
         y += gP.getTamTile();
         g2.drawString(texto, x, y);
@@ -186,7 +274,6 @@ public class InterfazUsuario {
             g2.drawString(">", x - gP.getTamTile(), y);
 
         texto = "Salir del juego";
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
         x = getXCentrado(texto);
         y += gP.getTamTile();
         g2.drawString(texto, x, y);

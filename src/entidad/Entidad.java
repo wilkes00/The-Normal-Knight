@@ -180,4 +180,13 @@ public abstract class Entidad extends GameObject {
     public String getDireccion() {
         return this.direccion;
     }
+    public void setVida(int vida){
+        this.vida = vida;
+    }
+    public int getVida(){
+        return this.vida;
+    }
+    public int getVidaMax(){
+        return this.vidaMax;
+    }
 }

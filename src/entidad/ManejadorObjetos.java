@@ -9,7 +9,7 @@ import java.util.Comparator;
  * Gestiona todos los objetos dentro del juego, tanto al jugador
  * como NPCs, enemigos e items.
  * Carga las imagenes de los objetos y las coloca en el mapa.
- * Actualiza a los objetos que son entidades
+ * Actualiza a los objetos que son entidades.
  */
 public class ManejadorObjetos {
     ArrayList<Entidad> entidades = new ArrayList<>();

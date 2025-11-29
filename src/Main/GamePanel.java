@@ -45,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable{
 	private final int pauseState = 2;
 	private final int transitionState = 3;
 	private final int dialogueState = 4;
+	private final int helpState = 5;
 
 	//configuracion del mundo
 	private final int maxRenMundo = 50;
@@ -274,6 +275,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public int getPauseState(){
 		return this.pauseState;
 	}
+	public int getHelpState(){ return helpState; }
 
 	//getters de los sistemas
 	public Jugador getJugador(){
