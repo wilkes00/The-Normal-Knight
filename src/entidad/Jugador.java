@@ -19,6 +19,9 @@ public class Jugador extends Entidad implements Llave{
     private ManejadorTeclas mT;
     private final int pantallaX, pantallaY;
     private boolean tieneLlave = false;
+    private boolean invulnerable = false;
+    private int contadorInvulnerabilidad = 0;
+    private final int tiempoInvulnerabilidad = 60; // 1 segundo a 60 FPS
 
     /**
      * Constructor para la clase Jugador.
@@ -48,6 +51,7 @@ public class Jugador extends Entidad implements Llave{
         this.direccion = "abajo";
         this.colision = true;
         this.setMapa(gP.getMapaActual());
+        this.vida = this.vidaMax; // Inicializar la vida del jugador
     }
     /**
      * Carga las imágenes (sprites) del jugador para las diferentes
@@ -142,6 +146,17 @@ public class Jugador extends Entidad implements Llave{
         // despues de moverse verifica si esta encima de un item
         revisarInteraccionItems();
         
+        // Verificar colisión con enemigos
+        revisarColisionEnemigos();
+        
+        // Actualizar contador de invulnerabilidad
+        if(invulnerable){
+            contadorInvulnerabilidad++;
+            if(contadorInvulnerabilidad >= tiempoInvulnerabilidad){
+                invulnerable = false;
+                contadorInvulnerabilidad = 0;
+            }
+        }
     }
     /**
      * Gestiona la interacción del jugador con objetos en el juego.
@@ -192,6 +207,69 @@ public class Jugador extends Entidad implements Llave{
         }
     }
     /**
+     * Revisa si el jugador está colisionando con enemigos y aplica daño si no es invulnerable.
+     */
+    public void revisarColisionEnemigos() {
+        if(invulnerable) return; // Si es invulnerable, no recibe daño
+        
+        ArrayList<GameObject> lista = gP.getManejadorObjetos().getListaGameObjects();
+        
+        // Hitbox actual del jugador
+        Rectangle areaJugador = new Rectangle(
+            this.mundoX + this.areaSolida.x, 
+            this.mundoY + this.areaSolida.y,
+            this.areaSolida.width, 
+            this.areaSolida.height);
+
+        for (GameObject obj : lista) {
+            // Verificar si el objeto es un enemigo
+            if(obj instanceof Enemigo || obj instanceof Jefe) {
+                Entidad enemigo = (Entidad)obj;
+                
+                // Verificar que estén en el mismo mapa
+                if(enemigo.getMapa() != this.getMapa())
+                    continue;
+                
+                // Calcular área del enemigo
+                Rectangle areaEnemigo = new Rectangle(
+                    enemigo.getMundoX() + enemigo.getAreaSolida().x,
+                    enemigo.getMundoY() + enemigo.getAreaSolida().y,
+                    enemigo.getAreaSolida().width,
+                    enemigo.getAreaSolida().height);
+                
+                // Expandir ligeramente las áreas para detectar contacto
+                areaJugador.grow(2, 2);  // Expande 2 píxeles en cada dirección
+                areaEnemigo.grow(2, 2);
+                
+                // Si hay colisión, recibir daño
+                if(areaJugador.intersects(areaEnemigo)) {
+                    recibirDamage(1);
+                    break; // Solo recibir daño de un enemigo por frame
+                }
+            }
+        }
+    }
+    
+    /**
+     * El jugador recibe daño y se vuelve invulnerable temporalmente.
+     * @param cantidad La cantidad de daño a recibir.
+     */
+    public void recibirDamage(int cantidad) {
+        this.vida -= cantidad;
+        this.invulnerable = true;
+        this.contadorInvulnerabilidad = 0;
+        
+        // gP.playSoundEffect(indice_sonido_daño);
+        
+        // Verificar si el jugador murió
+        if(this.vida <= 0) {
+            this.vida = 0;
+            // Aquí puedes agregar lógica de game over
+            System.out.println("El jugador ha sido derrotado!");
+        }
+    }
+    
+    /**
      * Revisa si el jugador está colisionando con objetos NO sólidos (items)
      * para recogerlos.
      */
@@ -228,9 +306,17 @@ public class Jugador extends Entidad implements Llave{
             //El jugador está tocando el item?
             if (areaJugador.intersects(areaObjeto)) {
                 //Si? Recogido.
-                gP.setEstadoJuego(gP.getDialogueState());
-                //Aquí va la logica para revisar que objeto recogio y
-                //llamar al metodo necesario
+                // Determinar qué tipo de objeto se recogió y mostrar mensaje
+                String nombreObjeto = obj.getClass().getSimpleName();
+                if(obj instanceof Pocion){
+                    gP.getIU().mostrarMensaje("Pocion recogida");
+                    // Aquí agregar lógica de curación si es necesario
+                } else if(obj instanceof Llave){
+                    gP.getIU().mostrarMensaje("Llave obtenida");
+                    this.setLlave(true);
+                } else {
+                    gP.getIU().mostrarMensaje(nombreObjeto + " recogido");
+                }
 
                 //Elimina el objeto del juego
                 gP.getManejadorObjetos().removerGameObject(obj);
@@ -283,8 +369,18 @@ public class Jugador extends Entidad implements Llave{
         int jugadorPantallaX = this.mundoX - camaraX;
         int jugadorPantallaY = this.mundoY - camaraY;
         
-        //dibuja el sprite seleccionado en las coordenadas calculadas
-        g2.drawImage(sprite, jugadorPantallaX, jugadorPantallaY, gP.getTamTile() + 20, gP.getTamTile() + 20, null);
+        // Efecto de parpadeo cuando es invulnerable
+        if(invulnerable){
+            // Parpadear cada 10 frames (alternar visible/invisible)
+            if(contadorInvulnerabilidad / 10 % 2 == 0){
+                //dibuja el sprite seleccionado en las coordenadas calculadas
+                g2.drawImage(sprite, jugadorPantallaX, jugadorPantallaY, gP.getTamTile() + 20, gP.getTamTile() + 20, null);
+            }
+            // Si no, no dibuja nada (invisible)
+        } else {
+            //dibuja el sprite seleccionado en las coordenadas calculadas
+            g2.drawImage(sprite, jugadorPantallaX, jugadorPantallaY, gP.getTamTile() + 20, gP.getTamTile() + 20, null);
+        }
 
         /* // ==== LA SIGUIENTE SECCION DE CODIGO ES PARA DEPURACION ====
         g2.setColor(new Color(255, 0, 0, 100));

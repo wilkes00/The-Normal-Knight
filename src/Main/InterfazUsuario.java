@@ -24,6 +24,8 @@ public class InterfazUsuario {
     Heart heart;
     private boolean estadoMensaje = false;
     private String mensaje = "";
+    private int contadorMensaje = 0;
+    private final int tiempoMensaje = 180; // 3 segundos a 60 FPS
     private String dialogoActual = "";
     private final int MaxOpacidad = 50;
     private int opacidadTransicion = 0;
@@ -77,15 +79,18 @@ public class InterfazUsuario {
         }
         else if(gP.getEstadoJuego() == gP.getPlayState()){
             drawVidaJugador();
+            drawMensaje();
         }
         //Ventana de dialogo
         else if(gP.getEstadoJuego() == gP.getDialogueState()){
             drawVidaJugador();
             dibujaPantallaDialogo();
+            drawMensaje();
         }
         else if(gP.getEstadoJuego() == gP.getPauseState()){
             drawVidaJugador();
             drawMenuPausa();
+            drawMensaje();
         }
             
     }
@@ -155,11 +160,13 @@ public class InterfazUsuario {
 
 
     }
+    /**
+     * Dibuja la vida del jugador en forma de corazones.
+     */
     public void drawVidaJugador(){
         int x = gP.getTamTile() / 2;
         int y = gP.getTamTile() / 2;
         int i = 0;
-        gP.jugador.setVida(gP.jugador.getVidaMax());
         //Dibuja corazones completos
         while(i < gP.jugador.getVida() / 2){
             g2.drawImage(heart.getFullHeart(), x, y, gP.getTamTile(), gP.getTamTile(), null);
@@ -167,13 +174,13 @@ public class InterfazUsuario {
             x += gP.getTamTile();
         }
         //Dibuja medio corazon si la vida es impar
-        if(gP.jugador.getVida() % 2 == 1){
+        if(gP.getJugador().getVida() % 2 == 1){
             g2.drawImage(heart.getHalfHeart(), x, y, gP.getTamTile(), gP.getTamTile(), null);
             i++;
             x += gP.getTamTile();
         }
         //Dibuja corazones vacios
-        while(i < gP.jugador.getVidaMax() / 2){
+        while(i < gP.getJugador().getVidaMax() / 2){
             g2.drawImage(heart.getEmptyHeart(), x, y, gP.getTamTile(), gP.getTamTile(), null);
             i++;
             x += gP.getTamTile();
@@ -282,12 +289,47 @@ public class InterfazUsuario {
             g2.drawString(">", x - gP.getTamTile(), y);
     }
     /**
+     * Dibuja un mensaje pequeño en la esquina izquierda de la pantalla.
+     * El mensaje se muestra durante un tiempo limitado.
+     */
+    public void drawMensaje(){
+        if(estadoMensaje){
+            contadorMensaje++;
+            
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+            int x = gP.getTamTile() / 2;
+            int y = gP.getTamTile() * 3;
+            
+            // Fondo semi-transparente
+            int anchoTexto = (int)g2.getFontMetrics().getStringBounds(mensaje, g2).getWidth();
+            int padding = 10;
+            g2.setColor(new Color(0, 0, 0, 180));
+            g2.fillRoundRect(x - padding, y - 25, anchoTexto + padding * 2, 35, 10, 10);
+            
+            // Borde
+            g2.setColor(new Color(255, 255, 255, 200));
+            g2.setStroke(new BasicStroke(2));
+            g2.drawRoundRect(x - padding, y - 25, anchoTexto + padding * 2, 35, 10, 10);
+            
+            // Texto del mensaje
+            g2.setColor(Color.white);
+            g2.drawString(mensaje, x, y);
+            
+            // Desactivar mensaje después del tiempo establecido
+            if(contadorMensaje >= tiempoMensaje){
+                estadoMensaje = false;
+                contadorMensaje = 0;
+            }
+        }
+    }
+    /**
      * Muestra un mensaje en pantalla.
      * @param mensaje el mensaje a mostrar.
      */
     public void mostrarMensaje(String mensaje){
         this.mensaje = mensaje;
         this.estadoMensaje = true;
+        this.contadorMensaje = 0; // Reiniciar el contador
     }
     /**
      * Calcula la posición X centrada para un texto dado.
