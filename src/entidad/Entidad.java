@@ -175,7 +175,7 @@ public abstract class Entidad extends GameObject {
         }
 
         /* // ==== LA SIGUIENTE SECCION DE CODIGO ES PARA DEPURACION ====
-        g2.setColor(new Color(255, 0, 0, 100));
+        g2.setColor(new java.awt.Color(255, 0, 0, 100));
         int hitboxX = EntidadPantallaX + areaSolida.x;
         int hitboxY = EntidadPantallaY + areaSolida.y;
         
@@ -183,7 +183,7 @@ public abstract class Entidad extends GameObject {
         g2.fillRect(hitboxX, hitboxY, areaSolida.width, areaSolida.height);
         
         //Dibuja un borde blanco para que se vea mejor
-        g2.setColor(Color.white);
+        g2.setColor(java.awt.Color.white);
         g2.drawRect(hitboxX, hitboxY, areaSolida.width, areaSolida.height);
         */ //=========================================================
     }

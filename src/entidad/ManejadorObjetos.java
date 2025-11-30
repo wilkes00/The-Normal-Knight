@@ -46,8 +46,8 @@ public class ManejadorObjetos {
         agregarGameObject(npc[2]);
 
         npc[3] = new Jefe(gP);
-        npc[3].mundoX = gP.getTamTile() *10;
-        npc[3].mundoY = gP.getTamTile() *10;
+        npc[3].mundoX = gP.getTamTile() *14;
+        npc[3].mundoY = gP.getTamTile() *6;
         npc[3].setMapa(gP.getMapaMazmorra2());
         agregarGameObject(npc[3]);
     }

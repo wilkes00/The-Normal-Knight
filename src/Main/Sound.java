@@ -55,6 +55,13 @@ public class Sound {
      * Detiene la reproducción del sonido.
      */
     public void stop(){
-        clip.stop();
+        if(clip != null){
+            if(clip.isRunning()){
+                clip.stop();
+            }
+            clip.flush();
+            clip.close();
+            clip = null;
+        }
     }
 }

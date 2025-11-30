@@ -110,6 +110,16 @@ public class ManejadorTeclas implements KeyListener{
 					}
 			}
 		}
+		//Controles en pantalla de Game Over
+		else if(gP.getEstadoJuego() == gP.getGameOverState()){
+			switch(e.getKeyCode()){
+				case KeyEvent.VK_ENTER:
+					gP.reiniciarJuego();
+					gP.setEstadoJuego(gP.getStartState());
+					gP.playMusic(0);
+					break;
+			}
+		}
 	}
 	/**
 	 * Maneja el evento de liberar una tecla.

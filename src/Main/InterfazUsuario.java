@@ -63,11 +63,11 @@ public class InterfazUsuario {
         g2.setFont(pixelFont);
         g2.setColor(Color.white);
         
-        /* //  ==== Coordenadas del jugador DEPURACION ====
+         //  ==== Coordenadas del jugador DEPURACION ====
         int renJugador = gP.jugador.getMundoY() / gP.getTamTile();
         int colJugador = gP.jugador.getMundoX() / gP.getTamTile();
         g2.drawString("Col: " + colJugador + " Ren: " + renJugador, 20, 40);
-        */ // ============================================
+         // ============================================
 
         //Pantalla de inicio del juego
         if(gP.getEstadoJuego() == gP.getStartState()){
@@ -95,6 +95,10 @@ public class InterfazUsuario {
             drawVidaJugador();
             drawMenuPausa();
             drawMensaje();
+        }
+        //Pantalla de Game Over
+        else if(gP.getEstadoJuego() == gP.getGameOverState()){
+            drawPantallaGameOver();
         }
             
     }
@@ -219,6 +223,35 @@ public class InterfazUsuario {
             gP.setEstadoJuego(gP.getPlayState());
             cE.teleport();
         }
+    }
+    /**
+     * Dibuja la pantalla de Game Over.
+     */
+    public void drawPantallaGameOver(){
+        // Fondo oscuro
+        g2.setColor(new Color(0, 0, 0, 200));
+        g2.fillRect(0, 0, gP.getAnchoPantalla(), gP.getAltoPantalla());
+        
+        // Texto "HAS MUERTO"
+        g2.setFont(pixelFont.deriveFont(Font.BOLD, 72F));
+        g2.setColor(Color.RED);
+        String texto = "HAS MUERTO";
+        int x = getXCentrado(texto);
+        int y = gP.getAltoPantalla() / 2 - gP.getTamTile() * 2;
+        
+        // Sombra del texto
+        g2.setColor(Color.BLACK);
+        g2.drawString(texto, x + 5, y + 5);
+        g2.setColor(Color.RED);
+        g2.drawString(texto, x, y);
+        
+        // Texto "ENTER para continuar"
+        g2.setFont(txtFont.deriveFont(Font.PLAIN, 28F));
+        g2.setColor(Color.WHITE);
+        texto = "Presiona ENTER para volver al menu";
+        x = getXCentrado(texto);
+        y += gP.getTamTile() * 3;
+        g2.drawString(texto, x, y);
     }
     /**
      * Dibuja la ventana de diálogo en pantalla.

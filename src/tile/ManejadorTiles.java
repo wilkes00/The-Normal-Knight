@@ -263,6 +263,14 @@ public class ManejadorTiles {
                     //dibuja el mosaico si esta dentro de la pantalla
                     g2.drawImage(this.arregloTiles[codigoTile].getImagen(), pantallaX, pantallaY, this.gP.getTamTile(), this.gP.getTamTile(), null);
 
+                    /* // ==== DEPURACION: Mostrar tiles con colisión ====
+                    if(this.arregloTiles[codigoTile] != null && this.arregloTiles[codigoTile].getColision()){
+                        g2.setColor(new java.awt.Color(255, 0, 0, 80));
+                        g2.fillRect(pantallaX, pantallaY, this.gP.getTamTile(), this.gP.getTamTile());
+                        g2.setColor(java.awt.Color.RED);
+                        g2.drawRect(pantallaX, pantallaY, this.gP.getTamTile(), this.gP.getTamTile());
+                    }
+                    */ //==================================================
                 }
             //avanza a la siguiente columna del mapa
             colMundo++;
@@ -277,12 +285,15 @@ public class ManejadorTiles {
     //getters
     public int getCodigoMapaTiles(int ren, int col){
         if(ren < 0 || ren >= gP.getMaxRenMundo() || col < 0 || col >= gP.getMaxColMundo()){
-            return 0; //// Retorna 0 (o un tile sólido/vacío) si se sale del mapa para evitar el crash
+            return -1; // Retorna -1 si se sale del mapa (sin colisión)
         }
         return this.codigosMapaTiles[gP.getMapaActual()][ren][col];
     }
     public boolean getColisionDeTile(int index){
         if(index == -1 || index >= maxTiles){
+            return false;
+        }
+        if(this.arregloTiles[index] == null){
             return false;
         }
         return this.arregloTiles[index].getColision();

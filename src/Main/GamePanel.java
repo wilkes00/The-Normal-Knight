@@ -25,7 +25,8 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//Sistema de juego
 	Thread hebraJuego;
-	Sound sound = new Sound();
+	Sound music = new Sound();
+	Sound soundEffects = new Sound();
     ManejadorTiles mTi = new ManejadorTiles(this);
     ManejadorObjetos mObj = new ManejadorObjetos(this);
     ControladorEventos cE = new ControladorEventos(this);
@@ -46,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable{
 	private final int transitionState = 3;
 	private final int dialogueState = 4;
 	private final int helpState = 5;
+	private final int gameOverState = 6;
 
 	//configuracion del mundo
 	private final int maxRenMundo = 50;
@@ -89,6 +91,29 @@ public class GamePanel extends JPanel implements Runnable{
 		playMusic(0);
 	}
 	/**
+	 * Reinicia el juego a su estado inicial.
+	 */
+	public void reiniciarJuego(){
+		// Detener y reiniciar el sonido
+		stopMusic();
+		music = new Sound();
+		soundEffects = new Sound();
+		
+		// Resetear el jugador
+		jugador.configuracionInicial();
+		
+		// Reiniciar el manejador de objetos
+		mObj = new ManejadorObjetos(this);
+		mObj.agregarGameObject(jugador);
+		
+		// Reiniciar eventos
+		cE = new ControladorEventos(this);
+		cE.setJugador(this.jugador);
+		
+		// Resetear mapa actual
+		this.mapaActual = mapaMundo;
+	}
+	/**
 	 * Inicia la hebra principal del juego.
 	 */
 	public void iniciaHebraJuego() {
@@ -127,7 +152,12 @@ public class GamePanel extends JPanel implements Runnable{
 		if(estadoJuego == playState) {
 			mObj.update();
 			cE.revisaEventos(); //revisa los eventos
-
+			
+			// Verificar si el jugador murió
+			if(jugador.getVida() <= 0){
+				estadoJuego = gameOverState;
+				stopMusic();
+			}
 		}
 		else if(estadoJuego == pauseState){
 			//aqui va la logica de pausa
@@ -182,27 +212,29 @@ public class GamePanel extends JPanel implements Runnable{
 		g2.dispose();	
 	}
 	/**
-	 * Reproduce música de fondo en bucle.
+	 * Reproduce música de fondo.
 	 * @param index Índice del archivo de música a reproducir.
 	 */
 	public void playMusic(int index){
-		sound.setFile(index);
-		sound.play();
-		sound.loop();
+		music.setFile(index);
+		music.play();
+		music.loop();
 	}
 	/**
 	 * Detiene la música de fondo.
 	 */
 	public void stopMusic(){
-		sound.stop();
+		if(music != null){
+			music.stop();
+		}
 	}
 	/**
 	 * Reproduce un efecto de sonido.
 	 * @param index Índice del archivo de sonido a reproducir.
 	 */
 	public void playSoundEffect(int index){
-		sound.setFile(index);
-		sound.play();
+		soundEffects.setFile(index);
+		soundEffects.play();
 	}
 	
 	//getters y setters
@@ -276,6 +308,7 @@ public class GamePanel extends JPanel implements Runnable{
 		return this.pauseState;
 	}
 	public int getHelpState(){ return helpState; }
+	public int getGameOverState(){ return gameOverState; }
 
 	//getters de los sistemas
 	public Jugador getJugador(){
