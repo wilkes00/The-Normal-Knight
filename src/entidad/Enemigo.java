@@ -18,6 +18,8 @@ public class Enemigo extends Entidad {
         this.areaSolida = new java.awt.Rectangle(12, 16, 22, 22);
         this.direccion = "abajo";
         this.velocidad = 1;
+        this.vida = 3; // Enemigos tienen 3 puntos de vida
+        this.vidaMax = 3;
         this.getSprites();
     }
     /**

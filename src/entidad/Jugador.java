@@ -19,9 +19,9 @@ public class Jugador extends Entidad implements Llave{
     private ManejadorTeclas mT;
     private final int pantallaX, pantallaY;
     private boolean tieneLlave = false;
-    private boolean invulnerable = false;
-    private int contadorInvulnerabilidad = 0;
-    private final int tiempoInvulnerabilidad = 60; // 1 segundo a 60 FPS
+    private boolean atacando = false;
+    private int contadorAtaque = 0;
+    private final int duracionAtaque = 20; // Duración de la animación de ataque (20 frames)
 
     /**
      * Constructor para la clase Jugador.
@@ -52,6 +52,7 @@ public class Jugador extends Entidad implements Llave{
         this.colision = true;
         this.setMapa(gP.getMapaActual());
         this.vida = this.vidaMax; // Inicializar la vida del jugador
+        this.tiempoInvulnerabilidad = 60; // 1 segundo para el jugador
     }
     /**
      * Carga las imágenes (sprites) del jugador para las diferentes
@@ -82,6 +83,29 @@ public class Jugador extends Entidad implements Llave{
             //Movimiento hacia arriba
             arriba1 = spritesheetJugador.getSubimage(0 * frameWidth, 3 * frameHeight, frameWidth, frameHeight);
             arriba2 = spritesheetJugador.getSubimage(1 * frameWidth, 3 * frameHeight, frameWidth, frameHeight);
+            arriba3 = spritesheetJugador.getSubimage(2 * frameWidth, 3 * frameHeight, frameWidth, frameHeight);
+            
+            // Tercer sprite para abajo
+            abajo3 = spritesheetJugador.getSubimage(2 * frameWidth, 0 * frameHeight, frameWidth, frameHeight);
+            
+            // Tercer sprite para izquierda
+            izquierda3 = spritesheetJugador.getSubimage(2 * frameWidth, 1 * frameHeight, frameWidth, frameHeight);
+            
+            // Tercer sprite para derecha
+            derecha3 = spritesheetJugador.getSubimage(2 * frameWidth, 2 * frameHeight, frameWidth, frameHeight);
+            
+            // Sprites de ataque
+            ataqueAbajo1 = spritesheetJugador.getSubimage(3 * frameWidth, 0 * frameHeight, frameWidth, frameHeight);
+            ataqueAbajo2 = spritesheetJugador.getSubimage(4 * frameWidth, 0 * frameHeight, frameWidth, frameHeight);
+            
+            ataqueIzquierda1 = spritesheetJugador.getSubimage(3 * frameWidth, 1 * frameHeight, frameWidth, frameHeight);
+            ataqueIzquierda2 = spritesheetJugador.getSubimage(4 * frameWidth, 1 * frameHeight, frameWidth, frameHeight);
+            
+            ataqueDerecha1 = spritesheetJugador.getSubimage(3 * frameWidth, 2 * frameHeight, frameWidth, frameHeight);
+            ataqueDerecha2 = spritesheetJugador.getSubimage(4 * frameWidth, 2 * frameHeight, frameWidth, frameHeight);
+            
+            ataqueArriba1 = spritesheetJugador.getSubimage(3 * frameWidth, 3 * frameHeight, frameWidth, frameHeight);
+            ataqueArriba2 = spritesheetJugador.getSubimage(4 * frameWidth, 3 * frameHeight, frameWidth, frameHeight);
         }catch(IOException e){
             e.printStackTrace();
             System.err.println("Error al cargar el spritesheet del jugador.");
@@ -133,6 +157,8 @@ public class Jugador extends Entidad implements Llave{
             if(this.contadorSprites > this.cambiaSprite){
                 if(this.numeroSprite == 1)
                     this.numeroSprite = 2;
+                else if(this.numeroSprite == 2)
+                    this.numeroSprite = 3;
                 else
                     this.numeroSprite = 1;
                 this.contadorSprites = 0;
@@ -143,6 +169,26 @@ public class Jugador extends Entidad implements Llave{
             interactuarObjeto();
             mT.setTeclaE(false); // Desactivar para que no se ejecute 60 veces por segundo
         }
+        
+        // Lógica de ataque
+        if(mT.getTeclaK() && !atacando){
+            atacando = true;
+            contadorAtaque = 0;
+        }
+        
+        // Actualizar animación de ataque
+        if(atacando){
+            contadorAtaque++;
+            // Detectar colisión con enemigos al inicio del ataque
+            if(contadorAtaque == 1){
+                atacarEnemigos();
+            }
+            if(contadorAtaque >= duracionAtaque){
+                atacando = false;
+                contadorAtaque = 0;
+            }
+        }
+        
         // despues de moverse verifica si esta encima de un item
         revisarInteraccionItems();
         
@@ -207,6 +253,87 @@ public class Jugador extends Entidad implements Llave{
         }
     }
     /**
+     * Detecta y daña a los enemigos dentro del rango de ataque.
+     */
+    public void atacarEnemigos() {
+        ArrayList<GameObject> lista = gP.getManejadorObjetos().getListaGameObjects();
+        
+        // Calcular el área de ataque frente al jugador
+        int ataqueX = this.mundoX + this.areaSolida.x;
+        int ataqueY = this.mundoY + this.areaSolida.y;
+        int ataqueAncho = this.areaSolida.width;
+        int ataqueAlto = this.areaSolida.height;
+        
+        // Extender el rango de ataque según la dirección
+        int rangoAtaque = 30; // Píxeles de alcance del ataque
+        
+        switch(this.direccion){
+            case "arriba":
+                ataqueY -= rangoAtaque;
+                ataqueAlto += rangoAtaque;
+                break;
+            case "abajo":
+                ataqueAlto += rangoAtaque;
+                break;
+            case "izquierda":
+                ataqueX -= rangoAtaque;
+                ataqueAncho += rangoAtaque;
+                break;
+            case "derecha":
+                ataqueAncho += rangoAtaque;
+                break;
+        }
+        
+        Rectangle areaAtaque = new Rectangle(ataqueX, ataqueY, ataqueAncho, ataqueAlto);
+        
+        // Lista para almacenar enemigos a eliminar
+        ArrayList<GameObject> enemigosAEliminar = new ArrayList<>();
+        
+        // Revisar colisión con enemigos
+        for (GameObject obj : lista) {
+            if(obj instanceof Enemigo || obj instanceof Jefe) {
+                Entidad enemigo = (Entidad)obj;
+                
+                // Verificar que estén en el mismo mapa
+                if(enemigo.getMapa() != this.getMapa())
+                    continue;
+                
+                // Calcular área del enemigo
+                Rectangle areaEnemigo = new Rectangle(
+                    enemigo.getMundoX() + enemigo.getAreaSolida().x,
+                    enemigo.getMundoY() + enemigo.getAreaSolida().y,
+                    enemigo.getAreaSolida().width,
+                    enemigo.getAreaSolida().height);
+                
+                // Si hay colisión con el ataque
+                if(areaAtaque.intersects(areaEnemigo)) {
+                    // Aplicar daño al enemigo solo si no es invulnerable
+                    if(!enemigo.invulnerable){
+                        enemigo.setVida(enemigo.getVida() - 1);
+                        enemigo.invulnerable = true;
+                        enemigo.contadorInvulnerabilidad = 0;
+                        
+                        // Si el enemigo murió, marcarlo para eliminación
+                        if(enemigo.getVida() <= 0){
+                            enemigosAEliminar.add(enemigo);
+                            gP.playSoundEffect(5); // Sonido de enemigo derrotado
+                            System.out.println("Enemigo derrotado!");
+                        } else {
+                            gP.playSoundEffect(4); // Sonido de golpear enemigo
+                            System.out.println("Enemigo golpeado! Vida: " + enemigo.getVida() + "/" + enemigo.getVidaMax());
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Eliminar enemigos derrotados después de iterar
+        for(GameObject enemigo : enemigosAEliminar){
+            gP.getManejadorObjetos().removerGameObject(enemigo);
+        }
+    }
+    
+    /**
      * Revisa si el jugador está colisionando con enemigos y aplica daño si no es invulnerable.
      */
     public void revisarColisionEnemigos() {
@@ -259,7 +386,7 @@ public class Jugador extends Entidad implements Llave{
         this.invulnerable = true;
         this.contadorInvulnerabilidad = 0;
         
-        // gP.playSoundEffect(indice_sonido_daño);
+        gP.playSoundEffect(3);
         
         // Verificar si el jugador murió
         if(this.vida <= 0) {
@@ -309,10 +436,16 @@ public class Jugador extends Entidad implements Llave{
                 // Determinar qué tipo de objeto se recogió y mostrar mensaje
                 String nombreObjeto = obj.getClass().getSimpleName();
                 if(obj instanceof Pocion){
-                    gP.getIU().mostrarMensaje("Pocion recogida");
-                    // Aquí agregar lógica de curación si es necesario
+                    // Curar al jugador 1 punto de vida
+                    if(this.vida < this.vidaMax){
+                        this.vida += 1;
+                        gP.getIU().mostrarMensaje("¡Poción recogida! +1 Vida");
+                        gP.playSoundEffect(6);
+                    } else {
+                        gP.getIU().mostrarMensaje("¡Vida al máximo!");
+                    }
                 } else if(obj instanceof Llave){
-                    gP.getIU().mostrarMensaje("Llave obtenida");
+                    gP.getIU().mostrarMensaje("¡Llave obtenida!");
                     this.setLlave(true);
                 } else {
                     gP.getIU().mostrarMensaje(nombreObjeto + " recogido");
@@ -336,32 +469,63 @@ public class Jugador extends Entidad implements Llave{
     @Override
     public void draw(Graphics2D g2, int camaraX, int camaraY){
         BufferedImage sprite = null;
-        switch(this.direccion){
-            case "arriba":
-                if(this.numeroSprite == 1)
-                    sprite = this.arriba1;
-                if(this.numeroSprite == 2)
-                    sprite = this.arriba2;
-                break;
-            case "abajo":
-                if(this.numeroSprite == 1)
-                    sprite = this.abajo1;
-                if(this.numeroSprite == 2)
-                    sprite = this.abajo2;
-                break;
-            case "izquierda":
-                if(this.numeroSprite == 1)
-                    sprite = this.izquierda1;
-                if(this.numeroSprite == 2)
-                    sprite = this.izquierda2;
-                break;
-            case "derecha":
-                if(this.numeroSprite == 1)
-                    sprite = this.derecha1;
-                if(this.numeroSprite == 2)
-                    sprite = this.derecha2;
-                break;
-
+        
+        // Si está atacando, usar sprites de ataque
+        if(atacando){
+            // Alterna entre los dos sprites de ataque
+            int spriteAtaque = (contadorAtaque / 10) % 2 + 1; // Alterna cada 10 frames
+            
+            switch(this.direccion){
+                case "arriba":
+                    sprite = (spriteAtaque == 1) ? ataqueArriba1 : ataqueArriba2;
+                    break;
+                case "abajo":
+                    sprite = (spriteAtaque == 1) ? ataqueAbajo1 : ataqueAbajo2;
+                    break;
+                case "izquierda":
+                    sprite = (spriteAtaque == 1) ? ataqueIzquierda1 : ataqueIzquierda2;
+                    break;
+                case "derecha":
+                    sprite = (spriteAtaque == 1) ? ataqueDerecha1 : ataqueDerecha2;
+                    break;
+            }
+        }
+        // Si no está atacando, usar sprites normales
+        else {
+            switch(this.direccion){
+                case "arriba":
+                    if(this.numeroSprite == 1)
+                        sprite = this.arriba1;
+                    else if(this.numeroSprite == 2)
+                        sprite = this.arriba2;
+                    else if(this.numeroSprite == 3)
+                        sprite = this.arriba3;
+                    break;
+                case "abajo":
+                    if(this.numeroSprite == 1)
+                        sprite = this.abajo1;
+                    else if(this.numeroSprite == 2)
+                        sprite = this.abajo2;
+                    else if(this.numeroSprite == 3)
+                        sprite = this.abajo3;
+                    break;
+                case "izquierda":
+                    if(this.numeroSprite == 1)
+                        sprite = this.izquierda1;
+                    else if(this.numeroSprite == 2)
+                        sprite = this.izquierda2;
+                    else if(this.numeroSprite == 3)
+                        sprite = this.izquierda3;
+                    break;
+                case "derecha":
+                    if(this.numeroSprite == 1)
+                        sprite = this.derecha1;
+                    else if(this.numeroSprite == 2)
+                        sprite = this.derecha2;
+                    else if(this.numeroSprite == 3)
+                        sprite = this.derecha3;
+                    break;
+            }
         }
 
         //calculo de la posicion en pantalla

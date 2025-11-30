@@ -17,12 +17,18 @@ public abstract class Entidad extends GameObject {
     protected int vida;
     protected int vidaMax = 6;
     protected BufferedImage arriba1, arriba2, abajo1, abajo2, derecha1, derecha2, izquierda1, izquierda2;
+    protected BufferedImage arriba3, abajo3, derecha3, izquierda3;
+    protected BufferedImage ataqueArriba1, ataqueArriba2, ataqueAbajo1, ataqueAbajo2;
+    protected BufferedImage ataqueDerecha1, ataqueDerecha2, ataqueIzquierda1, ataqueIzquierda2;
     protected String direccion;
     protected int contadorSprites = 0;
     protected int numeroSprite = 1;
     protected int cambiaSprite = 10;
     protected String[] dialogos = new String[20];
     protected int indiceDialogo = 0;
+    protected boolean invulnerable = false;
+    protected int contadorInvulnerabilidad = 0;
+    protected int tiempoInvulnerabilidad = 40; // Tiempo de invulnerabilidad en frames (puede ser modificado)
  
     /**
      * Constructor de la clase Entidad.
@@ -59,6 +65,15 @@ public abstract class Entidad extends GameObject {
                 case "derecha":
                     setMundoX(getMundoX() + getVelocidad());
                     break;
+            }
+        }
+        
+        // Actualizar contador de invulnerabilidad
+        if(invulnerable){
+            contadorInvulnerabilidad++;
+            if(contadorInvulnerabilidad >= tiempoInvulnerabilidad){
+                invulnerable = false;
+                contadorInvulnerabilidad = 0;
             }
         }
         
@@ -146,8 +161,18 @@ public abstract class Entidad extends GameObject {
         int EntidadPantallaX = this.mundoX - camaraX;
         int EntidadPantallaY = this.mundoY - camaraY;
         
+        // Aplicar transparencia si está invulnerable
+        if(invulnerable){
+            g2.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, 0.5f));
+        }
+        
         //dibuja el sprite seleccionado en las coordenadas calculadas
         g2.drawImage(sprite, EntidadPantallaX, EntidadPantallaY, gP.getTamTile(), gP.getTamTile(), null);
+        
+        // Restaurar opacidad normal
+        if(invulnerable){
+            g2.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, 1.0f));
+        }
 
         /* // ==== LA SIGUIENTE SECCION DE CODIGO ES PARA DEPURACION ====
         g2.setColor(new Color(255, 0, 0, 100));

@@ -20,8 +20,9 @@ public class InterfazUsuario {
     GamePanel gP;
     ControladorEventos cE;
     Graphics2D g2;
-    Font pixelFont;
+    Font pixelFont, txtFont;
     Heart heart;
+    BufferedImage cursor;
     private boolean estadoMensaje = false;
     private String mensaje = "";
     private int contadorMensaje = 0;
@@ -42,6 +43,9 @@ public class InterfazUsuario {
         try {
             InputStream f = getClass().getResourceAsStream("/resources/fonts/PixelScriptRegular-0WnDG.otf");
             pixelFont = Font.createFont(Font.TRUETYPE_FONT, f);
+            f = getClass().getResourceAsStream("/resources/fonts/dogicapixel.ttf");
+            txtFont = Font.createFont(Font.TRUETYPE_FONT, f);
+            cursor = ImageIO.read(getClass().getResourceAsStream("/resources/menus/cursor.png"));
         } catch (FontFormatException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -100,10 +104,9 @@ public class InterfazUsuario {
      */
     public void drawPantallaInicio(){
         //Fondo
-        BufferedImage img = null, cursor = null;
+        BufferedImage img = null;
         try {
             img = ImageIO.read(getClass().getResourceAsStream("/resources/menus/Menu-nuevo.png"));
-            cursor = ImageIO.read(getClass().getResourceAsStream("/resources/menus/cursor.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,7 +118,7 @@ public class InterfazUsuario {
         int y = gP.getTamTile() * 5;
         //Sombra
         g2.setColor(Color.gray);
-        g2.drawString(txt, x+5, y+5);
+        g2.drawString(txt, x+4, y+4);
         //Texto
         g2.setColor(Color.white);
         g2.drawString(txt, x, y);
@@ -126,7 +129,7 @@ public class InterfazUsuario {
         y += gP.getTamTile() * 4;
         //sombra
         g2.setColor(Color.gray);
-        g2.drawString(txt, x+5, y+5);
+        g2.drawString(txt, x+4, y+4);
         //texto
         g2.setColor(Color.white);
         g2.drawString(txt, x, y);
@@ -138,7 +141,7 @@ public class InterfazUsuario {
         y += gP.getTamTile();
         //sombra
         g2.setColor(Color.gray);
-        g2.drawString(txt, x+5, y+5);
+        g2.drawString(txt, x+4, y+4);
         //texto
         g2.setColor(Color.white);
         g2.drawString(txt, x, y);
@@ -151,7 +154,7 @@ public class InterfazUsuario {
         y += gP.getTamTile();
         //sombra
         g2.setColor(Color.gray);
-        g2.drawString(txt, x+5, y+5);
+        g2.drawString(txt, x+4, y+4);
         //texto
         g2.setColor(Color.white);
         g2.drawString(txt, x, y);
@@ -227,7 +230,7 @@ public class InterfazUsuario {
         int ancho = gP.getAnchoPantalla() - (gP.getTamTile() * 4);
         dibujaSubVentana(x, y, alto, ancho);
 
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+        g2.setFont(txtFont.deriveFont(Font.TRUETYPE_FONT, 22F));
         x += gP.getTamTile();
         y += gP.getTamTile();
         g2.drawString(dialogoActual, x, y);
@@ -257,13 +260,13 @@ public class InterfazUsuario {
     public void drawMenuPausa(){
         //Dibuja pantalla de pausa
         dibujaSubVentana(gP.getTamTile()*4, gP.getTamTile()*2, gP.getAltoPantalla() - gP.getTamTile()*4, gP.getAnchoPantalla() - gP.getTamTile()*8);
-        g2.setFont(g2.getFont().deriveFont(Font.TRUETYPE_FONT, 72F));
+        g2.setFont(txtFont.deriveFont(Font.TRUETYPE_FONT, 72F));
         String texto = "PAUSA";
         int x = getXCentrado(texto);
         int y = gP.getAltoPantalla() / 4;
         g2.drawString(texto, x, y);
 
-        g2.setFont(g2.getFont().deriveFont(Font.TRUETYPE_FONT, 32F));
+        g2.setFont(txtFont.deriveFont(Font.TRUETYPE_FONT, 22F));
         texto = "Opciones";
         x = getXCentrado(texto);
         y += gP.getTamTile() * 3;
@@ -296,7 +299,7 @@ public class InterfazUsuario {
         if(estadoMensaje){
             contadorMensaje++;
             
-            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+            g2.setFont(txtFont.deriveFont(Font.TRUETYPE_FONT, 18F));
             int x = gP.getTamTile() / 2;
             int y = gP.getTamTile() * 3;
             

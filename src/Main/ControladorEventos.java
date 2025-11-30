@@ -57,7 +57,7 @@ public class ControladorEventos {
             if(hit(0, 7, 21, "arriba") || hit(0, 7, 22, "arriba") || 
                hit(0, 7, 23, "arriba") || hit(0, 7, 24, "arriba")){
                 mapaDestino = gP.getMapaMazmorra1();
-                renDestino = 13;
+                renDestino = 12;
                 colDestino = 12; 
                 gP.setEstadoJuego(gP.getTransitionState()); // cambiar estado a transición
             }

@@ -44,6 +44,12 @@ public class ManejadorObjetos {
         npc[2].mundoY = gP.getTamTile() *20;
         npc[2].setMapa(gP.getMapaMundo());
         agregarGameObject(npc[2]);
+
+        npc[3] = new Jefe(gP);
+        npc[3].mundoX = gP.getTamTile() *10;
+        npc[3].mundoY = gP.getTamTile() *10;
+        npc[3].setMapa(gP.getMapaMazmorra2());
+        agregarGameObject(npc[3]);
     }
     /**
      * Coloca los objetos estaticos en el mapa.
@@ -69,7 +75,9 @@ public class ManejadorObjetos {
      * Actualiza solo las Entidades (objetos que se mueven).
      */
     public void update() {
-        for (Entidad ent : entidades){
+        // Crear una copia de la lista para evitar errores de concurrencia
+        ArrayList<Entidad> entidadesActualizar = new ArrayList<>(entidades);
+        for (Entidad ent : entidadesActualizar){
             if(ent.getMapa() == gP.getMapaActual()) {
                 ent.update();
             }
