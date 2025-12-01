@@ -91,23 +91,34 @@ public class ManejadorTeclas implements KeyListener{
 		}
 		//Controles en pantalla de pausa
 		else if(gP.getEstadoJuego() == gP.getPauseState()){
-			switch(e.getKeyCode()){
-				case KeyEvent.VK_ESCAPE : gP.setEstadoJuego(gP.getPlayState());
-					break;
-				case KeyEvent.VK_W : iU.decrementaNumOpcion();
-					break;
-				case KeyEvent.VK_S : iU.incrementaNumOpcion();
-					break;
-				case KeyEvent.VK_ENTER:
-					if(iU.getNumOpcion() == 0){
-						//entra a opciones
-					}
-					else if(iU.getNumOpcion() == 1){
-						//Pantalla de ayuda
-					}
-					else if(iU.getNumOpcion() == 2){
-						System.exit(0);
-					}
+			if(iU.getMostrandoControles()){
+				// Si está mostrando controles, ESC vuelve al menú de pausa
+				switch(e.getKeyCode()){
+					case KeyEvent.VK_ESCAPE:
+						iU.setMostrandoControles(false);
+						break;
+				}
+			} else {
+				// Menú de pausa normal
+				switch(e.getKeyCode()){
+					case KeyEvent.VK_ESCAPE : gP.setEstadoJuego(gP.getPlayState());
+						break;
+					case KeyEvent.VK_W : iU.decrementaNumOpcion();
+						break;
+					case KeyEvent.VK_S : iU.incrementaNumOpcion();
+						break;
+					case KeyEvent.VK_ENTER:
+						if(iU.getNumOpcion() == 0){
+							//entra a opciones
+						}
+						else if(iU.getNumOpcion() == 1){
+							//Pantalla de controles
+							iU.setMostrandoControles(true);
+						}
+						else if(iU.getNumOpcion() == 2){
+							System.exit(0);
+						}
+				}
 			}
 		}
 		//Controles en pantalla de Game Over

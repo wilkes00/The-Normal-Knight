@@ -22,10 +22,10 @@ public class NPC extends Entidad{
         this.setDialogos();
     }
     public void setDialogos(){
-        this.dialogos[0] = "Tened cuidado forastero, este cementerio es peligroso.";
-        this.dialogos[1] = "Ni un alma ha regresado de la mazmorra.";
-        this.dialogos[2] = "Dicen que hay un gran tesoro escondido alli.";
-        this.dialogos[3] = "Si tan solo fuese mas joven, yo mismo iria a buscarlo...";
+        this.dialogos[0] = "No deberias estar aqui...";
+        this.dialogos[1] = "Vete antes de que sea demasiado tarde.";
+        this.dialogos[2] = "La mazmorra de abajo no se abre con nada\nquiza necesites una llave especial.";
+        this.dialogos[3] = "Pero os digo, muchos han intentado\nentrar y solo sus cuerpos han regresado.";
     }
     /**
      * Carga los sprites especificos del NPC.

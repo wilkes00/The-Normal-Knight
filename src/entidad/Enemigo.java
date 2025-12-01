@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
  */
 public class Enemigo extends Entidad {
     private int cont = 0;
+    
     public Enemigo(GamePanel gP) {
         super(gP);
         this.colision = true;
@@ -22,6 +23,12 @@ public class Enemigo extends Entidad {
         this.vidaMax = 3;
         this.getSprites();
     }
+    
+    @Override
+    public void setVida(int vida){
+        super.setVida(vida);
+    }
+    
     /**
      * Carga los sprites especificos del enemigo.
      */
@@ -111,6 +118,7 @@ public class Enemigo extends Entidad {
         }
             
     }
+    
     /**
      * Verifica si el enemigo puede "ver" al jugador.
      * @return true si el jugador está dentro del rango de visión, false en caso contrario.

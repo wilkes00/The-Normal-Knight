@@ -139,6 +139,9 @@ public class ControladorEventos {
         anteriorEventoY = jugador.getMundoY();
         touchEvent = false;
     }
+    /**
+     * Muestra un mensaje indicando que la mazmorra está cerrada.
+     */
     public void mazmorraCerrada(){
         gP.setEstadoJuego(gP.getDialogueState());
         gP.getIU().setDialogoActual("¡La mazmorra está cerrada! Necesitas una llave para entrar.");

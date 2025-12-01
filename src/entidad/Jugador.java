@@ -418,6 +418,11 @@ public class Jugador extends Entidad implements Llave{
             // El jugador no puede recogerse a si mismo.
             if(obj == this)
                 continue;
+            
+            // Verificar que el objeto esté en el mismo mapa que el jugador
+            if(obj.getMapa() != this.getMapa())
+                continue;
+                
             // Si el objeto ES sólido (colision=true), lo ignoramos.
             // (El DetectorColisiones ya se encargó de él).
             if(obj.getColision())

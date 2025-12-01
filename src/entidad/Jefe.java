@@ -26,8 +26,8 @@ public class Jefe extends Entidad implements Llave {
         this.areaSolida = new java.awt.Rectangle(20, 24, 56, 56); // Hitbox más grande para el troll
         this.direccion = "abajo";
         this.velocidad = 1; // Movimiento muy lento
-        this.vida = 10; // Jefe tiene 10 puntos de vida
-        this.vidaMax = 10;
+        this.vida = 8;
+        this.vidaMax = 8;
         this.cambiaSprite = 15; // Animación más lenta
         this.getSprites();
     }
@@ -205,8 +205,8 @@ public class Jefe extends Entidad implements Llave {
         int ataqueAncho = this.areaSolida.width;
         int ataqueAlto = this.areaSolida.height;
         
-        // Extender el rango de ataque según la dirección (espada)
-        int rangoEspada = 50; // Píxeles de alcance de la espada
+        // Extender el rango de ataque según la dirección
+        int rangoEspada = 30; // Píxeles de alcance de la espada 
         
         switch(this.direccion){
             case "arriba":

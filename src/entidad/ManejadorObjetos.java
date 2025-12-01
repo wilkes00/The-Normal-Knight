@@ -40,8 +40,8 @@ public class ManejadorObjetos {
         agregarGameObject(npc[1]);
 
         npc[2] = new NPC_Velador(gP);
-        npc[2].mundoX = gP.getTamTile() *28;
-        npc[2].mundoY = gP.getTamTile() *20;
+        npc[2].mundoX = gP.getTamTile() *25;
+        npc[2].mundoY = gP.getTamTile() *7;
         npc[2].setMapa(gP.getMapaMundo());
         agregarGameObject(npc[2]);
 
@@ -50,13 +50,21 @@ public class ManejadorObjetos {
         npc[3].mundoY = gP.getTamTile() *6;
         npc[3].setMapa(gP.getMapaMazmorra2());
         agregarGameObject(npc[3]);
+        
+        npc[4] = new Enemigo(gP);
+        npc[4].mundoX = gP.getTamTile() *5;
+        npc[4].mundoY = gP.getTamTile() *1;
+        npc[4].setMapa(gP.getMapaMazmorra1());
+        agregarGameObject(npc[4]);
     }
     /**
      * Coloca los objetos estaticos en el mapa.
      */
     public void colocarObjetosEstaticos() {
         // Añade la pocion a la lista de objetos estaticos
-        objetos.add(new Pocion(this.gP, this.gP.getMapaMundo(),18, 16)); 
+        objetos.add(new Pocion(this.gP, this.gP.getMapaMundo(),18, 16));
+        objetos.add(new Pocion(this.gP, this.gP.getMapaMazmorra2(),14, 2));
+        objetos.add(new Pocion(this.gP, this.gP.getMapaMazmorra2(),10, 5)); 
         
         // Cofres
         objetos.add(new Cofre(this.gP, gP.getMapaMazmorra1(), 3, 3, false));

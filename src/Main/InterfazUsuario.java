@@ -32,6 +32,7 @@ public class InterfazUsuario {
     private int opacidadTransicion = 0;
     private boolean juegoTerminado = false;
     private int numOpcion = 0;
+    private boolean mostrandoControles = false;
     /**
      * Constructor de la InterfazUsuario.
      * @param gP referencia al GamePanel principal.
@@ -60,14 +61,18 @@ public class InterfazUsuario {
      */
     public void draw(Graphics2D g2){
         this.g2 = g2;
+        
+         //  ==== Coordenadas del jugador DEPURACION ====
+        g2.setFont(txtFont.deriveFont(Font.PLAIN, 18F));
+        g2.setColor(Color.white);
+        int renJugador = gP.jugador.getMundoY() / gP.getTamTile();
+        int colJugador = gP.jugador.getMundoX() / gP.getTamTile();
+        g2.drawString("Col: " + colJugador + " Ren: " + renJugador, 20, 100);
+         // ============================================
         g2.setFont(pixelFont);
         g2.setColor(Color.white);
         
-         //  ==== Coordenadas del jugador DEPURACION ====
-        int renJugador = gP.jugador.getMundoY() / gP.getTamTile();
-        int colJugador = gP.jugador.getMundoX() / gP.getTamTile();
-        g2.drawString("Col: " + colJugador + " Ren: " + renJugador, 20, 40);
-         // ============================================
+        
 
         //Pantalla de inicio del juego
         if(gP.getEstadoJuego() == gP.getStartState()){
@@ -93,7 +98,11 @@ public class InterfazUsuario {
         }
         else if(gP.getEstadoJuego() == gP.getPauseState()){
             drawVidaJugador();
-            drawMenuPausa();
+            if(mostrandoControles){
+                drawControlesPausa();
+            } else {
+                drawMenuPausa();
+            }
             drawMensaje();
         }
         //Pantalla de Game Over
@@ -266,7 +275,13 @@ public class InterfazUsuario {
         g2.setFont(txtFont.deriveFont(Font.TRUETYPE_FONT, 22F));
         x += gP.getTamTile();
         y += gP.getTamTile();
-        g2.drawString(dialogoActual, x, y);
+        
+        // Dividir el diálogo en líneas si contiene \n
+        String[] lineas = dialogoActual.split("\n");
+        for(String linea : lineas){
+            g2.drawString(linea, x, y);
+            y += 30; // Espaciado entre líneas
+        }
     }
     /**
      * Dibuja una subventana con bordes redondeados.
@@ -286,6 +301,46 @@ public class InterfazUsuario {
         g2.drawRoundRect(x+5, y+5, ancho-10, alto-10, 25, 25);
 
 
+    }
+    /**
+     * Dibuja la pantalla de controles dentro del menú de pausa.
+     */
+    public void drawControlesPausa(){
+        //Dibuja ventana de controles
+        dibujaSubVentana(gP.getTamTile()*4, gP.getTamTile()*2, gP.getAltoPantalla() - gP.getTamTile()*4, gP.getAnchoPantalla() - gP.getTamTile()*8);
+        
+        g2.setFont(txtFont.deriveFont(Font.TRUETYPE_FONT, 48F));
+        String texto = "CONTROLES";
+        int x = getXCentrado(texto);
+        int y = gP.getTamTile() * 3;
+        g2.setColor(Color.white);
+        g2.drawString(texto, x, y);
+        
+        // Lista de controles
+        g2.setFont(txtFont.deriveFont(Font.TRUETYPE_FONT, 20F));
+        y += gP.getTamTile() * 2;
+        int margenIzq = gP.getTamTile() * 6;
+        
+        g2.drawString("W - Mover arriba", margenIzq, y);
+        y += gP.getTamTile();
+        g2.drawString("S - Mover abajo", margenIzq, y);
+        y += gP.getTamTile();
+        g2.drawString("A - Mover izquierda", margenIzq, y);
+        y += gP.getTamTile();
+        g2.drawString("D - Mover derecha", margenIzq, y);
+        y += gP.getTamTile();
+        g2.drawString("K - Atacar", margenIzq, y);
+        y += gP.getTamTile();
+        g2.drawString("ENTER - Interactuar", margenIzq, y);
+        y += gP.getTamTile();
+        g2.drawString("ESC - Pausar", margenIzq, y);
+        
+        // Instrucción para volver
+        y += gP.getTamTile();
+        g2.setFont(txtFont.deriveFont(Font.TRUETYPE_FONT, 18F));
+        texto = "Presiona ESC para volver";
+        x = getXCentrado(texto);
+        g2.drawString(texto, x, y);
     }
     /**
      * Dibuja el menú de pausa en pantalla.
@@ -403,5 +458,11 @@ public class InterfazUsuario {
     }
     public void setDialogoActual(String dialogoActual) {
         this.dialogoActual = dialogoActual;
+    }
+    public boolean getMostrandoControles() {
+        return this.mostrandoControles;
+    }
+    public void setMostrandoControles(boolean mostrandoControles) {
+        this.mostrandoControles = mostrandoControles;
     }
 }

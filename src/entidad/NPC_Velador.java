@@ -16,8 +16,11 @@ public class NPC_Velador extends Entidad {
         this.setDialogos();
     }
     public void setDialogos(){
-        this.dialogos[0] = "No deberias estar aqui...";
-        this.dialogos[1] = "Vete antes de que sea demasiado tarde.";
+        this.dialogos[0] = "Tened cuidado forastero, este cementerio es peligroso.";
+        this.dialogos[1] = "Ni un alma ha regresado de la mazmorra.";
+        this.dialogos[2] = "Dicen que hay un gran tesoro escondido alli.";
+        this.dialogos[3] = "Si tan solo fuese mas joven, yo mismo iria a buscarlo...";
+        
     }
     /**
      * Carga los sprites especificos del NPC.
