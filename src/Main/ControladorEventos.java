@@ -52,6 +52,7 @@ public class ControladorEventos {
         if(distancia > gP.getTamTile()){
             touchEvent = true;
         }
+        
         if(touchEvent){
             //evento de teletransporte a la mazmorra 1
             if(hit(0, 7, 21, "arriba") || hit(0, 7, 22, "arriba") || 
@@ -69,7 +70,10 @@ public class ControladorEventos {
                 colDestino = 23; 
                 gP.setEstadoJuego(gP.getTransitionState()); // cambiar estado a transición
             }
-            
+            //evento 3 mazmorra
+            else if(hit(0, 31, 43, "arriba") || hit(0, 31, 44, "arriba") || hit(0, 31, 45, "arriba")) {
+            	mazmorraCerrada();
+            }
             //evento de teletransporte a la mazmorra 2
             else if(gP.getJugador().getLlave() == true){
                 if(hit(0, 31, 5, "arriba") || hit(0, 31, 4, "arriba")){
@@ -144,7 +148,7 @@ public class ControladorEventos {
      */
     public void mazmorraCerrada(){
         gP.setEstadoJuego(gP.getDialogueState());
-        gP.getIU().setDialogoActual("¡La mazmorra está cerrada! Necesitas una llave para entrar.");
+        gP.getIU().setDialogoActual("¡La mazmorra está cerrada!\nNecesitas una llave para entrar.");
         anteriorEventoX = jugador.getMundoX();
         anteriorEventoY = jugador.getMundoY();
         touchEvent = false;
