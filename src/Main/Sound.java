@@ -10,7 +10,9 @@ import javax.sound.sampled.Clip;
 public class Sound {
     Clip clip;
     URL soundURL[] = new URL[10];
-    
+    /**
+     * Constructor de la clase Sound. Se encarga de cargar los sonidos en el arreglo soundURL.
+     */
     public Sound(){
         soundURL[0] = getClass().getResource("/resources/sounds/inicio.wav");
         soundURL[1] = getClass().getResource("/resources/sounds/base.wav");
@@ -41,6 +43,10 @@ public class Sound {
     public void play(){
         clip.start();
     }
+    /**
+     * Reproduce un efecto de sonido corto.
+     * @param index
+     */
     public void playSoundEfect(int index){
         setFile(index);
         play();

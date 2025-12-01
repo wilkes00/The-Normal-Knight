@@ -28,7 +28,7 @@ public abstract class Entidad extends GameObject {
     protected int indiceDialogo = 0;
     protected boolean invulnerable = false;
     protected int contadorInvulnerabilidad = 0;
-    protected int tiempoInvulnerabilidad = 40; // Tiempo de invulnerabilidad en frames (puede ser modificado)
+    protected int tiempoInvulnerabilidad = 40; // Tiempo de invulnerabilidad en frames
  
     /**
      * Constructor de la clase Entidad.
@@ -84,7 +84,11 @@ public abstract class Entidad extends GameObject {
      * no es un metodo con la firma abstract porque el Jugador no lo utiliza.
      */
     public void accion(){}
-    
+    /**
+     * Metodo que incluye la logica para los dialogos de las entidades.
+     * Se encarga de cambiar el estado del juego a DialogueState si la entidad tiene dialogos.
+     * Ademas de mover la direccion en la que esta mirando la entidad, para que observe al jugador.
+     */
     public void hablar(){
         if(dialogos[indiceDialogo] != null){
             gP.setEstadoJuego(gP.getDialogueState());
@@ -182,13 +186,15 @@ public abstract class Entidad extends GameObject {
         //Dibuja el rectángulo relleno
         g2.fillRect(hitboxX, hitboxY, areaSolida.width, areaSolida.height);
         
-        //Dibuja un borde blanco para que se vea mejor
+        //dibuja un borde blanco al rectangulo
         g2.setColor(java.awt.Color.white);
         g2.drawRect(hitboxX, hitboxY, areaSolida.width, areaSolida.height);
         */ //=========================================================
     }
      /**
-     * Voltea horizontalmente una imagen.
+     * Metodo auxiliar que voltea horizontalmente una imagen.
+     * @param img la imagen a voltear
+     * @return la imagen volteada
      */
     protected BufferedImage voltearHorizontal(BufferedImage img){
         AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);

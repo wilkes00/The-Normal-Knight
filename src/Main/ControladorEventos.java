@@ -14,7 +14,7 @@ public class ControladorEventos {
     private int mapaDestino, renDestino, colDestino;
     /**
      * Constructor de ControladorEventos.
-     * 
+     * Se encarga de definir el rectangulo de evento, y almacenar las coordenadas del evento anterior.
      * @param gP referencia a GamePanel principal.
      */
     public ControladorEventos(GamePanel gP){

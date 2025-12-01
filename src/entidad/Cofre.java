@@ -46,7 +46,7 @@ public class Cofre extends Objeto implements Llave{
         }
     }
     /**
-     * Interacción del jugador con el cofre.
+     * Interacción del cofre con el jugador.
      */
     public void interactuar(){
         if(abierto == false){

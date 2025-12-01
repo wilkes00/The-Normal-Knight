@@ -36,9 +36,6 @@ public class GamePanel extends JPanel implements Runnable{
     DetectorColisiones dC = new DetectorColisiones(this);
 	private final int FPS = 60;
 
-	
-	
-
 	//estado del juego
 	private int estadoJuego;
 	private final int startState = 0;
@@ -99,6 +96,8 @@ public class GamePanel extends JPanel implements Runnable{
 		music = new Sound();
 		soundEffects = new Sound();
 		
+		// Resetear mapa actual
+		this.mapaActual = mapaMundo;
 		// Resetear el jugador
 		jugador.configuracionInicial();
 		
@@ -109,9 +108,6 @@ public class GamePanel extends JPanel implements Runnable{
 		// Reiniciar eventos
 		cE = new ControladorEventos(this);
 		cE.setJugador(this.jugador);
-		
-		// Resetear mapa actual
-		this.mapaActual = mapaMundo;
 	}
 	/**
 	 * Inicia la hebra principal del juego.

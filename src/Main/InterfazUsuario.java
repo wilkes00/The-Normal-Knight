@@ -62,13 +62,13 @@ public class InterfazUsuario {
     public void draw(Graphics2D g2){
         this.g2 = g2;
         
-         //  ==== Coordenadas del jugador DEPURACION ====
+        /* //  ==== Coordenadas del jugador DEPURACION ====
         g2.setFont(txtFont.deriveFont(Font.PLAIN, 18F));
         g2.setColor(Color.white);
         int renJugador = gP.jugador.getMundoY() / gP.getTamTile();
         int colJugador = gP.jugador.getMundoX() / gP.getTamTile();
         g2.drawString("Col: " + colJugador + " Ren: " + renJugador, 20, 100);
-         // ============================================
+        */ // ============================================
         g2.setFont(pixelFont);
         g2.setColor(Color.white);
         

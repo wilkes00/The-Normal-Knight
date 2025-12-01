@@ -19,11 +19,13 @@ public class Enemigo extends Entidad {
         this.areaSolida = new java.awt.Rectangle(12, 16, 22, 22);
         this.direccion = "abajo";
         this.velocidad = 1;
-        this.vida = 3; // Enemigos tienen 3 puntos de vida
+        this.vida = 3; //enemigos con 3 puntos de vida
         this.vidaMax = 3;
         this.getSprites();
     }
-    
+    /**
+     * Metodo setter para la vida
+     * */
     @Override
     public void setVida(int vida){
         super.setVida(vida);
@@ -124,7 +126,7 @@ public class Enemigo extends Entidad {
      * @return true si el jugador está dentro del rango de visión, false en caso contrario.
      */
     private boolean observaJugador() {
-        int rangoVision = 200; // Distancia máxima para "ver" al jugador
+        int rangoVision = 150; // Distancia máxima para "ver" al jugador
         // Calcular distancia al jugador
         int distanciaX = Math.abs(gP.getJugador().getMundoX() - this.mundoX);
         int distanciaY = Math.abs(gP.getJugador().getMundoY() - this.mundoY);

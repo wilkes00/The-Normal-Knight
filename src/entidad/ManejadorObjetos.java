@@ -28,8 +28,8 @@ public class ManejadorObjetos {
      */
     public void setNPC(){
         npc[0] = new NPC(gP);
-        npc[0].mundoX = gP.getTamTile() *28;
-        npc[0].mundoY = gP.getTamTile() *16;
+        npc[0].mundoX = gP.getTamTile() *39;
+        npc[0].mundoY = gP.getTamTile() *15;
         npc[0].setMapa(gP.getMapaMundo());
         agregarGameObject(npc[0]);
 
@@ -64,8 +64,10 @@ public class ManejadorObjetos {
         // Añade la pocion a la lista de objetos estaticos
         objetos.add(new Pocion(this.gP, this.gP.getMapaMundo(),18, 16));
         objetos.add(new Pocion(this.gP, this.gP.getMapaMazmorra2(),14, 2));
-        objetos.add(new Pocion(this.gP, this.gP.getMapaMazmorra2(),10, 5)); 
-        
+        objetos.add(new Pocion(this.gP, this.gP.getMapaMazmorra2(),13, 5)); 
+        objetos.add(new Pocion(this.gP, this.gP.getMapaMazmorra2(),18, 7)); 
+
+
         // Cofres
         objetos.add(new Cofre(this.gP, gP.getMapaMazmorra1(), 3, 3, false));
         objetos.add(new Cofre(this.gP, gP.getMapaMazmorra1(), 8, 3, false));

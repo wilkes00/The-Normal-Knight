@@ -12,6 +12,11 @@ import javax.imageio.ImageIO;
  */
 public class NPC extends Entidad{
     private int cont = 0;
+    /**
+     * Constructor de la clase NPC, se encarga de las configuraciones iniciales para esta entidad, tales como:
+     * colision, hitbox, direccion, velocidad de movimiento, carga de sprites y de dialogos.
+     * @param gP
+     */
     public NPC(GamePanel gP){
         super(gP);
         this.colision = true;
@@ -21,6 +26,9 @@ public class NPC extends Entidad{
         this.getSpritesNPC();
         this.setDialogos();
     }
+    /**
+     * Metodo que carga los dialogos especificos de este NPC
+     */
     public void setDialogos(){
         this.dialogos[0] = "No deberias estar aqui...";
         this.dialogos[1] = "Vete antes de que sea demasiado tarde.";

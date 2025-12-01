@@ -10,7 +10,10 @@ public class Objeto extends GameObject{
     GamePanel gP;
     protected String nombre;
     private boolean tieneLlave = false;
-
+    /**
+     * Constructor de la clase Objeto, se encarga de inicializar el rectangulo que funciona hitbox.
+     * @param gP Referencia al GamePanel principal.
+     */
     public Objeto(GamePanel gP){
         this.gP = gP;
         this.areaSolida = new Rectangle(8, 16, 32, 32);
